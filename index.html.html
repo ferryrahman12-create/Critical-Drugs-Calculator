@@ -1,0 +1,1430 @@
+﻿<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kalkulator Dosis Obat ICU</title>
+  <style>
+    :root {
+      --bg: #eef3f7;
+      --panel: #ffffff;
+      --ink: #152033;
+      --muted: #627085;
+      --line: #d8e0ea;
+      --primary: #087568;
+      --primary-dark: #07584f;
+      --primary-soft: #e7f4f2;
+      --accent: #2563eb;
+      --soft: #f3f8f7;
+      --danger: #b91c1c;
+      --warn: #8a4b00;
+      --shadow: 0 18px 45px rgba(28, 41, 61, 0.11);
+      --shadow-soft: 0 8px 24px rgba(28, 41, 61, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(180deg, #dfeaf2 0, #eef3f7 260px, #f7f9fc 100%);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .app-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 24px auto 32px;
+    }
+
+    .app-header {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 22px;
+      border: 1px solid rgba(216, 224, 234, 0.95);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .app-mark {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 800;
+      box-shadow: 0 12px 24px rgba(8, 117, 104, 0.22);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(1.7rem, 3vw, 2.55rem);
+      letter-spacing: 0;
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      max-width: 840px;
+      font-size: 0.98rem;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .meta-pill {
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #cbd8e6;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #f8fbfd;
+      color: #304158;
+      font-size: 0.82rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .warning {
+      margin: 0 0 18px;
+      padding: 14px 16px 14px 18px;
+      border: 1px solid #f4d38b;
+      border-left: 5px solid #d97706;
+      background: #fff8e6;
+      color: var(--warn);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      box-shadow: 0 6px 18px rgba(138, 75, 0, 0.08);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 420px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .form-panel,
+    .result-panel { padding: 22px; }
+
+    .result-panel {
+      position: sticky;
+      top: 16px;
+      border-top: 5px solid var(--primary);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 14px;
+      color: #243047;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 8px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 16px;
+      margin-bottom: 22px;
+    }
+
+    .grid.single { grid-template-columns: 1fr; }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: #314057;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    label span {
+      color: var(--danger);
+      font-weight: 800;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 48px;
+      padding: 11px 12px;
+      border: 1px solid #c4cfdd;
+      border-radius: 8px;
+      background: #fbfdff;
+      color: var(--ink);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.16);
+      background: #fff;
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    .quick-select {
+      display: grid;
+      gap: 10px;
+      margin: -8px 0 22px;
+    }
+
+    .quick-select-title {
+      margin: 0;
+      color: #52637a;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .drug-logo-grid,
+    .mixture-logo-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .drug-logo-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .mixture-logo-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .logo-option {
+      min-height: 76px;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      border: 1px solid #d6e0eb;
+      border-radius: 8px;
+      padding: 10px;
+      background: #fbfdff;
+      color: #25344b;
+      text-align: left;
+      box-shadow: 0 4px 14px rgba(28, 41, 61, 0.05);
+    }
+
+    .logo-option:hover {
+      border-color: #a9c1d8;
+      background: #fff;
+      box-shadow: 0 8px 18px rgba(28, 41, 61, 0.08);
+    }
+
+    .logo-option.is-active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: 0 0 0 3px rgba(8, 117, 104, 0.12);
+    }
+
+    .logo-badge {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--logo-color, var(--primary));
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0;
+      box-shadow: inset 0 -10px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .mixture-logo-grid .logo-badge {
+      font-size: 0.64rem;
+    }
+
+    .logo-text {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .logo-text strong {
+      overflow-wrap: anywhere;
+      color: #1f2d43;
+      font-size: 0.9rem;
+      line-height: 1.15;
+    }
+
+    .logo-text span {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.25;
+    }
+
+    .mixture-logo-grid:empty {
+      display: none;
+    }
+
+    .hint {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      min-height: 46px;
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(8, 117, 104, 0.24);
+    }
+
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-secondary { background: #e8eef5; color: #243047; }
+    .btn-secondary:hover { background: #dce5ef; }
+
+    .label-size-options {
+      display: none;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .label-size-options.is-visible { display: grid; }
+
+    .label-size-options button {
+      min-height: 40px;
+      padding: 8px 10px;
+      font-size: 0.92rem;
+    }
+
+    .rate-box {
+      padding: 18px;
+      background: linear-gradient(135deg, #e7f4f2 0%, #f6fbff 100%);
+      border: 1px solid #b7deda;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+    }
+
+    .rate-label {
+      margin: 0 0 4px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .rate-value {
+      margin: 0;
+      color: var(--primary-dark);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .rate-unit {
+      color: #314057;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .result-list {
+      display: grid;
+      gap: 0;
+      margin: 14px 0;
+      padding: 0;
+      list-style: none;
+      border: 1px solid #e2e9f2;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .result-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #e6edf5;
+      background: #fff;
+    }
+
+    .result-list li:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .result-list li:last-child {
+      border-bottom: 0;
+    }
+
+    .result-list span:first-child { color: var(--muted); }
+    .result-list span:last-child { font-weight: 700; text-align: right; }
+
+    .detail-box {
+      display: grid;
+      gap: 8px;
+      margin: 14px 0;
+      padding: 13px;
+      border: 1px solid #c9d8e8;
+      border-radius: 8px;
+      background: #f8fbff;
+      color: #314057;
+      font-size: 0.9rem;
+    }
+
+    .detail-box strong {
+      color: var(--ink);
+    }
+
+    .safety-alert {
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid #f3c96b;
+      border-left: 5px solid #d97706;
+      border-radius: 8px;
+      background: #fff8e6;
+      color: #6b4500;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .status-message {
+      margin: 12px 0 0;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #eef6f5;
+      color: var(--primary-dark);
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: 1px solid #b9dcda;
+    }
+
+    .status-message.is-error {
+      background: #fff1f2;
+      color: var(--danger);
+      border: 1px solid #fecdd3;
+    }
+
+    .history-panel {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e6edf5;
+    }
+
+    .history-title {
+      margin: 0 0 8px;
+      color: #314057;
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .history-list li {
+      display: grid;
+      gap: 2px;
+      padding: 10px 12px;
+      border: 1px solid #e1e9f2;
+      border-radius: 8px;
+      background: #fbfcfe;
+      font-size: 0.86rem;
+      box-shadow: 0 3px 10px rgba(28, 41, 61, 0.04);
+    }
+
+    .history-list strong {
+      color: var(--primary-dark);
+      font-size: 0.98rem;
+    }
+
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid #e6edf5;
+    }
+
+    .note {
+      margin: 14px 0 0;
+      color: var(--danger);
+      font-size: 0.86rem;
+    }
+
+    .empty {
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #56677f;
+      padding: 22px;
+      border: 1px dashed #aebdd0;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(231, 244, 242, 0.7), rgba(248, 251, 255, 0.88));
+      text-align: center;
+      font-weight: 700;
+    }
+
+    #printSheet,
+    #kitirSheet { display: none; }
+
+    .print-result-sheet {
+      background: #fff;
+      color: #000;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .print-drug-title {
+      margin: 0 0 10mm;
+      padding: 6mm 4mm;
+      border: 2px solid #000;
+      text-align: center;
+      font-size: 30px;
+      line-height: 1.1;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .print-info-table,
+    .print-sign-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 9mm;
+      font-size: 14px;
+    }
+
+    .print-info-table th,
+    .print-info-table td,
+    .print-sign-table th,
+    .print-sign-table td {
+      border: 1.5px solid #000;
+      padding: 7px 9px;
+      vertical-align: top;
+    }
+
+    .print-info-table th,
+    .print-sign-table th {
+      width: 25%;
+      background: #f0f0f0;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .print-sign-table th {
+      width: 50%;
+      text-align: center;
+    }
+
+    .print-sign-space {
+      height: 38mm;
+      vertical-align: bottom !important;
+      text-align: center;
+    }
+
+    .print-rate-box {
+      margin-bottom: 9mm;
+      border: 2px solid #000;
+      padding: 7mm;
+      text-align: center;
+    }
+
+    .print-rate-box div:first-child {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 3mm;
+    }
+
+    .print-rate-box div:last-child {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .kitir-sheet {
+      background: #fff;
+      color: #000;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .kitir-header {
+      display: grid;
+      grid-template-columns: 34mm 1fr 42mm;
+      align-items: center;
+      gap: 5mm;
+      margin-bottom: 5mm;
+    }
+
+    .kitir-badge {
+      min-height: 20mm;
+      border: 2px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.1;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3mm;
+    }
+
+    .kitir-badge.alert {
+      border-color: #b91c1c;
+      background: #b91c1c;
+      color: #fff;
+    }
+
+    .kitir-badge.checker {
+      border-color: #111;
+      background: #f3f4f6;
+      color: #111;
+    }
+
+    .kitir-drug-title {
+      margin: 0;
+      text-align: center;
+      font-size: 30px;
+      line-height: 1.1;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .kitir-mixture {
+      border: 1.5px solid #000;
+      padding: 4mm;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 5mm;
+    }
+
+    .kitir-patient-grid,
+    .kitir-sign-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4mm;
+      margin-bottom: 5mm;
+    }
+
+    .kitir-field,
+    .kitir-weight {
+      border: 1.5px solid #000;
+      padding: 3mm;
+      min-height: 16mm;
+      font-size: 13px;
+    }
+
+    .kitir-field span,
+    .kitir-weight span {
+      display: block;
+      margin-bottom: 1mm;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .kitir-field strong,
+    .kitir-weight strong {
+      font-size: 17px;
+    }
+
+    .kitir-weight {
+      width: 58%;
+      margin: 0 auto 5mm;
+      text-align: center;
+    }
+
+    .kitir-dose-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .kitir-dose-table th,
+    .kitir-dose-table td {
+      border: 1.5px solid #000;
+      padding: 7px 8px;
+      text-align: center;
+    }
+
+    .kitir-dose-table th {
+      background: #f0f0f0;
+      font-weight: 800;
+    }
+
+    @media (max-width: 900px) {
+      .app-header {
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: start;
+      }
+
+      .header-meta {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+      }
+
+      .drug-logo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .layout { grid-template-columns: 1fr; }
+      .result-panel { position: static; }
+    }
+
+    @media (max-width: 620px) {
+      .app-shell { width: min(100% - 20px, 1120px); margin: 12px auto 20px; }
+      .app-header { padding: 16px; }
+      .grid, .signature-grid { grid-template-columns: 1fr; }
+      .drug-logo-grid, .mixture-logo-grid { grid-template-columns: 1fr; }
+      .form-panel, .result-panel { padding: 14px; }
+      .header-meta { gap: 6px; }
+      .meta-pill { font-size: 0.78rem; }
+      .actions button { width: 100%; }
+      .result-list li { display: block; }
+      .result-list span { display: block; text-align: left !important; }
+    }
+
+    @media print {
+      @page { size: A4 portrait; margin: 10mm; }
+      body { background: #fff; }
+      header, .warning, .form-panel, .actions, .result-panel > .section-title, #printSheet, #kitirSheet { display: none !important; }
+      .app-shell { width: 100%; margin: 0; }
+      .layout { display: block; }
+      .result-panel { box-shadow: none; border: 0; position: static; padding: 0; }
+      body.print-result #resultContent { display: none !important; }
+      body.print-result #printSheet { display: block !important; }
+      body.print-kitir #resultContent { display: none !important; }
+      body.print-kitir #kitirSheet { display: block !important; }
+      input { border: 0; border-bottom: 1px solid #000; border-radius: 0; min-height: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="app-mark" aria-hidden="true">🧮</div>
+      <div>
+        <h1>Kalkulator Dosis Obat ICU</h1>
+        <p class="subtitle">Hitung laju syringe pump dan cetak hasil verifikasi obat ICU.</p>
+      </div>
+      <div class="header-meta" aria-label="Status alat bantu">
+        <span class="meta-pill">High Alert</span>
+        <span class="meta-pill">Double Check</span>
+        <span class="meta-pill">Syringe Pump</span>
+      </div>
+    </header>
+
+    <div class="warning">
+      Alat bantu ini tidak menggantikan instruksi dokter, protokol rumah sakit, atau verifikasi farmasi. Selalu cek ulang nama obat, konsentrasi, satuan dosis, kompatibilitas cairan, dan batas dosis sesuai kebijakan setempat.
+    </div>
+
+    <section class="layout">
+      <form class="panel form-panel" id="doseForm">
+        <h2 class="section-title">Data Pasien 🧑</h2>
+        <div class="grid">
+          <div>
+            <label for="patientName">Nama pasien <span aria-hidden="true">*</span></label>
+            <input id="patientName" autocomplete="off" placeholder="Contoh: Tn. A" required />
+          </div>
+          <div>
+            <label for="medicalRecord">Nomor RM <span aria-hidden="true">*</span></label>
+            <input id="medicalRecord" autocomplete="off" placeholder="Contoh: 123456" required />
+          </div>
+          <div>
+            <label for="weight">Berat badan (kg) <span aria-hidden="true">*</span></label>
+            <input id="weight" type="number" min="0.1" step="0.1" placeholder="Contoh: 60" required />
+          </div>
+          <div>
+            <label for="targetDose">Target dosis <span aria-hidden="true">*</span></label>
+            <input id="targetDose" type="number" min="0" step="0.01" placeholder="Contoh: 0.1" required />
+            <div class="hint" id="doseUnitHint">Pilih obat untuk melihat satuan dosis.</div>
+          </div>
+        </div>
+
+        <h2 class="section-title">Obat dan Pengoplosan 💉</h2>
+        <div class="grid">
+          <div>
+            <label for="drugName">Nama obat</label>
+            <select id="drugName" required>
+              <option value="" disabled selected hidden>Pilih nama obat</option>
+            </select>
+          </div>
+          <div>
+            <label for="drugOption">Opsi pengoplosan</label>
+            <select id="drugOption" required disabled>
+              <option value="">Pilih obat terlebih dahulu</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="quick-select" aria-label="Pilihan cepat obat dan pengoplosan">
+          <div class="drug-logo-grid" id="drugQuickSelect"></div>
+          <div class="mixture-logo-grid" id="mixtureQuickSelect"></div>
+        </div>
+
+        <div class="grid">
+          <div>
+            <label for="fluid">Pelarut</label>
+            <select id="fluid">
+              <option value="NS">NS</option>
+              <option value="D5">D5</option>
+            </select>
+          </div>
+          <div>
+            <label for="rounding">Pembulatan rate</label>
+            <select id="rounding">
+              <option value="2">2 angka desimal</option>
+              <option value="1">1 angka desimal</option>
+              <option value="0">Bilangan bulat</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" type="submit">Hitung Rate</button>
+          <button class="btn-secondary" type="button" id="resetButton">Reset</button>
+        </div>
+      </form>
+
+      <aside class="panel result-panel">
+        <h2 class="section-title">Hasil Rate Jalan</h2>
+        <div id="resultContent" class="empty">Masukkan data pasien, pilih obat, lalu tekan Hitung Rate.</div>
+        <div id="printSheet"></div>
+        <div id="kitirSheet"></div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const drugNames = [
+      { id: 'norepi', label: 'Norepinephrine/Vascon', logo: 'NE', color: '#087568', subtitle: 'Vasopressor' },
+      { id: 'epi', label: 'Epinephrine', logo: 'EPI', color: '#b91c1c', subtitle: 'Inotropik' },
+      { id: 'dopamine', label: 'Dopamin', logo: 'DA', color: '#2563eb', subtitle: 'Katekolamin' },
+      { id: 'dobutamine', label: 'Dobutamin', logo: 'DB', color: '#7c3aed', subtitle: 'Inotropik' },
+      { id: 'dexmed', label: 'Dexmedetomidine', logo: 'DEX', color: '#0f766e', subtitle: 'Sedasi' }
+    ];
+
+    const drugOptions = [
+      { id: 'norepi-8-40', drugId: 'norepi', label: '8 mg up to NS/D5 40 mL', drug: 'Norepinephrine/Vascon', amount: 8, amountUnit: 'mg', amountMcg: 8000, volumeMl: 40, doseUnit: 'mcg/kg/menit' },
+      { id: 'norepi-8-50', drugId: 'norepi', label: '8 mg up to NS/D5 50 mL', drug: 'Norepinephrine/Vascon', amount: 8, amountUnit: 'mg', amountMcg: 8000, volumeMl: 50, doseUnit: 'mcg/kg/menit' },
+      { id: 'norepi-4-40', drugId: 'norepi', label: '4 mg up to NS/D5 40 mL', drug: 'Norepinephrine/Vascon', amount: 4, amountUnit: 'mg', amountMcg: 4000, volumeMl: 40, doseUnit: 'mcg/kg/menit' },
+      { id: 'norepi-4-50', drugId: 'norepi', label: '4 mg up to NS/D5 50 mL', drug: 'Norepinephrine/Vascon', amount: 4, amountUnit: 'mg', amountMcg: 4000, volumeMl: 50, doseUnit: 'mcg/kg/menit' },
+      { id: 'epi-8-40', drugId: 'epi', label: '8 mg up to NS/D5 40 mL', drug: 'Epinephrine', amount: 8, amountUnit: 'mg', amountMcg: 8000, volumeMl: 40, doseUnit: 'mcg/kg/menit' },
+      { id: 'epi-8-50', drugId: 'epi', label: '8 mg up to NS/D5 50 mL', drug: 'Epinephrine', amount: 8, amountUnit: 'mg', amountMcg: 8000, volumeMl: 50, doseUnit: 'mcg/kg/menit' },
+      { id: 'epi-4-40', drugId: 'epi', label: '4 mg up to NS/D5 40 mL', drug: 'Epinephrine', amount: 4, amountUnit: 'mg', amountMcg: 4000, volumeMl: 40, doseUnit: 'mcg/kg/menit' },
+      { id: 'epi-4-50', drugId: 'epi', label: '4 mg up to NS/D5 50 mL', drug: 'Epinephrine', amount: 4, amountUnit: 'mg', amountMcg: 4000, volumeMl: 50, doseUnit: 'mcg/kg/menit' },
+      { id: 'dopamine-200-40', drugId: 'dopamine', label: '200 mg up to NS/D5 40 mL', drug: 'Dopamin', amount: 200, amountUnit: 'mg', amountMcg: 200000, volumeMl: 40, doseUnit: 'mcg/kg/menit' },
+      { id: 'dobutamine-250-50', drugId: 'dobutamine', label: '250 mg up to NS/D5 50 mL', drug: 'Dobutamin', amount: 250, amountUnit: 'mg', amountMcg: 250000, volumeMl: 50, doseUnit: 'mcg/kg/menit' },
+      { id: 'dexmed-200-50', drugId: 'dexmed', label: '200 mcg up to NS/D5 50 mL', drug: 'Dexmedetomidine', amount: 200, amountUnit: 'mcg', amountMcg: 200, volumeMl: 50, doseUnit: 'mcg/kg/jam', usesHourlyDose: true }
+    ];
+
+    const form = document.getElementById('doseForm');
+    const drugSelect = document.getElementById('drugName');
+    const mixtureSelect = document.getElementById('drugOption');
+    const drugQuickSelect = document.getElementById('drugQuickSelect');
+    const mixtureQuickSelect = document.getElementById('mixtureQuickSelect');
+    const doseUnitHint = document.getElementById('doseUnitHint');
+    const resultContent = document.getElementById('resultContent');
+    const printSheet = document.getElementById('printSheet');
+    const kitirSheet = document.getElementById('kitirSheet');
+    const resetButton = document.getElementById('resetButton');
+
+    let lastResult = null;
+    let calculationHistory = [];
+
+    function populateDrugNames() {
+      drugNames.forEach((option) => {
+        const element = document.createElement('option');
+        element.value = option.id;
+        element.textContent = option.label;
+        drugSelect.appendChild(element);
+      });
+    }
+
+    function getDrugMeta(drugId) {
+      return drugNames.find((drug) => drug.id === drugId) || drugNames[0];
+    }
+
+    function renderDrugQuickSelect() {
+      drugQuickSelect.innerHTML = drugNames.map((drug) => `
+        <button
+          class="logo-option${drugSelect.value === drug.id ? ' is-active' : ''}"
+          type="button"
+          data-drug-id="${drug.id}"
+          style="--logo-color: ${drug.color}"
+          aria-pressed="${drugSelect.value === drug.id ? 'true' : 'false'}"
+        >
+          <span class="logo-badge" aria-hidden="true">${drug.logo}</span>
+          <span class="logo-text">
+            <strong>${drug.label}</strong>
+            <span>${drug.subtitle}</span>
+          </span>
+        </button>
+      `).join('');
+    }
+
+    function renderMixtureQuickSelect() {
+      if (!drugSelect.value) {
+        mixtureQuickSelect.innerHTML = '';
+        return;
+      }
+
+      const drug = getDrugMeta(drugSelect.value);
+      mixtureQuickSelect.innerHTML = drugOptions
+        .filter((option) => option.drugId === drugSelect.value)
+        .map((option) => `
+          <button
+            class="logo-option${mixtureSelect.value === option.id ? ' is-active' : ''}"
+            type="button"
+            data-mixture-id="${option.id}"
+            style="--logo-color: ${drug.color}"
+            aria-pressed="${mixtureSelect.value === option.id ? 'true' : 'false'}"
+          >
+            <span class="logo-badge" aria-hidden="true">${option.amount}${option.amountUnit === 'mcg' ? 'mcg' : 'mg'}</span>
+            <span class="logo-text">
+              <strong>${option.amount} ${option.amountUnit} / ${option.volumeMl} mL</strong>
+              <span>${option.doseUnit}</span>
+            </span>
+          </button>
+        `).join('');
+    }
+
+    function renderQuickSelects() {
+      renderDrugQuickSelect();
+      renderMixtureQuickSelect();
+    }
+
+    function populateMixtureOptions() {
+      mixtureSelect.innerHTML = '';
+
+      const placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.disabled = true;
+      placeholder.hidden = true;
+      placeholder.selected = true;
+      placeholder.textContent = drugSelect.value
+        ? 'Pilih opsi pengoplosan'
+        : 'Pilih obat terlebih dahulu';
+      mixtureSelect.appendChild(placeholder);
+      mixtureSelect.disabled = !drugSelect.value;
+
+      if (!drugSelect.value) {
+        renderMixtureQuickSelect();
+        return;
+      }
+
+      drugOptions
+        .filter((option) => option.drugId === drugSelect.value)
+        .forEach((option) => {
+          const element = document.createElement('option');
+          element.value = option.id;
+          element.textContent = option.label;
+          mixtureSelect.appendChild(element);
+        });
+
+      renderMixtureQuickSelect();
+    }
+
+    function formatNumber(value, decimals = 2) {
+      return Number(value).toLocaleString('id-ID', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>'"]/g, (char) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[char]));
+    }
+
+    function getSelectedDrug() {
+      return drugOptions.find((option) => option.id === mixtureSelect.value && option.drugId === drugSelect.value);
+    }
+
+    function updateDoseHint() {
+      const selected = getSelectedDrug();
+      doseUnitHint.textContent = selected
+        ? `Satuan target dosis: ${selected.doseUnit}`
+        : drugSelect.value
+          ? 'Pilih opsi pengoplosan untuk melihat satuan dosis.'
+          : 'Pilih obat untuk melihat satuan dosis.';
+    }
+
+    function calculateRate(dose, weight, concentrationMcgPerMl, usesHourlyDose) {
+      const dosePerHour = usesHourlyDose ? dose * weight : dose * weight * 60;
+      return dosePerHour / concentrationMcgPerMl;
+    }
+
+    function getValidationMessage() {
+      const selected = getSelectedDrug();
+      const patientName = document.getElementById('patientName').value.trim();
+      const medicalRecord = document.getElementById('medicalRecord').value.trim();
+      const weightInput = document.getElementById('weight').value.trim();
+      const doseInput = document.getElementById('targetDose').value.trim();
+      const weight = Number(weightInput);
+      const dose = Number(doseInput);
+
+      if (!patientName) return 'Nama pasien wajib diisi.';
+      if (!medicalRecord) return 'Nomor RM wajib diisi.';
+      if (!weightInput || !Number.isFinite(weight) || weight <= 0) return 'Berat badan harus lebih dari 0 kg.';
+      if (!doseInput || !Number.isFinite(dose) || dose < 0) return 'Target dosis tidak boleh kosong atau negatif.';
+      if (!drugSelect.value) return 'Pilih nama obat terlebih dahulu.';
+      if (!selected) return 'Pilih opsi pengoplosan yang sesuai dengan obat.';
+      return '';
+    }
+
+    function collectData() {
+      const selected = getSelectedDrug();
+      const weight = Number(document.getElementById('weight').value);
+      const dose = Number(document.getElementById('targetDose').value);
+      const rounding = Number(document.getElementById('rounding').value);
+      const fluid = document.getElementById('fluid').value;
+
+      if (getValidationMessage()) return null;
+
+      const concentrationMcgPerMl = selected.amountMcg / selected.volumeMl;
+      const dosePerHour = selected.usesHourlyDose ? dose * weight : dose * weight * 60;
+      const rate = calculateRate(dose, weight, concentrationMcgPerMl, selected.usesHourlyDose);
+      const syringeDurationHours = rate > 0 ? selected.volumeMl / rate : 0;
+
+      return {
+        patientName: document.getElementById('patientName').value.trim(),
+        medicalRecord: document.getElementById('medicalRecord').value.trim(),
+        weight,
+        dose,
+        doseUnit: selected.doseUnit,
+        drug: selected.drug,
+        fluid,
+        amount: selected.amount,
+        amountUnit: selected.amountUnit,
+        volumeMl: selected.volumeMl,
+        usesHourlyDose: Boolean(selected.usesHourlyDose),
+        mixture: `${selected.amount} ${selected.amountUnit} up to ${fluid} ${selected.volumeMl} mL`,
+        concentrationMcgPerMl,
+        concentrationFormatted: formatNumber(concentrationMcgPerMl, 2),
+        dosePerHour,
+        dosePerHourFormatted: formatNumber(dosePerHour, 2),
+        rate,
+        rateFormatted: formatNumber(rate, rounding),
+        syringeDurationHours,
+        syringeDurationFormatted: syringeDurationHours > 0 ? formatNumber(syringeDurationHours, 1) : '-'
+      };
+    }
+
+    function getSignatureData() {
+      return {
+        giver: document.getElementById('giverName')?.value.trim() || '',
+        checker: document.getElementById('checkerName')?.value.trim() || ''
+      };
+    }
+
+    function getSafetyAlert(data) {
+      if (data.rate <= 0) return 'Rate 0 mL/jam. Pastikan target dosis memang dimaksudkan untuk dihentikan.';
+      if (data.rate > data.volumeMl) return 'Rate lebih besar dari volume spuit per jam. Cek ulang konsentrasi, dosis target, dan ukuran spuit.';
+      return '';
+    }
+
+    function getResultSummary(data) {
+      return [
+        `Pasien: ${data.patientName || '-'}`,
+        `RM: ${data.medicalRecord || '-'}`,
+        `BB: ${formatNumber(data.weight, 1)} kg`,
+        `Obat: ${data.drug}`,
+        `Pengoplosan: ${data.mixture}`,
+        `Konsentrasi: ${data.concentrationFormatted} mcg/mL`,
+        `Target: ${data.dose} ${data.doseUnit}`,
+        `Rate: ${data.rateFormatted} mL/jam`
+      ].join('\n');
+    }
+
+    function renderHistory() {
+      if (!calculationHistory.length) return '';
+
+      const items = calculationHistory.map((item) => `
+        <li>
+          <strong>${item.rateFormatted} mL/jam</strong>
+          <span>${item.drug} - ${item.dose} ${item.doseUnit}</span>
+          <span>BB ${formatNumber(item.weight, 1)} kg - ${item.mixture}</span>
+        </li>
+      `).join('');
+
+      return `
+        <div class="history-panel">
+          <p class="history-title">Riwayat hitung</p>
+          <ul class="history-list">${items}</ul>
+        </div>
+      `;
+    }
+
+    function rememberCalculation(data) {
+      calculationHistory = [
+        {
+          drug: data.drug,
+          dose: data.dose,
+          doseUnit: data.doseUnit,
+          weight: data.weight,
+          mixture: data.mixture,
+          rateFormatted: data.rateFormatted
+        },
+        ...calculationHistory
+      ].slice(0, 5);
+    }
+
+    async function copyResultSummary(data) {
+      const text = getResultSummary(data);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      textArea.remove();
+    }
+
+    function renderResult(data, signatures = getSignatureData()) {
+      const safetyAlert = getSafetyAlert(data);
+      resultContent.className = 'print-area';
+      resultContent.innerHTML = `
+        <div class="rate-box">
+          <p class="rate-label">Rate syringe pump</p>
+          <p class="rate-value">${data.rateFormatted} <span class="rate-unit">mL/jam</span></p>
+        </div>
+        <ul class="result-list">
+          <li><span>Nama pasien</span><span>${escapeHtml(data.patientName) || '-'}</span></li>
+          <li><span>Nomor RM</span><span>${escapeHtml(data.medicalRecord) || '-'}</span></li>
+          <li><span>Berat badan</span><span>${formatNumber(data.weight, 1)} kg</span></li>
+          <li><span>Obat</span><span>${data.drug}</span></li>
+          <li><span>Pengoplosan</span><span>${data.mixture}</span></li>
+          <li><span>Pelarut</span><span>${data.fluid}</span></li>
+          <li><span>Konsentrasi</span><span>${data.concentrationFormatted} mcg/mL</span></li>
+          <li><span>Target dosis</span><span>${data.dose} ${data.doseUnit}</span></li>
+        </ul>
+        <div class="detail-box">
+          <div><strong>Rumus:</strong> (${data.dose} x ${formatNumber(data.weight, 1)}${data.usesHourlyDose ? '' : ' x 60'}) / ${data.concentrationFormatted} = ${data.rateFormatted} mL/jam</div>
+          <div><strong>Kebutuhan per jam:</strong> ${data.dosePerHourFormatted} mcg/jam</div>
+          <div><strong>Estimasi spuit habis:</strong> ${data.syringeDurationFormatted} jam bila volume ${data.volumeMl} mL dan rate tidak berubah</div>
+        </div>
+        ${safetyAlert ? `<div class="safety-alert">${safetyAlert}</div>` : ''}
+        <div class="signature-grid">
+          <div>
+            <label for="giverName">Giver</label>
+            <input id="giverName" type="text" placeholder="Nama pemberi obat" value="${escapeHtml(signatures.giver)}" />
+          </div>
+          <div>
+            <label for="checkerName">Checker</label>
+            <input id="checkerName" type="text" placeholder="Nama pemeriksa" value="${escapeHtml(signatures.checker)}" />
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn-secondary" type="button" id="printButton">Cetak Label Spuit</button>
+          <button class="btn-secondary" type="button" id="kitirButton">Cetak Label Titrasi</button>
+          <button class="btn-secondary" type="button" id="copyButton">Salin Ringkasan</button>
+        </div>
+        <div class="label-size-options" id="labelSizeOptions" aria-label="Pilih ukuran spuit">
+          <button class="btn-secondary" type="button" data-label-size="10 cc">Spuit 10cc</button>
+          <button class="btn-secondary" type="button" data-label-size="20 cc">Spuit 20cc</button>
+          <button class="btn-secondary" type="button" data-label-size="50 cc">Spuit 50cc</button>
+        </div>
+        <div id="copyStatus" aria-live="polite"></div>
+        <p class="note">Wajib verifikasi ulang secara independen sebelum obat dijalankan.</p>
+        ${renderHistory()}
+      `;
+    }
+
+    function renderPrintResult(data, syringeSize = '') {
+      const signatures = getSignatureData();
+      printSheet.className = 'print-result-sheet';
+      printSheet.innerHTML = `
+        <h1 class="print-drug-title">${data.drug}</h1>
+        <table class="print-info-table">
+          <tbody>
+            <tr>
+              <th>Nama Pasien</th>
+              <td>${escapeHtml(data.patientName) || '-'}</td>
+              <th>Nomor Rekam Medis</th>
+              <td>${escapeHtml(data.medicalRecord) || '-'}</td>
+            </tr>
+            <tr>
+              <th>Berat Badan Pasien</th>
+              <td>${formatNumber(data.weight, 1)} kg</td>
+              <th>Konsentrasi</th>
+              <td>${data.concentrationFormatted} mcg/mL</td>
+            </tr>
+            <tr>
+              <th>Pengoplosan</th>
+              <td>${data.mixture}</td>
+              <th>Target Dosis</th>
+              <td>${data.dose} ${data.doseUnit}</td>
+            </tr>
+            <tr>
+              <th>Ukuran Spuit</th>
+              <td>${syringeSize || '-'}</td>
+              <th>Pelarut</th>
+              <td>${data.fluid}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="print-rate-box">
+          <div>Rate Syringe Pump</div>
+          <div>${data.rateFormatted} mL/jam</div>
+        </div>
+        <table class="print-sign-table">
+          <thead>
+            <tr>
+              <th>Giver</th>
+              <th>Checker</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="print-sign-space">${escapeHtml(signatures.giver) || 'Nama / Paraf'}</td>
+              <td class="print-sign-space">${escapeHtml(signatures.checker) || 'Nama / Paraf'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">Wajib verifikasi ulang secara independen sebelum obat dijalankan.</p>
+      `;
+    }
+
+    function buildKitirRows(data) {
+      return Array.from({ length: 10 }, (_, index) => {
+        const dose = (index + 1) / 10;
+        const rate = calculateRate(dose, data.weight, data.concentrationMcgPerMl, data.usesHourlyDose);
+        return `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${formatNumber(dose, 1)} ${data.doseUnit}</td>
+            <td>${formatNumber(rate, 2)} mL/jam</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderKitir(data) {
+      const signatures = getSignatureData();
+      kitirSheet.className = 'kitir-sheet';
+      kitirSheet.innerHTML = `
+        <div class="kitir-header">
+          <div class="kitir-badge alert">High<br>Alert</div>
+          <h1 class="kitir-drug-title">${data.drug}</h1>
+          <div class="kitir-badge checker">Double<br>Checker</div>
+        </div>
+        <div class="kitir-mixture">Pengoplosan: ${data.mixture}</div>
+        <div class="kitir-patient-grid">
+          <div class="kitir-field">
+            <span>Nama Pasien</span>
+            <strong>${escapeHtml(data.patientName) || '-'}</strong>
+          </div>
+          <div class="kitir-field">
+            <span>Nomor RM</span>
+            <strong>${escapeHtml(data.medicalRecord) || '-'}</strong>
+          </div>
+        </div>
+        <div class="kitir-weight">
+          <span>Berat Badan Pasien</span>
+          <strong>${formatNumber(data.weight, 1)} kg</strong>
+        </div>
+        <div class="kitir-sign-grid">
+          <div class="kitir-field">
+            <span>Checker</span>
+            <strong>${escapeHtml(signatures.checker) || '-'}</strong>
+          </div>
+          <div class="kitir-field">
+            <span>Giver</span>
+            <strong>${escapeHtml(signatures.giver) || '-'}</strong>
+          </div>
+        </div>
+        <table class="kitir-dose-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Target Dosis</th>
+              <th>Rate Syringe Pump</th>
+            </tr>
+          </thead>
+          <tbody>${buildKitirRows(data)}</tbody>
+        </table>
+        <p class="note">Wajib verifikasi ulang secara independen sebelum obat dijalankan.</p>
+      `;
+    }
+
+    function updateCalculation(shouldRemember = true) {
+      const signatures = getSignatureData();
+      const data = collectData();
+      if (!data) {
+        resultContent.className = 'empty';
+        resultContent.innerHTML = `<div class="status-message is-error">${getValidationMessage() || 'Mohon lengkapi pilihan obat, berat badan, dan target dosis dengan benar.'}</div>`;
+        return null;
+      }
+      lastResult = data;
+      if (shouldRemember) rememberCalculation(data);
+      renderResult(data, signatures);
+      renderPrintResult(data);
+      renderKitir(data);
+      return data;
+    }
+
+    function preparePrint(mode, syringeSize = '') {
+      const data = collectData();
+      if (!data) return;
+      lastResult = data;
+      renderPrintResult(data, syringeSize);
+      renderKitir(data);
+      document.body.classList.remove('print-result', 'print-kitir');
+      document.body.classList.add(mode);
+      window.print();
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      updateCalculation();
+    });
+
+    resetButton.addEventListener('click', () => {
+      form.reset();
+      lastResult = null;
+      calculationHistory = [];
+      populateMixtureOptions();
+      updateDoseHint();
+      renderQuickSelects();
+      printSheet.innerHTML = '';
+      printSheet.className = '';
+      kitirSheet.innerHTML = '';
+      kitirSheet.className = '';
+      resultContent.className = 'empty';
+      resultContent.textContent = 'Masukkan data pasien, pilih obat, lalu tekan Hitung Rate.';
+    });
+
+    resultContent.addEventListener('click', (event) => {
+      if (!event.target) return;
+      if (event.target.id === 'printButton') {
+        const labelSizeOptions = document.getElementById('labelSizeOptions');
+        labelSizeOptions?.classList.toggle('is-visible');
+      }
+      if (event.target.dataset?.labelSize) preparePrint('print-result', event.target.dataset.labelSize);
+      if (event.target.id === 'kitirButton') preparePrint('print-kitir');
+      if (event.target.id === 'copyButton' && lastResult) {
+        copyResultSummary(lastResult)
+          .then(() => {
+            const copyStatus = document.getElementById('copyStatus');
+            if (copyStatus) copyStatus.className = 'status-message';
+            if (copyStatus) copyStatus.textContent = 'Ringkasan berhasil disalin.';
+          })
+          .catch(() => {
+            const copyStatus = document.getElementById('copyStatus');
+            if (copyStatus) copyStatus.className = 'status-message is-error';
+            if (copyStatus) copyStatus.textContent = 'Ringkasan belum bisa disalin dari browser ini.';
+          });
+      }
+    });
+
+    drugQuickSelect.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-drug-id]');
+      if (!button) return;
+      drugSelect.value = button.dataset.drugId;
+      populateMixtureOptions();
+      updateDoseHint();
+      renderQuickSelects();
+      if (lastResult) updateCalculation(false);
+    });
+
+    mixtureQuickSelect.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-mixture-id]');
+      if (!button) return;
+      mixtureSelect.value = button.dataset.mixtureId;
+      updateDoseHint();
+      renderQuickSelects();
+      if (lastResult) updateCalculation(false);
+    });
+
+    window.addEventListener('afterprint', () => document.body.classList.remove('print-result', 'print-kitir'));
+    form.addEventListener('input', () => {
+      if (lastResult) updateCalculation(false);
+    });
+    drugSelect.addEventListener('change', () => {
+      populateMixtureOptions();
+      updateDoseHint();
+      renderQuickSelects();
+      if (lastResult) updateCalculation(false);
+    });
+    mixtureSelect.addEventListener('change', () => {
+      updateDoseHint();
+      renderQuickSelects();
+      if (lastResult) updateCalculation(false);
+    });
+
+    populateDrugNames();
+    populateMixtureOptions();
+    renderQuickSelects();
+    updateDoseHint();
+  </script>
+</body>
+</html>
