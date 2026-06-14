@@ -70,11 +70,22 @@
       --scrollbar-thumb: #d1d5db;
       --logo-kejaksaan-1: #1a5632;
       --logo-kejaksaan-2: #0d3b1f;
-      --header-bg: rgba(255, 255, 255, 0.95);
-      --header-border: rgba(216, 224, 234, 0.8);
+      --header-bg: rgba(255, 255, 255, 0.75);
+      --header-border: rgba(255, 255, 255, 0.5);
       --toggle-bg: #e5e7eb;
       --toggle-text: #374151;
       --toggle-knob: #ffffff;
+      --modal-overlay: rgba(0, 0, 0, 0.5);
+      --skeleton-base: #e5e7eb;
+      --skeleton-shine: #f3f4f6;
+      --chart-bg: #f9fafb;
+      --chart-grid: #e5e7eb;
+      --chart-line: #087568;
+      --chart-safe: #10b981;
+      --chart-caution: #f59e0b;
+      --chart-danger: #ef4444;
+      --draft-badge-bg: #dbeafe;
+      --draft-badge-text: #1e40af;
     }
 
     [data-theme="dark"] {
@@ -141,11 +152,22 @@
       --scrollbar-thumb: #475569;
       --logo-kejaksaan-1: #0d3b1f;
       --logo-kejaksaan-2: #0a2a15;
-      --header-bg: rgba(30, 41, 59, 0.95);
-      --header-border: rgba(51, 65, 85, 0.8);
+      --header-bg: rgba(30, 41, 59, 0.8);
+      --header-border: rgba(51, 65, 85, 0.6);
       --toggle-bg: #334155;
       --toggle-text: #cbd5e1;
       --toggle-knob: #14b8a6;
+      --modal-overlay: rgba(0, 0, 0, 0.7);
+      --skeleton-base: #334155;
+      --skeleton-shine: #475569;
+      --chart-bg: #1e293b;
+      --chart-grid: #334155;
+      --chart-line: #14b8a6;
+      --chart-safe: #10b981;
+      --chart-caution: #f59e0b;
+      --chart-danger: #ef4444;
+      --draft-badge-bg: #1e3a5f;
+      --draft-badge-text: #93c5fd;
     }
 
     * { 
@@ -154,13 +176,52 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 50%, var(--bg-gradient-3) 100%);
+      background: linear-gradient(135deg, 
+        #e0f2fe 0%, 
+        #f0fdf4 20%, 
+        #fef3c7 40%, 
+        #ffe4e6 60%, 
+        #f3e8ff 80%, 
+        #e0f2fe 100%
+      );
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
       color: var(--ink);
       line-height: 1.6;
       min-height: 100vh;
-      transition: background 0.3s ease, color 0.3s ease;
+      transition: color 0.3s ease;
+      padding-bottom: 80px;
+    }
+
+    [data-theme="dark"] body {
+      background: linear-gradient(135deg, 
+        #0f172a 0%, 
+        #1a1a2e 25%, 
+        #16213e 50%, 
+        #1a1a2e 75%, 
+        #0f172a 100%
+      );
+      background-size: 400% 400%;
+      animation: gradientShiftDark 20s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      25% { background-position: 100% 0%; }
+      50% { background-position: 100% 100%; }
+      75% { background-position: 0% 100%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes gradientShiftDark {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
     .app-container {
@@ -172,20 +233,426 @@
       gap: 20px;
     }
 
-    /* ===== HEADER ===== */
+    /* ===== DRAFT INDICATOR ===== */
+    .draft-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--draft-badge-bg);
+      color: var(--draft-badge-text);
+      border-radius: 20px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(-5px);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .draft-indicator.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .draft-indicator .draft-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: draftBlink 1.5s ease infinite;
+    }
+
+    @keyframes draftBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ===== CHART ===== */
+    .chart-container {
+      background: var(--chart-bg);
+      border: 1px solid var(--calc-border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      font-size: 0.65rem;
+    }
+
+    .chart-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+    }
+
+    .chart-legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: 160px;
+      display: block;
+    }
+
+    .chart-svg line,
+    .chart-svg text {
+      transition: all 0.3s ease;
+    }
+
+    .chart-tooltip {
+      position: absolute;
+      background: var(--ink);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      white-space: nowrap;
+      z-index: 5;
+    }
+
+    .chart-marker {
+      transition: all 0.3s ease;
+    }
+
+    /* ===== DRAG & DROP HISTORY ===== */
+    .history-item {
+      display: grid; 
+      grid-template-columns: 1fr auto; 
+      gap: 8px;
+      padding: 12px 14px; 
+      background: var(--history-item-bg);
+      border: 1px solid var(--history-item-border); 
+      border-radius: 10px;
+      cursor: grab; 
+      transition: all 0.2s ease; 
+      align-items: start;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+      touch-action: pan-y;
+    }
+
+    .history-item:active {
+      cursor: grabbing;
+    }
+
+    .history-item.dragging {
+      opacity: 0.5;
+      transform: scale(0.95);
+      box-shadow: var(--shadow);
+    }
+
+    .history-item.drag-over {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: 0 0 0 4px var(--primary-glow);
+    }
+
+    .history-item-swipe-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 80px;
+      background: linear-gradient(90deg, transparent, var(--danger));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.8rem;
+      transform: translateX(100%);
+      transition: transform 0.2s ease;
+      pointer-events: none;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .history-item.swiped .history-item-swipe-bg {
+      transform: translateX(0);
+    }
+
+    .history-item-main {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .history-item.swiped .history-item-main {
+      transform: translateX(-80px);
+    }
+
+    .drag-handle {
+      position: absolute;
+      left: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      padding: 4px;
+      cursor: grab;
+      z-index: 2;
+    }
+
+    .history-item:hover .drag-handle,
+    .history-item.swiped .drag-handle {
+      opacity: 0.5;
+    }
+
+    .drag-handle:hover {
+      opacity: 1 !important;
+    }
+
+    .drag-handle-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--muted-light);
+    }
+
+    .history-item.pinned {
+      border-left: 4px solid var(--primary);
+      padding-left: 10px;
+    }
+
+    .pin-indicator {
+      font-size: 0.7rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* ===== STEP INDICATOR ===== */
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 4px;
+      position: relative;
+      padding: 0 20px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex: 1;
+      position: relative;
+    }
+
+    .step-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: calc(50% + 20px);
+      right: calc(-50% + 20px);
+      height: 3px;
+      background: var(--line);
+      z-index: 0;
+      transition: background 0.4s ease;
+      border-radius: 2px;
+    }
+
+    .step-item.completed:not(:last-child)::after {
+      background: var(--primary);
+    }
+
+    .step-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--panel);
+      border: 3px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      transition: all 0.4s ease;
+      z-index: 1;
+      flex-shrink: 0;
+      position: relative;
+      color: var(--muted-light);
+    }
+
+    .step-item.active .step-dot {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+      box-shadow: 0 0 0 6px var(--primary-glow);
+      animation: stepPulse 2s infinite;
+    }
+
+    @keyframes stepPulse {
+      0%, 100% { box-shadow: 0 0 0 6px var(--primary-glow); }
+      50% { box-shadow: 0 0 0 12px rgba(8, 117, 104, 0.05); }
+    }
+
+    .step-item.completed .step-dot {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .step-content {
+      margin-left: 12px;
+      z-index: 1;
+    }
+
+    .step-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .step-item.active .step-title,
+    .step-item.completed .step-title {
+      color: var(--primary);
+    }
+
+    .step-desc {
+      font-size: 0.65rem;
+      color: var(--muted-light);
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .step-item.active .step-desc {
+      color: var(--muted);
+    }
+
+    /* ===== SKELETON LOADING ===== */
+    @keyframes skeletonShimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .skeleton {
+      background: linear-gradient(90deg, 
+        var(--skeleton-base) 25%, 
+        var(--skeleton-shine) 50%, 
+        var(--skeleton-base) 75%
+      );
+      background-size: 200% 100%;
+      animation: skeletonShimmer 1.5s ease infinite;
+      border-radius: 8px;
+    }
+
+    .skeleton-result {
+      padding: 24px;
+    }
+
+    .skeleton-rate {
+      height: 80px;
+      width: 70%;
+      margin: 0 auto 20px;
+      border-radius: 14px;
+    }
+
+    .skeleton-row {
+      height: 16px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+    }
+
+    .skeleton-row:last-child {
+      width: 60%;
+    }
+
+    /* ===== HEADER GLASSMORPHISM ===== */
     .app-header {
       background: var(--header-bg);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
       border: 1px solid var(--header-border);
-      border-radius: 16px;
-      padding: 20px 24px;
-      padding-right: 160px;
+      border-radius: 20px;
+      padding: 24px 28px;
+      padding-right: 180px;
       display: flex;
       align-items: center;
       gap: 20px;
-      box-shadow: var(--shadow-soft);
+      box-shadow: 
+        0 8px 32px rgba(28, 41, 61, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
       position: relative;
-      transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .app-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.3) 45%,
+        rgba(255, 255, 255, 0.5) 50%,
+        rgba(255, 255, 255, 0.3) 55%,
+        transparent 60%
+      );
+      animation: glassShimmer 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes glassShimmer {
+      0%, 100% { transform: translateX(-100%) rotate(45deg); }
+      50% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    [data-theme="dark"] .app-header {
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    [data-theme="dark"] .app-header::before {
+      background: linear-gradient(
+        45deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.05) 45%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(255, 255, 255, 0.05) 55%,
+        transparent 60%
+      );
     }
 
     .header-logo-left {
@@ -198,19 +665,38 @@
     .logo-placeholder {
       width: 55px;
       height: 55px;
-      border-radius: 12px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 2rem;
       color: white;
       flex-shrink: 0;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     .logo-kejaksaan {
-      background: linear-gradient(135deg, var(--logo-kejaksaan-1), var(--logo-kejaksaan-2));
-      box-shadow: 0 8px 20px rgba(26, 86, 50, 0.3);
+      background: linear-gradient(135deg, #0d3b1f 0%, #1a5632 100%);
+      box-shadow: 
+        0 8px 25px rgba(26, 86, 50, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .logo-placeholder::after {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: -30%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.3) 0%,
+        transparent 100%
+      );
+      transform: rotate(25deg);
     }
 
     .header-center {
@@ -355,6 +841,11 @@
       transition: all 0.3s ease;
     }
 
+    .panel:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 50px rgba(28, 41, 61, 0.14);
+    }
+
     .panel-header {
       padding: 18px 24px;
       border-bottom: 2px solid var(--line-soft);
@@ -437,6 +928,19 @@
       box-shadow: 0 0 0 3px var(--primary-glow);
     }
 
+    .form-input.error,
+    .form-select.error {
+      border-color: var(--danger) !important;
+      animation: shake 0.5s ease;
+      background: var(--danger-soft) !important;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+      20%, 40%, 60%, 80% { transform: translateX(4px); }
+    }
+
     .form-input::placeholder { color: var(--muted-light); }
     .form-hint { margin-top: 6px; font-size: 0.8rem; color: var(--muted); transition: color 0.3s ease; }
 
@@ -456,12 +960,15 @@
     .quick-select-btn {
       display: flex; align-items: center; gap: 10px; padding: 12px;
       background: var(--input-bg); border: 2px solid var(--input-border);
-      border-radius: 12px; cursor: pointer; transition: all 0.2s ease;
+      border-radius: 12px; cursor: pointer; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       text-align: left; font-size: 0.85rem; color: var(--ink-secondary); user-select: none;
     }
     .quick-select-btn:hover {
       border-color: var(--muted-light); background: var(--panel-hover);
       transform: translateY(-1px); box-shadow: var(--shadow-sm);
+    }
+    .quick-select-btn:active {
+      transform: scale(0.95) !important;
     }
     .quick-select-btn.active {
       border-color: var(--active-yellow-border); background: var(--active-yellow-bg);
@@ -488,13 +995,44 @@
       font-weight: 600; cursor: pointer; transition: all 0.2s ease;
       display: inline-flex; align-items: center; justify-content: center;
       gap: 6px; min-height: 40px;
+      position: relative;
+      overflow: hidden;
     }
     .btn:hover { transform: translateY(-1px); }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+    .btn:active::after {
+      width: 300px;
+      height: 300px;
+    }
+
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white; box-shadow: 0 4px 12px rgba(8, 117, 104, 0.3);
+      color: white; 
+      box-shadow: 0 4px 12px rgba(8, 117, 104, 0.3);
+      animation: pulse 2s infinite;
     }
-    .btn-primary:hover { box-shadow: 0 6px 16px rgba(8, 117, 104, 0.4); }
+    .btn-primary:hover {
+      animation: none;
+      box-shadow: 0 8px 25px rgba(8, 117, 104, 0.5);
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 4px 12px rgba(8, 117, 104, 0.3); }
+      50% { box-shadow: 0 8px 25px rgba(8, 117, 104, 0.5); }
+    }
+
     .btn-secondary { background: var(--btn-secondary-bg); color: var(--ink-secondary); border: 1px solid var(--line-light); }
     .btn-secondary:hover { background: var(--btn-secondary-hover); }
     .btn-danger { background: var(--danger-soft); color: var(--danger); border: 1px solid var(--danger-border); }
@@ -508,8 +1046,28 @@
       text-align: center; padding: 50px 20px; color: var(--muted-light);
       font-weight: 600; font-size: 0.95rem; transition: color 0.3s ease;
     }
-    .result-empty .empty-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
-    .result-content { animation: fadeInUp 0.35s ease; }
+    .result-empty .empty-icon {
+      margin-bottom: 12px; display: inline-block;
+      animation: bounce 2s ease infinite;
+    }
+    .result-empty .empty-svg {
+      display: block;
+      margin: 0 auto 16px;
+      width: 120px;
+      height: 100px;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    .result-content {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: fadeInScale 0.4s ease;
+    }
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
@@ -640,17 +1198,18 @@
     .history-list::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 10px; }
     .history-list::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 10px; }
 
-    .history-item {
-      display: grid; grid-template-columns: 1fr auto; gap: 8px;
-      padding: 12px 14px; background: var(--history-item-bg);
-      border: 1px solid var(--history-item-border); border-radius: 10px;
-      cursor: pointer; transition: all 0.15s ease; align-items: start;
-    }
     .history-item:hover {
       background: var(--history-item-hover-bg); border-color: var(--history-item-hover-border);
       box-shadow: 0 2px 8px rgba(8, 117, 104, 0.06); transform: translateY(-1px);
     }
-    .history-item-main { display: grid; gap: 4px; min-width: 0; }
+    .history-item.removing {
+      animation: slideOutRight 0.3s ease forwards;
+    }
+    @keyframes slideOutRight {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(60px); opacity: 0; }
+    }
+    .history-item-main { display: grid; gap: 4px; }
     .history-item-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .history-rate { font-weight: 800; color: var(--rate-value-text); font-size: 1rem; transition: color 0.3s ease; }
     .history-drug-badge {
@@ -673,6 +1232,244 @@
     .status-success { background: var(--primary-light); color: var(--rate-text); padding: 8px; border-radius: 6px; font-size: 0.82rem; }
     .status-error { background: var(--danger-soft); color: var(--danger); padding: 8px; border-radius: 6px; font-size: 0.82rem; }
 
+    /* ===== TOAST NOTIFICATION ===== */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .toast {
+      padding: 16px 22px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: white;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+      animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1), toastFadeOut 0.3s ease 2.8s forwards;
+      max-width: 380px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      backdrop-filter: blur(12px);
+      pointer-events: auto;
+      line-height: 1.4;
+      letter-spacing: 0.2px;
+    }
+
+    .toast-success {
+      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+    }
+
+    .toast-error {
+      background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%);
+      border: 1px solid rgba(248, 113, 113, 0.4);
+    }
+
+    .toast-warning {
+      background: linear-gradient(135deg, #92400e 0%, #b45309 100%);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+    }
+
+    .toast-info {
+      background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+      border: 1px solid rgba(96, 165, 250, 0.4);
+    }
+
+    .toast-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .toast-message {
+      flex: 1;
+      min-width: 0;
+    }
+
+    @keyframes toastSlideIn {
+      from { transform: translateX(120%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes toastFadeOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(40px); opacity: 0; }
+    }
+
+    /* ===== CUSTOM CONFIRM DIALOG ===== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--modal-overlay);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: modalFadeIn 0.2s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-dialog {
+      background: var(--panel);
+      border-radius: 20px;
+      padding: 28px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+      animation: modalScaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid var(--line);
+    }
+
+    @keyframes modalScaleIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-icon {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .modal-message {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .modal-actions .btn {
+      min-width: 100px;
+    }
+
+    /* ===== FAB ===== */
+    .fab-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .fab {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fab-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      width: 60px;
+      height: 60px;
+      animation: fabPulse 2s infinite;
+    }
+
+    @keyframes fabPulse {
+      0%, 100% { box-shadow: 0 8px 24px rgba(8, 117, 104, 0.3); }
+      50% { box-shadow: 0 12px 32px rgba(8, 117, 104, 0.5); }
+    }
+
+    .fab-primary:hover {
+      transform: scale(1.08);
+      animation: none;
+    }
+
+    .fab-secondary {
+      background: var(--panel);
+      color: var(--ink);
+      border: 2px solid var(--line);
+      width: 44px;
+      height: 44px;
+      font-size: 1.2rem;
+    }
+
+    .fab-secondary:hover {
+      transform: scale(1.08);
+      border-color: var(--primary);
+    }
+
+    .fab-label {
+      position: absolute;
+      right: 70px;
+      background: var(--ink);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(10px);
+      transition: all 0.2s ease;
+      pointer-events: none;
+    }
+
+    .fab:hover .fab-label {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .fab-ripple::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.5s ease, height 0.5s ease;
+    }
+
+    .fab-ripple:active::after {
+      width: 200px;
+      height: 200px;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       .app-container { padding: 12px; gap: 14px; }
@@ -691,31 +1488,43 @@
       .action-buttons { flex-direction: column; }
       .syringe-size-selector { grid-template-columns: 1fr 1fr 1fr; }
       .history-header { flex-direction: column; align-items: flex-start; }
-      .history-item { grid-template-columns: 1fr; }
+      .history-item { grid-template-columns: 1fr; cursor: default; }
       .history-item-actions { justify-content: flex-end; }
       .theme-toggle { min-width: 110px; padding: 4px 4px 4px 10px; }
       .theme-toggle-label { font-size: 0.7rem; }
       .theme-toggle-status { font-size: 0.65rem; padding: 5px 10px; }
+      .chart-svg { height: 120px; }
+      .drag-handle { display: none; }
+      .step-indicator { flex-direction: column; gap: 12px; padding: 0; }
+      .step-item:not(:last-child)::after { display: none; }
+      .step-item { width: 100%; }
+      .step-content { flex: 1; }
     }
 
     @media (max-width: 480px) {
       .quick-select-grid { grid-template-columns: 1fr 1fr; }
       .syringe-size-selector { grid-template-columns: 1fr; }
       .header-badges { width: 100%; }
+      .toast-container { top: 12px; right: 12px; left: 12px; }
+      .toast { max-width: 100%; font-size: 0.8rem; padding: 14px 18px; }
+      .chart-svg { height: 100px; }
     }
 
     @media print {
       @page { size: A4 portrait; margin: 15mm; }
-      body { background: white !important; }
+      body { background: white !important; animation: none !important; padding-bottom: 0 !important; }
       .app-header, .warning-box, .no-print, .action-buttons, .syringe-size-section,
-      .btn-group, #copyStatus, .note-warning, .history-panel, .theme-toggle-wrapper {
+      .btn-group, #copyStatus, .note-warning, .history-panel, .theme-toggle-wrapper,
+      .toast-container, .fab-container, .step-indicator, .modal-overlay,
+      .chart-container, .draft-indicator, .drag-handle {
         display: none !important;
       }
       .main-layout { gap: 0; }
       .panel { box-shadow: none; border: 1px solid #000; border-radius: 0; background: white !important; }
+      .panel:hover { transform: none; }
       .result-grid { grid-template-columns: 1fr; }
       .app-container { padding: 0; max-width: 100%; }
-      * { color: #000 !important; background: white !important; }
+      * { color: #000 !important; background: white !important; animation: none !important; }
     }
   </style>
 </head>
@@ -733,6 +1542,9 @@
         <div class="header-badges">
           <span class="badge badge-danger">⚠ High Alert</span>
           <span class="badge badge-warning">✓ Double Check</span>
+          <span class="draft-indicator" id="draftIndicator">
+            <span class="draft-dot"></span> Draft tersimpan
+          </span>
         </div>
       </div>
 
@@ -749,6 +1561,31 @@
     <div class="warning-box">
       <span class="warning-icon">⚠️</span>
       <span>Dimohon untuk selalu melakukan double checker dan double verifikasi. Konsultasikan dengan tim farmasi dan tim dokter, sesuaikan dengan kebutuhan dan kebijakan rumah sakit Anda.</span>
+    </div>
+
+    <!-- ===== STEP INDICATOR ===== -->
+    <div class="step-indicator" id="stepIndicator">
+      <div class="step-item active" data-step="1">
+        <div class="step-dot">1</div>
+        <div class="step-content">
+          <div class="step-title">Data Pasien</div>
+          <div class="step-desc">Isi nama, RM, BB</div>
+        </div>
+      </div>
+      <div class="step-item" data-step="2">
+        <div class="step-dot">2</div>
+        <div class="step-content">
+          <div class="step-title">Pilih Obat</div>
+          <div class="step-desc">Obat & pengoplosan</div>
+        </div>
+      </div>
+      <div class="step-item" data-step="3">
+        <div class="step-dot">3</div>
+        <div class="step-content">
+          <div class="step-title">Hasil</div>
+          <div class="step-desc">Rate syringe pump</div>
+        </div>
+      </div>
     </div>
 
     <!-- ===== LAYOUT UTAMA ===== -->
@@ -829,7 +1666,13 @@
         </div>
         <div class="panel-body compact" id="resultContent">
           <div class="result-empty">
-            <span class="empty-icon">📝</span>
+            <svg class="empty-svg" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="15" width="100" height="75" rx="8" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2"/>
+              <rect x="25" y="30" width="70" height="8" rx="4" fill="var(--muted-light)"/>
+              <rect x="35" y="48" width="50" height="8" rx="4" fill="var(--muted-light)" opacity="0.6"/>
+              <circle cx="60" cy="72" r="12" fill="var(--primary)" opacity="0.3"/>
+              <text x="60" y="76" text-anchor="middle" font-size="12" fill="var(--primary)">?</text>
+            </svg>
             Masukkan data pasien, pilih obat, lalu tekan Hitung Rate
           </div>
         </div>
@@ -843,7 +1686,12 @@
         </div>
         <div class="panel-body compact" id="historyContent">
           <div class="history-empty">
-            <span class="history-empty-icon">📭</span>
+            <svg class="empty-svg" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 16px;width:100px;height:80px;">
+              <rect x="20" y="10" width="80" height="70" rx="6" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2" stroke-dasharray="6 3"/>
+              <rect x="35" y="25" width="50" height="6" rx="3" fill="var(--muted-light)" opacity="0.5"/>
+              <rect x="35" y="40" width="35" height="6" rx="3" fill="var(--muted-light)" opacity="0.4"/>
+              <rect x="35" y="55" width="45" height="6" rx="3" fill="var(--muted-light)" opacity="0.3"/>
+            </svg>
             Belum ada riwayat perhitungan
           </div>
         </div>
@@ -856,7 +1704,456 @@
   <div id="printSheet" style="display: none;"></div>
   <div id="kitirSheet" style="display: none;"></div>
 
+  <!-- ===== FAB (FLOATING ACTION BUTTON) ===== -->
+  <div class="fab-container" id="fabContainer">
+    <button class="fab fab-secondary fab-ripple" id="fabScrollTop" title="Kembali ke atas" style="display: none;">
+      <span style="font-size:1.2rem;">↑</span>
+      <span class="fab-label">Ke Atas</span>
+    </button>
+    <button class="fab fab-primary fab-ripple" id="fabCalculate" title="Hitung Rate">
+      <span style="font-size:1.4rem;">🔢</span>
+      <span class="fab-label">Hitung Rate</span>
+    </button>
+  </div>
+
   <script>
+    // ===== TOAST SYSTEM =====
+    function showToast(message, type = 'info', duration = 3000) {
+      let container = document.querySelector('.toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+      }
+
+      const icons = {
+        success: '✅',
+        error: '❌',
+        warning: '⚠️',
+        info: 'ℹ️'
+      };
+
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.innerHTML = `
+        <span class="toast-icon">${icons[type] || icons.info}</span>
+        <span class="toast-message">${message}</span>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.remove();
+        }
+      }, duration + 300);
+    }
+
+    // ===== CUSTOM CONFIRM DIALOG =====
+    function showConfirm(message, title = 'Konfirmasi', icon = '⚠️') {
+      return new Promise((resolve) => {
+        const oldModal = document.querySelector('.modal-overlay');
+        if (oldModal) oldModal.remove();
+
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+
+        overlay.innerHTML = `
+          <div class="modal-dialog">
+            <div class="modal-icon">${icon}</div>
+            <div class="modal-title">${title}</div>
+            <div class="modal-message">${message}</div>
+            <div class="modal-actions">
+              <button class="btn btn-primary" id="modalConfirmYes">Ya, Lanjutkan</button>
+              <button class="btn btn-secondary" id="modalConfirmNo">Batal</button>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        const closeModal = (result) => {
+          overlay.style.opacity = '0';
+          overlay.style.transition = 'opacity 0.2s ease';
+          setTimeout(() => overlay.remove(), 200);
+          resolve(result);
+        };
+
+        overlay.querySelector('#modalConfirmYes').addEventListener('click', () => closeModal(true));
+        overlay.querySelector('#modalConfirmNo').addEventListener('click', () => closeModal(false));
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) closeModal(false);
+        });
+
+        setTimeout(() => overlay.querySelector('#modalConfirmNo').focus(), 100);
+      });
+    }
+
+    // ===== SKELETON LOADING =====
+    function showSkeletonLoading(container) {
+      container.innerHTML = `
+        <div class="skeleton-result">
+          <div class="skeleton skeleton-rate"></div>
+          <div class="skeleton skeleton-row"></div>
+          <div class="skeleton skeleton-row"></div>
+          <div class="skeleton skeleton-row"></div>
+          <div class="skeleton skeleton-row" style="width: 70%;"></div>
+        </div>
+      `;
+    }
+
+    // ===== AUTO-SAVE DRAFT =====
+    const DRAFT_KEY = 'acdc_form_draft';
+    let draftTimeout = null;
+
+    function saveDraft() {
+      const draft = {
+        patientName: document.getElementById('patientName').value,
+        medicalRecord: document.getElementById('medicalRecord').value,
+        weight: document.getElementById('weight').value,
+        targetDose: document.getElementById('targetDose').value,
+        drugName: drugSelect.value,
+        drugOption: mixtureSelect.value,
+        fluid: document.getElementById('fluid').value,
+        rounding: document.getElementById('rounding').value,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+        showDraftIndicator();
+      } catch (e) { /* storage full */ }
+    }
+
+    function loadDraft() {
+      try {
+        const saved = localStorage.getItem(DRAFT_KEY);
+        if (!saved) return false;
+
+        const draft = JSON.parse(saved);
+        
+        const age = Date.now() - new Date(draft.timestamp).getTime();
+        if (age > 24 * 60 * 60 * 1000) {
+          localStorage.removeItem(DRAFT_KEY);
+          return false;
+        }
+
+        if (draft.patientName) document.getElementById('patientName').value = draft.patientName;
+        if (draft.medicalRecord) document.getElementById('medicalRecord').value = draft.medicalRecord;
+        if (draft.weight) document.getElementById('weight').value = draft.weight;
+        if (draft.targetDose) document.getElementById('targetDose').value = draft.targetDose;
+        if (draft.fluid) document.getElementById('fluid').value = draft.fluid;
+        if (draft.rounding) document.getElementById('rounding').value = draft.rounding;
+
+        if (draft.drugName) {
+          drugSelect.value = draft.drugName;
+          populateMixtureOptions();
+          renderQuickSelects();
+          if (draft.drugOption) {
+            mixtureSelect.value = draft.drugOption;
+            updateDoseHint();
+            renderQuickSelects();
+          }
+        }
+
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function clearDraft() {
+      try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+      hideDraftIndicator();
+    }
+
+    function showDraftIndicator() {
+      const indicator = document.getElementById('draftIndicator');
+      if (indicator) {
+        indicator.classList.add('visible');
+        clearTimeout(draftTimeout);
+        draftTimeout = setTimeout(() => {
+          indicator.classList.remove('visible');
+        }, 2000);
+      }
+    }
+
+    function hideDraftIndicator() {
+      const indicator = document.getElementById('draftIndicator');
+      if (indicator) indicator.classList.remove('visible');
+    }
+
+    // Auto-save on input
+    const autoSaveInputs = ['patientName', 'medicalRecord', 'weight', 'targetDose', 'fluid', 'rounding'];
+    autoSaveInputs.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', () => {
+          clearTimeout(draftTimeout);
+          draftTimeout = setTimeout(saveDraft, 500);
+        });
+        el.addEventListener('change', saveDraft);
+      }
+    });
+
+    // ===== STEP INDICATOR =====
+    function updateStepIndicator(stepNumber) {
+      const steps = document.querySelectorAll('.step-item');
+      steps.forEach((step, index) => {
+        step.classList.remove('active', 'completed');
+        if (index + 1 < stepNumber) {
+          step.classList.add('completed');
+          step.querySelector('.step-dot').textContent = '✓';
+        } else if (index + 1 === stepNumber) {
+          step.classList.add('active');
+          step.querySelector('.step-dot').textContent = stepNumber;
+        } else {
+          step.querySelector('.step-dot').textContent = index + 1;
+        }
+      });
+    }
+
+    function autoDetectStep() {
+      const pn = document.getElementById('patientName').value.trim();
+      const mr = document.getElementById('medicalRecord').value.trim();
+      const w = Number(document.getElementById('weight').value);
+      const td = Number(document.getElementById('targetDose').value);
+      const drugSelected = drugSelect.value !== '';
+
+      if (lastResult) {
+        updateStepIndicator(3);
+      } else if (pn && mr && Number.isFinite(w) && w > 0 && Number.isFinite(td) && td >= 0 && drugSelected) {
+        updateStepIndicator(2);
+      } else {
+        updateStepIndicator(1);
+      }
+    }
+
+    // ===== CHART VISUAL DOSIS =====
+    function renderDoseChart(data) {
+      const container = document.createElement('div');
+      container.className = 'chart-container';
+      container.innerHTML = `
+        <div class="chart-title">📈 Visualisasi Rentang Dosis vs Rate</div>
+        <div class="chart-legend">
+          <span class="chart-legend-item"><span class="chart-legend-dot" style="background:var(--chart-safe)"></span> Aman</span>
+          <span class="chart-legend-item"><span class="chart-legend-dot" style="background:var(--chart-caution)"></span> Hati-hati</span>
+          <span class="chart-legend-item"><span class="chart-legend-dot" style="background:var(--chart-danger)"></span> Bahaya</span>
+          <span class="chart-legend-item"><span class="chart-legend-dot" style="background:var(--primary);border-radius:50%;width:6px;height:6px;"></span> Target saat ini</span>
+        </div>
+        <svg class="chart-svg" viewBox="0 0 400 160" preserveAspectRatio="xMidYMid meet">
+          <line x1="60" y1="10" x2="60" y2="140" stroke="var(--chart-grid)" stroke-width="1"/>
+          <line x1="60" y1="140" x2="380" y2="140" stroke="var(--chart-grid)" stroke-width="1"/>
+          <line x1="60" y1="107" x2="380" y2="107" stroke="var(--chart-grid)" stroke-width="0.5" stroke-dasharray="4"/>
+          <line x1="60" y1="75" x2="380" y2="75" stroke="var(--chart-grid)" stroke-width="0.5" stroke-dasharray="4"/>
+          <line x1="60" y1="42" x2="380" y2="42" stroke="var(--chart-grid)" stroke-width="0.5" stroke-dasharray="4"/>
+
+          <text x="55" y="14" text-anchor="end" font-size="9" fill="var(--muted)">${formatNumber(data.dose * 4, 2)}</text>
+          <text x="55" y="46" text-anchor="end" font-size="9" fill="var(--muted)">${formatNumber(data.dose * 3, 2)}</text>
+          <text x="55" y="79" text-anchor="end" font-size="9" fill="var(--muted)">${formatNumber(data.dose * 2, 2)}</text>
+          <text x="55" y="111" text-anchor="end" font-size="9" fill="var(--muted)">${formatNumber(data.dose, 2)}</text>
+          <text x="55" y="143" text-anchor="end" font-size="9" fill="var(--muted)">0</text>
+
+          <text x="220" y="158" text-anchor="middle" font-size="9" fill="var(--muted)">Dosis Target (${data.doseUnit})</text>
+
+          <rect x="60" y="10" width="320" height="32" fill="var(--danger)" opacity="0.15"/>
+          <rect x="60" y="42" width="320" height="33" fill="var(--chart-caution)" opacity="0.15"/>
+          <rect x="60" y="75" width="320" height="65" fill="var(--chart-safe)" opacity="0.15"/>
+
+          <polyline id="chartCurve" fill="none" stroke="var(--chart-line)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points=""/>
+
+          <circle id="chartMarker" class="chart-marker" cx="0" cy="0" r="6" fill="var(--primary)" stroke="white" stroke-width="2"/>
+          <text id="chartMarkerLabel" x="0" y="0" font-size="9" font-weight="700" fill="var(--ink)" text-anchor="middle"></text>
+        </svg>
+        <div class="chart-tooltip" id="chartTooltip"></div>
+      `;
+
+      const points = [];
+      const doses = [0, data.dose * 0.25, data.dose * 0.5, data.dose * 0.75, data.dose, data.dose * 1.25, data.dose * 1.5, data.dose * 1.75, data.dose * 2, data.dose * 2.5, data.dose * 3, data.dose * 4];
+      
+      doses.forEach((d, i) => {
+        const rate = calculateRate(d, data.weight, data.concentrationMcgPerMl, data.usesHourlyDose);
+        const x = 60 + (i / (doses.length - 1)) * 320;
+        const maxRate = calculateRate(data.dose * 4, data.weight, data.concentrationMcgPerMl, data.usesHourlyDose);
+        const y = 140 - (rate / Math.max(maxRate, 0.01)) * 130;
+        points.push(`${x},${Math.max(10, Math.min(140, y))}`);
+      });
+
+      setTimeout(() => {
+        const polyline = container.querySelector('#chartCurve');
+        if (polyline) polyline.setAttribute('points', points.join(' '));
+
+        const targetX = 60 + (4 / (doses.length - 1)) * 320;
+        const targetRate = calculateRate(data.dose, data.weight, data.concentrationMcgPerMl, data.usesHourlyDose);
+        const maxRate = calculateRate(data.dose * 4, data.weight, data.concentrationMcgPerMl, data.usesHourlyDose);
+        const targetY = 140 - (targetRate / Math.max(maxRate, 0.01)) * 130;
+        
+        const marker = container.querySelector('#chartMarker');
+        const markerLabel = container.querySelector('#chartMarkerLabel');
+        if (marker) {
+          marker.setAttribute('cx', targetX);
+          marker.setAttribute('cy', Math.max(10, Math.min(140, targetY)));
+        }
+        if (markerLabel) {
+          markerLabel.setAttribute('x', targetX);
+          markerLabel.setAttribute('y', Math.max(10, Math.min(140, targetY)) - 10);
+          markerLabel.textContent = data.rateFormatted;
+        }
+      }, 100);
+
+      return container;
+    }
+
+    // ===== DRAG & DROP HISTORY =====
+    function initDragDrop() {
+      const historyList = document.querySelector('.history-list');
+      if (!historyList) return;
+
+      let draggedItem = null;
+      let touchStartX = 0;
+      let touchCurrentX = 0;
+      let swipedItem = null;
+
+      historyList.addEventListener('dragstart', (e) => {
+        const item = e.target.closest('.history-item');
+        if (!item) return;
+        draggedItem = item;
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', item.dataset.historyId);
+      });
+
+      historyList.addEventListener('dragend', (e) => {
+        const item = e.target.closest('.history-item');
+        if (item) item.classList.remove('dragging');
+        draggedItem = null;
+        document.querySelectorAll('.history-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+      });
+
+      historyList.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        const item = e.target.closest('.history-item');
+        if (!item || item === draggedItem) return;
+        item.classList.add('drag-over');
+      });
+
+      historyList.addEventListener('dragleave', (e) => {
+        const item = e.target.closest('.history-item');
+        if (item) item.classList.remove('drag-over');
+      });
+
+      historyList.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const targetItem = e.target.closest('.history-item');
+        if (!targetItem || !draggedItem || targetItem === draggedItem) return;
+
+        const draggedId = draggedItem.dataset.historyId;
+        const targetId = targetItem.dataset.historyId;
+
+        const draggedIndex = calculationHistory.findIndex(h => h.id === draggedId);
+        const targetIndex = calculationHistory.findIndex(h => h.id === targetId);
+
+        if (draggedIndex !== -1 && targetIndex !== -1) {
+          const [removed] = calculationHistory.splice(draggedIndex, 1);
+          calculationHistory.splice(targetIndex, 0, removed);
+          saveHistory();
+          renderHistoryPanel();
+          showToast('Urutan riwayat diubah', 'info');
+        }
+
+        document.querySelectorAll('.history-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+        draggedItem.classList.remove('dragging');
+        draggedItem = null;
+      });
+
+      // Touch swipe to delete
+      historyList.addEventListener('touchstart', (e) => {
+        const item = e.target.closest('.history-item');
+        if (!item) return;
+        touchStartX = e.touches[0].clientX;
+        swipedItem = item;
+      });
+
+      historyList.addEventListener('touchmove', (e) => {
+        if (!swipedItem) return;
+        touchCurrentX = e.touches[0].clientX;
+        const diff = touchStartX - touchCurrentX;
+
+        if (diff > 30 && diff < 120) {
+          swipedItem.style.transform = `translateX(-${diff}px)`;
+        }
+      });
+
+      historyList.addEventListener('touchend', async (e) => {
+        if (!swipedItem) return;
+        const diff = touchStartX - touchCurrentX;
+
+        if (diff > 80) {
+          swipedItem.classList.add('swiped');
+          const id = swipedItem.dataset.historyId;
+          
+          const confirmed = await showConfirm('Hapus item riwayat ini?', 'Konfirmasi Hapus', '🗑️');
+          if (confirmed) {
+            deleteHistoryItem(id);
+            showToast('Item dihapus', 'success');
+          } else {
+            swipedItem.classList.remove('swiped');
+            swipedItem.style.transform = '';
+          }
+        } else {
+          swipedItem.style.transform = '';
+        }
+
+        touchStartX = 0;
+        touchCurrentX = 0;
+        swipedItem = null;
+      });
+
+      // Double click to pin
+      historyList.addEventListener('dblclick', (e) => {
+        const item = e.target.closest('.history-item');
+        if (!item) return;
+        item.classList.toggle('pinned');
+        const isPinned = item.classList.contains('pinned');
+        
+        const id = item.dataset.historyId;
+        const historyItem = calculationHistory.find(h => h.id === id);
+        if (historyItem) {
+          historyItem.pinned = isPinned;
+          saveHistory();
+        }
+        
+        showToast(isPinned ? '📌 Item disematkan' : '📍 Sematan dilepas', 'info');
+        renderHistoryPanel();
+      });
+    }
+
+    // ===== FAB =====
+    function initFAB() {
+      const fabCalculate = document.getElementById('fabCalculate');
+      const fabScrollTop = document.getElementById('fabScrollTop');
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          fabScrollTop.style.display = 'flex';
+          fabScrollTop.style.opacity = '1';
+        } else {
+          fabScrollTop.style.opacity = '0';
+          setTimeout(() => {
+            if (window.scrollY <= 300) fabScrollTop.style.display = 'none';
+          }, 300);
+        }
+      });
+
+      fabCalculate.addEventListener('click', () => {
+        document.getElementById('doseForm').dispatchEvent(new Event('submit'));
+      });
+
+      fabScrollTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
     // ===== THEME MANAGER =====
     const THEME_KEY = 'acdc_theme';
     function getSavedTheme() { try { return localStorage.getItem(THEME_KEY) || 'light'; } catch (e) { return 'light'; } }
@@ -874,6 +2171,7 @@
     function toggleTheme() {
       const current = document.documentElement.hasAttribute('data-theme') ? 'dark' : 'light';
       applyTheme(current === 'dark' ? 'light' : 'dark');
+      showToast(`Mode ${current === 'dark' ? 'terang' : 'gelap'} diaktifkan`, 'info');
     }
 
     // ===== DATA OBAT =====
@@ -1044,13 +2342,41 @@
         rateFormatted: data.rateFormatted, rate: data.rate,
         concentrationFormatted: data.concentrationFormatted,
         amount: data.amount, amountUnit: data.amountUnit, volumeMl: data.volumeMl,
-        usesHourlyDose: data.usesHourlyDose, syringeDurationFormatted: data.syringeDurationFormatted
+        usesHourlyDose: data.usesHourlyDose, syringeDurationFormatted: data.syringeDurationFormatted,
+        pinned: false
       }, ...calculationHistory].slice(0, 20);
       saveHistory(); renderHistoryPanel();
     }
 
-    function deleteHistoryItem(id) { calculationHistory = calculationHistory.filter(i => i.id !== id); saveHistory(); renderHistoryPanel(); }
-    function clearAllHistory() { if (confirm('Hapus semua riwayat?')) { calculationHistory = []; saveHistory(); renderHistoryPanel(); } }
+    function deleteHistoryItem(id) {
+      const historyItem = document.querySelector(`[data-history-id="${id}"]`);
+      if (historyItem) {
+        historyItem.classList.add('removing');
+        setTimeout(() => {
+          calculationHistory = calculationHistory.filter(i => i.id !== id);
+          saveHistory();
+          renderHistoryPanel();
+        }, 300);
+      } else {
+        calculationHistory = calculationHistory.filter(i => i.id !== id);
+        saveHistory();
+        renderHistoryPanel();
+      }
+    }
+
+    async function clearAllHistory() {
+      const confirmed = await showConfirm(
+        'Semua riwayat perhitungan akan dihapus permanen.',
+        'Hapus Semua Riwayat?',
+        '🗑️'
+      );
+      if (confirmed) {
+        calculationHistory = [];
+        saveHistory();
+        renderHistoryPanel();
+        showToast('Semua riwayat berhasil dihapus', 'success');
+      }
+    }
 
     function loadHistoryItem(id) {
       const item = calculationHistory.find(h => h.id === id);
@@ -1065,10 +2391,14 @@
       if (mo) mixtureSelect.value = mo.id;
       updateDoseHint(); renderQuickSelects(); updateCalculation(false);
       document.getElementById('resultPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      showToast('Data riwayat dimuat', 'info');
     }
 
     function exportHistory() {
-      if (!calculationHistory.length) { alert('Tidak ada riwayat.'); return; }
+      if (!calculationHistory.length) { 
+        showToast('Tidak ada riwayat untuk diekspor', 'warning');
+        return; 
+      }
       let t = 'RIWAYAT PERHITUNGAN ACDC - SANS\n' + '='.repeat(50) + '\n\n';
       calculationHistory.forEach((item, i) => {
         t += `#${i+1} - ${formatTimestamp(item.timestamp)}\n`;
@@ -1077,14 +2407,44 @@
       const blob = new Blob([t], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a'); a.href = url; a.download = `riwayat-acdc-${new Date().toISOString().slice(0,10)}.txt`; a.click(); URL.revokeObjectURL(url);
+      showToast('Riwayat berhasil diekspor', 'success');
     }
 
     function renderHistoryPanel() {
-      if (!calculationHistory.length) { historyContent.innerHTML = '<div class="history-empty"><span class="history-empty-icon">📭</span>Belum ada riwayat perhitungan</div>'; return; }
-      const items = calculationHistory.map(item => `
-        <div class="history-item" data-history-id="${item.id}">
+      if (!calculationHistory.length) { 
+        historyContent.innerHTML = `
+          <div class="history-empty">
+            <svg class="empty-svg" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 16px;width:100px;height:80px;">
+              <rect x="20" y="10" width="80" height="70" rx="6" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2" stroke-dasharray="6 3"/>
+              <rect x="35" y="25" width="50" height="6" rx="3" fill="var(--muted-light)" opacity="0.5"/>
+              <rect x="35" y="40" width="35" height="6" rx="3" fill="var(--muted-light)" opacity="0.4"/>
+              <rect x="35" y="55" width="45" height="6" rx="3" fill="var(--muted-light)" opacity="0.3"/>
+            </svg>
+            Belum ada riwayat perhitungan
+          </div>`; 
+        return; 
+      }
+      
+      const sortedHistory = [...calculationHistory].sort((a, b) => {
+        if (a.pinned && !b.pinned) return -1;
+        if (!a.pinned && b.pinned) return 1;
+        return new Date(b.timestamp) - new Date(a.timestamp);
+      });
+      
+      const items = sortedHistory.map(item => `
+        <div class="history-item${item.pinned ? ' pinned' : ''}" data-history-id="${item.id}" draggable="true">
+          <div class="drag-handle">
+            <span class="drag-handle-dot"></span>
+            <span class="drag-handle-dot"></span>
+            <span class="drag-handle-dot"></span>
+          </div>
+          <div class="history-item-swipe-bg">🗑️ Hapus</div>
           <div class="history-item-main">
-            <div class="history-item-top"><span class="history-rate">${item.rateFormatted} mL/jam</span><span class="history-drug-badge" style="background:${getDrugColor(item.drugId)}">${getDrugLabel(item.drugId)}</span></div>
+            <div class="history-item-top">
+              ${item.pinned ? '<span class="pin-indicator">📌</span>' : ''}
+              <span class="history-rate">${item.rateFormatted} mL/jam</span>
+              <span class="history-drug-badge" style="background:${getDrugColor(item.drugId)}">${getDrugLabel(item.drugId)}</span>
+            </div>
             <div class="history-patient">${escapeHtml(item.patientName)||'Tanpa nama'} · RM: ${escapeHtml(item.medicalRecord)||'-'}</div>
             <div class="history-detail">BB ${formatNumber(item.weight,1)} kg · Target ${item.dose} ${item.doseUnit} · ${item.mixture}</div>
             <div class="history-time">🕐 ${formatTimestamp(item.timestamp)}</div>
@@ -1094,17 +2454,34 @@
             <button class="btn btn-sm btn-danger" data-action="delete" data-id="${item.id}" title="Hapus">✕</button>
           </div>
         </div>`).join('');
+        
       historyContent.innerHTML = `
         <div class="history-header">
           <div class="history-title-section"><span class="history-title-text">📜 Daftar Riwayat</span><span class="history-count">${calculationHistory.length} data</span></div>
           <div class="history-actions"><button class="btn btn-sm btn-secondary" id="exportHistoryBtn">📥 Ekspor</button><button class="btn btn-sm btn-danger" id="clearHistoryBtn">🗑 Hapus Semua</button></div>
         </div>
-        <div class="history-list">${items}</div>`;
+        <div class="history-list">${items}</div>
+        <p style="font-size:0.65rem;color:var(--muted-light);margin-top:8px;text-align:center;">💡 Tips: Geser ke kiri untuk hapus · Double-click untuk pin · Drag untuk ubah urutan</p>
+      `;
+      
       historyContent.querySelectorAll('[data-action="load"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); loadHistoryItem(b.dataset.id); }));
-      historyContent.querySelectorAll('[data-action="delete"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); if (confirm('Hapus?')) deleteHistoryItem(b.dataset.id); }));
-      historyContent.querySelectorAll('.history-item').forEach(item => item.addEventListener('click', () => loadHistoryItem(item.dataset.historyId)));
+      historyContent.querySelectorAll('[data-action="delete"]').forEach(b => b.addEventListener('click', async e => { 
+        e.stopPropagation();
+        const confirmed = await showConfirm('Item riwayat ini akan dihapus.', 'Hapus Item?', '🗑️');
+        if (confirmed) {
+          deleteHistoryItem(b.dataset.id);
+          showToast('Item berhasil dihapus', 'success');
+        }
+      }));
+      historyContent.querySelectorAll('.history-item').forEach(item => item.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        loadHistoryItem(item.dataset.historyId);
+      }));
+      
       document.getElementById('exportHistoryBtn')?.addEventListener('click', exportHistory);
       document.getElementById('clearHistoryBtn')?.addEventListener('click', clearAllHistory);
+      
+      setTimeout(initDragDrop, 100);
     }
 
     // ===== CETAK LABEL SPUIT =====
@@ -1114,7 +2491,6 @@
       const dateStr = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
       const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
       
-      // Dimensi label sesuai ukuran spuit (dalam mm)
       const dimensions = {
         '10 cc': { width: '50mm', height: '30mm', fontSize: '10px', rateSize: '18px', titleSize: '12px' },
         '20 cc': { width: '60mm', height: '35mm', fontSize: '11px', rateSize: '20px', titleSize: '13px' },
@@ -1163,6 +2539,7 @@
       printWindow.document.close();
       printWindow.focus();
       setTimeout(() => { printWindow.print(); printWindow.close(); }, 300);
+      showToast(`Label spuit ${syringeSize} siap dicetak`, 'info');
     }
 
     function renderResult(data, signatures = getSignatureData()) {
@@ -1197,6 +2574,9 @@
               ${safetyAlert ? `<div class="safety-warning">⚠️ ${safetyAlert}</div>` : ''}
             </div>
           </div>
+          
+          <div id="chartArea"></div>
+          
           <div class="signature-section" style="margin-top: 16px;">
             <div class="form-group">
               <label class="form-label" for="giverName">Giver (Pemberi)</label>
@@ -1208,7 +2588,6 @@
             </div>
           </div>
 
-          <!-- Cetak Label Spuit dengan Pilihan Ukuran -->
           <div class="syringe-size-section">
             <div class="syringe-size-title">🖨️ Cetak Label Spuit — Pilih Ukuran</div>
             <div class="syringe-size-selector">
@@ -1238,9 +2617,14 @@
           <p class="note-warning">⚠️ Wajib verifikasi ulang secara independen sebelum obat dijalankan.</p>
         </div>
       `;
+
+      const chartArea = document.getElementById('chartArea');
+      if (chartArea && data) {
+        const chart = renderDoseChart(data);
+        chartArea.appendChild(chart);
+      }
     }
 
-    function renderPrintResult(data, syringeSize = '') { /* tetap ada untuk kompatibilitas */ }
     function buildKitirRows(data) {
       return Array.from({ length: 10 }, (_, i) => {
         const d = (i + 1) / 10;
@@ -1279,22 +2663,62 @@
     function updateCalculation(shouldRemember = true) {
       const signatures = getSignatureData();
       const data = collectData();
+      
       if (!data) {
-        resultContent.innerHTML = `<div class="result-empty"><span class="empty-icon">⚠️</span><div style="color: var(--danger); font-weight: 600;">${getValidationMessage() || 'Mohon lengkapi data dengan benar.'}</div></div>`;
+        const msg = getValidationMessage();
+        
+        document.querySelectorAll('.form-input.error, .form-select.error').forEach(el => el.classList.remove('error'));
+        
+        if (!document.getElementById('patientName').value.trim()) document.getElementById('patientName').classList.add('error');
+        if (!document.getElementById('medicalRecord').value.trim()) document.getElementById('medicalRecord').classList.add('error');
+        if (!Number.isFinite(Number(document.getElementById('weight').value)) || Number(document.getElementById('weight').value) <= 0) document.getElementById('weight').classList.add('error');
+        
+        resultContent.innerHTML = `
+          <div class="result-empty">
+            <svg class="empty-svg" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="60" cy="40" r="20" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="2"/>
+              <text x="60" y="45" text-anchor="middle" font-size="18" fill="var(--danger)">!</text>
+              <rect x="30" y="72" width="60" height="6" rx="3" fill="var(--muted-light)" opacity="0.5"/>
+            </svg>
+            <div style="color: var(--danger); font-weight: 600;">${msg || 'Mohon lengkapi data dengan benar.'}</div>
+          </div>
+        `;
+        
+        if (msg) showToast(msg, 'error');
+        updateStepIndicator(1);
         return null;
       }
-      lastResult = data;
-      if (shouldRemember) rememberCalculation(data);
-      renderResult(data, signatures);
-      renderKitir(data);
+      
+      document.querySelectorAll('.form-input.error, .form-select.error').forEach(el => el.classList.remove('error'));
+      showSkeletonLoading(resultContent);
+      
+      setTimeout(() => {
+        lastResult = data;
+        if (shouldRemember) rememberCalculation(data);
+        renderResult(data, signatures);
+        renderKitir(data);
+        document.getElementById('resultPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        updateStepIndicator(3);
+        clearDraft();
+      }, 600);
+      
       return data;
     }
 
     async function copyResultSummary(data) {
       const text = `Pasien: ${data.patientName||'-'}\nRM: ${data.medicalRecord||'-'}\nBB: ${formatNumber(data.weight,1)} kg\nObat: ${data.drug}\nPengoplosan: ${data.mixture}\nKonsentrasi: ${data.concentrationFormatted} mcg/mL\nTarget: ${data.dose} ${data.doseUnit}\nRate: ${data.rateFormatted} mL/jam`;
-      if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); return; }
-      const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+      try {
+        if (navigator.clipboard?.writeText) { 
+          await navigator.clipboard.writeText(text);
+          showToast('📋 Ringkasan berhasil disalin ke clipboard!', 'success');
+          return;
+        }
+        const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+        showToast('📋 Ringkasan berhasil disalin!', 'success');
+      } catch (e) {
+        showToast('❌ Gagal menyalin ringkasan', 'error');
+      }
     }
 
     function printKitir() {
@@ -1305,23 +2729,41 @@
       const pw = window.open('', '_blank');
       pw.document.write(`<!DOCTYPE html><html><head><title>Label Titrasi</title><style>@page{size:A4 portrait;margin:15mm;}body{font-family:Arial;background:white;color:#000;}</style></head><body>${document.getElementById('kitirSheet').innerHTML}</body></html>`);
       pw.document.close(); pw.focus(); pw.print(); pw.close();
+      showToast('Label titrasi siap dicetak', 'info');
     }
 
     // ===== EVENT LISTENERS =====
     form.addEventListener('submit', e => { e.preventDefault(); updateCalculation(); });
 
-    resetButton.addEventListener('click', () => {
+    resetButton.addEventListener('click', async () => {
+      if (lastResult) {
+        const confirmed = await showConfirm('Data yang sudah dihitung akan direset.', 'Reset Form?', '🔄');
+        if (!confirmed) return;
+      }
       form.reset(); drugSelect.value = ''; mixtureSelect.value = ''; mixtureSelect.disabled = true;
       lastResult = null; selectedSyringeSize = '';
       populateMixtureOptions(); updateDoseHint(); renderQuickSelects();
       document.getElementById('kitirSheet').innerHTML = '';
       document.getElementById('mixtureQuickSelectSection').style.display = 'none';
-      resultContent.innerHTML = '<div class="result-empty"><span class="empty-icon">📝</span>Masukkan data pasien, pilih obat, lalu tekan Hitung Rate</div>';
+      resultContent.innerHTML = `
+        <div class="result-empty">
+          <svg class="empty-svg" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="15" width="100" height="75" rx="8" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2"/>
+            <rect x="25" y="30" width="70" height="8" rx="4" fill="var(--muted-light)"/>
+            <rect x="35" y="48" width="50" height="8" rx="4" fill="var(--muted-light)" opacity="0.6"/>
+            <circle cx="60" cy="72" r="12" fill="var(--primary)" opacity="0.3"/>
+            <text x="60" y="76" text-anchor="middle" font-size="12" fill="var(--primary)">?</text>
+          </svg>
+          Masukkan data pasien, pilih obat, lalu tekan Hitung Rate
+        </div>`;
+      document.querySelectorAll('.form-input.error, .form-select.error').forEach(el => el.classList.remove('error'));
+      updateStepIndicator(1);
+      clearDraft();
+      showToast('Form berhasil direset', 'info');
     });
 
     resultContent.addEventListener('click', event => {
       if (!event.target) return;
-      // Cetak label spuit berdasarkan ukuran
       const syringeBtn = event.target.closest('[data-syringe]');
       if (syringeBtn && lastResult) {
         printSyringeLabel(lastResult, syringeBtn.dataset.syringe);
@@ -1329,15 +2771,7 @@
       }
       if (event.target.id === 'kitirButton' || event.target.closest('#kitirButton')) printKitir();
       if (event.target.id === 'copyButton' || event.target.closest('#copyButton')) {
-        if (lastResult) {
-          copyResultSummary(lastResult).then(() => {
-            const cs = document.getElementById('copyStatus');
-            if (cs) cs.innerHTML = '<div class="status-success">✅ Ringkasan berhasil disalin</div>';
-          }).catch(() => {
-            const cs = document.getElementById('copyStatus');
-            if (cs) cs.innerHTML = '<div class="status-error">❌ Gagal menyalin</div>';
-          });
-        }
+        if (lastResult) copyResultSummary(lastResult);
       }
     });
 
@@ -1346,6 +2780,8 @@
       if (!btn) return;
       drugSelect.value = btn.dataset.drugId;
       populateMixtureOptions(); updateDoseHint(); renderQuickSelects();
+      autoDetectStep();
+      saveDraft();
       if (lastResult) updateCalculation(false);
     });
 
@@ -1354,12 +2790,28 @@
       if (!btn) return;
       mixtureSelect.value = btn.dataset.mixtureId;
       updateDoseHint(); renderQuickSelects();
+      autoDetectStep();
+      saveDraft();
       if (lastResult) updateCalculation(false);
     });
 
-    form.addEventListener('input', () => { if (lastResult) updateCalculation(false); });
-    drugSelect.addEventListener('change', () => { populateMixtureOptions(); updateDoseHint(); renderQuickSelects(); if (lastResult) updateCalculation(false); });
-    mixtureSelect.addEventListener('change', () => { updateDoseHint(); renderQuickSelects(); if (lastResult) updateCalculation(false); });
+    form.addEventListener('input', () => { 
+      document.querySelectorAll('.form-input.error, .form-select.error').forEach(el => el.classList.remove('error'));
+      autoDetectStep();
+      if (lastResult) updateCalculation(false); 
+    });
+    
+    drugSelect.addEventListener('change', () => { 
+      populateMixtureOptions(); updateDoseHint(); renderQuickSelects(); 
+      autoDetectStep(); saveDraft();
+      if (lastResult) updateCalculation(false); 
+    });
+    
+    mixtureSelect.addEventListener('change', () => { 
+      updateDoseHint(); renderQuickSelects(); 
+      autoDetectStep(); saveDraft();
+      if (lastResult) updateCalculation(false); 
+    });
 
     // ===== INIT =====
     populateDrugNames();
@@ -1368,6 +2820,16 @@
     updateDoseHint();
     loadHistory();
     renderHistoryPanel();
+    initFAB();
+    autoDetectStep();
+
+    const draftLoaded = loadDraft();
+    if (draftLoaded) {
+      showToast('📝 Draft form sebelumnya dimuat', 'info');
+      autoDetectStep();
+      updateDoseHint();
+      renderQuickSelects();
+    }
   </script>
 </body>
 </html>
