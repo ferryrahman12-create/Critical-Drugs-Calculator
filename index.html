@@ -78,12 +78,6 @@
       --modal-overlay: rgba(0, 0, 0, 0.5);
       --skeleton-base: #e5e7eb;
       --skeleton-shine: #f3f4f6;
-      --chart-bg: #f9fafb;
-      --chart-grid: #e5e7eb;
-      --chart-line: #087568;
-      --chart-safe: #10b981;
-      --chart-caution: #f59e0b;
-      --chart-danger: #ef4444;
       --draft-badge-bg: #dbeafe;
       --draft-badge-text: #1e40af;
     }
@@ -160,12 +154,6 @@
       --modal-overlay: rgba(0, 0, 0, 0.7);
       --skeleton-base: #334155;
       --skeleton-shine: #475569;
-      --chart-bg: #1e293b;
-      --chart-grid: #334155;
-      --chart-line: #14b8a6;
-      --chart-safe: #10b981;
-      --chart-caution: #f59e0b;
-      --chart-danger: #ef4444;
       --draft-badge-bg: #1e3a5f;
       --draft-badge-text: #93c5fd;
     }
@@ -267,82 +255,6 @@
     @keyframes draftBlink {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.3; }
-    }
-
-    /* ===== CHART ===== */
-    .chart-container {
-      background: var(--chart-bg);
-      border: 1px solid var(--calc-border);
-      border-radius: 12px;
-      padding: 16px;
-      margin-top: 16px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .chart-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-      transition: color 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .chart-legend {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-      font-size: 0.65rem;
-    }
-
-    .chart-legend-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-weight: 600;
-    }
-
-    .chart-legend-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 2px;
-    }
-
-    .chart-svg {
-      width: 100%;
-      height: 160px;
-      display: block;
-    }
-
-    .chart-svg line,
-    .chart-svg text {
-      transition: all 0.3s ease;
-    }
-
-    .chart-tooltip {
-      position: absolute;
-      background: var(--ink);
-      color: white;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.15s ease;
-      white-space: nowrap;
-      z-index: 5;
-    }
-
-    .chart-marker {
-      transition: all 0.3s ease;
     }
 
     /* ===== DRAG & DROP HISTORY ===== */
@@ -887,7 +799,7 @@
 
     /* Form elements */
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 0;
     }
     .form-group:last-child { margin-bottom: 0; }
 
@@ -1038,7 +950,7 @@
     .btn-danger { background: var(--danger-soft); color: var(--danger); border: 1px solid var(--danger-border); }
     .btn-danger:hover { background: var(--danger-border); }
     .btn-sm { padding: 5px 10px; font-size: 0.72rem; min-height: 28px; border-radius: 6px; }
-    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
 
     /* Hasil */
     .result-section { width: 100%; }
@@ -1493,7 +1405,6 @@
       .theme-toggle { min-width: 110px; padding: 4px 4px 4px 10px; }
       .theme-toggle-label { font-size: 0.7rem; }
       .theme-toggle-status { font-size: 0.65rem; padding: 5px 10px; }
-      .chart-svg { height: 120px; }
       .drag-handle { display: none; }
       .step-indicator { flex-direction: column; gap: 12px; padding: 0; }
       .step-item:not(:last-child)::after { display: none; }
@@ -1507,7 +1418,6 @@
       .header-badges { width: 100%; }
       .toast-container { top: 12px; right: 12px; left: 12px; }
       .toast { max-width: 100%; font-size: 0.8rem; padding: 14px 18px; }
-      .chart-svg { height: 100px; }
     }
 
     @media print {
@@ -1516,7 +1426,7 @@
       .app-header, .warning-box, .no-print, .action-buttons, .syringe-size-section,
       .btn-group, #copyStatus, .note-warning, .history-panel, .theme-toggle-wrapper,
       .toast-container, .fab-container, .step-indicator, .modal-overlay,
-      .chart-container, .draft-indicator, .drag-handle {
+      .draft-indicator, .drag-handle {
         display: none !important;
       }
       .main-layout { gap: 0; }
@@ -1548,7 +1458,6 @@
         </div>
       </div>
 
-      <!-- Toggle Dark Mode -->
       <div class="theme-toggle-wrapper">
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Ganti mode gelap/terang">
           <span class="theme-toggle-label">Darkmode</span>
@@ -1557,13 +1466,11 @@
       </div>
     </header>
 
-    <!-- Warning -->
     <div class="warning-box">
       <span class="warning-icon">⚠️</span>
       <span>Dimohon untuk selalu melakukan double checker dan double verifikasi. Konsultasikan dengan tim farmasi dan tim dokter, sesuaikan dengan kebutuhan dan kebijakan rumah sakit Anda.</span>
     </div>
 
-    <!-- ===== STEP INDICATOR ===== -->
     <div class="step-indicator" id="stepIndicator">
       <div class="step-item active" data-step="1">
         <div class="step-dot">1</div>
@@ -1588,33 +1495,32 @@
       </div>
     </div>
 
-    <!-- ===== LAYOUT UTAMA ===== -->
     <div class="main-layout">
       
-      <!-- FORM PANEL -->
       <form class="panel" id="doseForm">
         <div class="panel-header">
           <div class="panel-header-icon">📋</div>
           <h2>Data Pasien & Obat</h2>
         </div>
         <div class="panel-body">
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px;">
+          <!-- BARIS 1: Nama Pasien, Nomor RM, BB, Target Dosis - 4 kolom simetris -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px;">
             <div class="form-group">
               <label class="form-label" for="patientName">Nama Pasien <span class="required">*</span></label>
-              <input type="text" id="patientName" class="form-input" placeholder="Contoh: Tn. Ahmad" autocomplete="off" required>
+              <input type="text" id="patientName" class="form-input" placeholder="Tn. Ahmad" autocomplete="off" required>
             </div>
             <div class="form-group">
               <label class="form-label" for="medicalRecord">Nomor RM <span class="required">*</span></label>
-              <input type="text" id="medicalRecord" class="form-input" placeholder="Contoh: 123456" autocomplete="off" required>
+              <input type="text" id="medicalRecord" class="form-input" placeholder="123456" autocomplete="off" required>
             </div>
             <div class="form-group">
-              <label class="form-label" for="weight">Berat Badan (Kg/BB) <span class="required">*</span></label>
-              <input type="number" id="weight" class="form-input" min="0.1" step="0.1" placeholder="Contoh: 60" required>
+              <label class="form-label" for="weight">Berat Badan (Kg) <span class="required">*</span></label>
+              <input type="number" id="weight" class="form-input" min="0.1" step="0.1" placeholder="60" required>
             </div>
             <div class="form-group">
-              <label class="form-label" for="targetDose">Target Dosis (Mcg/KgBB/Menit) <span class="required">*</span></label>
-              <input type="number" id="targetDose" class="form-input" min="0" step="0.01" placeholder="Contoh: 0.1" required>
-              <div class="form-hint" id="doseUnitHint">Pilih obat untuk melihat satuan dosis</div>
+              <label class="form-label" for="targetDose">Target Dosis <span class="required">*</span></label>
+              <input type="number" id="targetDose" class="form-input" min="0" step="0.01" placeholder="0.1" required>
+              <div class="form-hint" id="doseUnitHint">Pilih obat</div>
             </div>
           </div>
 
@@ -1633,7 +1539,8 @@
             <select id="drugOption" required disabled><option value="">Pilih obat terlebih dahulu</option></select>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 16px;">
+          <!-- BARIS 2: Pelarut, Pembulatan, Giver, Checker - 4 kolom simetris -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 0;">
             <div class="form-group">
               <label class="form-label" for="fluid">Pelarut</label>
               <select id="fluid" class="form-select">
@@ -1642,12 +1549,20 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label" for="rounding">Pembulatan Rate</label>
+              <label class="form-label" for="rounding">Pembulatan</label>
               <select id="rounding" class="form-select">
-                <option value="2">2 angka desimal</option>
-                <option value="1">1 angka desimal</option>
-                <option value="0">Bilangan bulat</option>
+                <option value="2">2 desimal</option>
+                <option value="1">1 desimal</option>
+                <option value="0">Bulat</option>
               </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="giverName">Giver <span class="required">*</span></label>
+              <input type="text" id="giverName" class="form-input" placeholder="Nama pemberi" autocomplete="off" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="checkerName">Checker <span class="required">*</span></label>
+              <input type="text" id="checkerName" class="form-input" placeholder="Nama pemeriksa" autocomplete="off" required>
             </div>
           </div>
 
@@ -1658,7 +1573,6 @@
         </div>
       </form>
 
-      <!-- HASIL -->
       <section class="result-section panel" id="resultPanel">
         <div class="panel-header">
           <div class="panel-header-icon">📊</div>
@@ -1678,7 +1592,6 @@
         </div>
       </section>
 
-      <!-- RIWAYAT -->
       <section class="panel history-panel" id="historyPanel">
         <div class="panel-header">
           <div class="panel-header-icon">📜</div>
@@ -1700,11 +1613,9 @@
     </div>
   </div>
 
-  <!-- Hidden print sheets -->
   <div id="printSheet" style="display: none;"></div>
   <div id="kitirSheet" style="display: none;"></div>
 
-  <!-- ===== FAB (FLOATING ACTION BUTTON) ===== -->
   <div class="fab-container" id="fabContainer">
     <button class="fab fab-secondary fab-ripple" id="fabScrollTop" title="Kembali ke atas" style="display: none;">
       <span style="font-size:1.2rem;">↑</span>
@@ -1725,28 +1636,12 @@
         container.className = 'toast-container';
         document.body.appendChild(container);
       }
-
-      const icons = {
-        success: '✅',
-        error: '❌',
-        warning: '⚠️',
-        info: 'ℹ️'
-      };
-
+      const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
       const toast = document.createElement('div');
       toast.className = `toast toast-${type}`;
-      toast.innerHTML = `
-        <span class="toast-icon">${icons[type] || icons.info}</span>
-        <span class="toast-message">${message}</span>
-      `;
-
+      toast.innerHTML = `<span class="toast-icon">${icons[type] || icons.info}</span><span class="toast-message">${message}</span>`;
       container.appendChild(toast);
-
-      setTimeout(() => {
-        if (toast.parentNode) {
-          toast.remove();
-        }
-      }, duration + 300);
+      setTimeout(() => { if (toast.parentNode) toast.remove(); }, duration + 300);
     }
 
     // ===== CUSTOM CONFIRM DIALOG =====
@@ -1754,10 +1649,8 @@
       return new Promise((resolve) => {
         const oldModal = document.querySelector('.modal-overlay');
         if (oldModal) oldModal.remove();
-
         const overlay = document.createElement('div');
         overlay.className = 'modal-overlay';
-
         overlay.innerHTML = `
           <div class="modal-dialog">
             <div class="modal-icon">${icon}</div>
@@ -1767,24 +1660,17 @@
               <button class="btn btn-primary" id="modalConfirmYes">Ya, Lanjutkan</button>
               <button class="btn btn-secondary" id="modalConfirmNo">Batal</button>
             </div>
-          </div>
-        `;
-
+          </div>`;
         document.body.appendChild(overlay);
-
         const closeModal = (result) => {
           overlay.style.opacity = '0';
           overlay.style.transition = 'opacity 0.2s ease';
           setTimeout(() => overlay.remove(), 200);
           resolve(result);
         };
-
         overlay.querySelector('#modalConfirmYes').addEventListener('click', () => closeModal(true));
         overlay.querySelector('#modalConfirmNo').addEventListener('click', () => closeModal(false));
-        overlay.addEventListener('click', (e) => {
-          if (e.target === overlay) closeModal(false);
-        });
-
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(false); });
         setTimeout(() => overlay.querySelector('#modalConfirmNo').focus(), 100);
       });
     }
@@ -1798,8 +1684,7 @@
           <div class="skeleton skeleton-row"></div>
           <div class="skeleton skeleton-row"></div>
           <div class="skeleton skeleton-row" style="width: 70%;"></div>
-        </div>
-      `;
+        </div>`;
     }
 
     // ===== AUTO-SAVE DRAFT =====
@@ -1816,65 +1701,46 @@
         drugOption: mixtureSelect.value,
         fluid: document.getElementById('fluid').value,
         rounding: document.getElementById('rounding').value,
+        giverName: document.getElementById('giverName').value,
+        checkerName: document.getElementById('checkerName').value,
         timestamp: new Date().toISOString()
       };
-
-      try {
-        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-        showDraftIndicator();
-      } catch (e) { /* storage full */ }
+      try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); showDraftIndicator(); } catch (e) {}
     }
 
     function loadDraft() {
       try {
         const saved = localStorage.getItem(DRAFT_KEY);
         if (!saved) return false;
-
         const draft = JSON.parse(saved);
-        
         const age = Date.now() - new Date(draft.timestamp).getTime();
-        if (age > 24 * 60 * 60 * 1000) {
-          localStorage.removeItem(DRAFT_KEY);
-          return false;
-        }
-
+        if (age > 24 * 60 * 60 * 1000) { localStorage.removeItem(DRAFT_KEY); return false; }
         if (draft.patientName) document.getElementById('patientName').value = draft.patientName;
         if (draft.medicalRecord) document.getElementById('medicalRecord').value = draft.medicalRecord;
         if (draft.weight) document.getElementById('weight').value = draft.weight;
         if (draft.targetDose) document.getElementById('targetDose').value = draft.targetDose;
         if (draft.fluid) document.getElementById('fluid').value = draft.fluid;
         if (draft.rounding) document.getElementById('rounding').value = draft.rounding;
-
+        if (draft.giverName) document.getElementById('giverName').value = draft.giverName;
+        if (draft.checkerName) document.getElementById('checkerName').value = draft.checkerName;
         if (draft.drugName) {
           drugSelect.value = draft.drugName;
           populateMixtureOptions();
           renderQuickSelects();
-          if (draft.drugOption) {
-            mixtureSelect.value = draft.drugOption;
-            updateDoseHint();
-            renderQuickSelects();
-          }
+          if (draft.drugOption) { mixtureSelect.value = draft.drugOption; updateDoseHint(); renderQuickSelects(); }
         }
-
         return true;
-      } catch (e) {
-        return false;
-      }
+      } catch (e) { return false; }
     }
 
-    function clearDraft() {
-      try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
-      hideDraftIndicator();
-    }
+    function clearDraft() { try { localStorage.removeItem(DRAFT_KEY); } catch (e) {} hideDraftIndicator(); }
 
     function showDraftIndicator() {
       const indicator = document.getElementById('draftIndicator');
       if (indicator) {
         indicator.classList.add('visible');
         clearTimeout(draftTimeout);
-        draftTimeout = setTimeout(() => {
-          indicator.classList.remove('visible');
-        }, 2000);
+        draftTimeout = setTimeout(() => { indicator.classList.remove('visible'); }, 2000);
       }
     }
 
@@ -1884,14 +1750,10 @@
     }
 
     // Auto-save on input
-    const autoSaveInputs = ['patientName', 'medicalRecord', 'weight', 'targetDose', 'fluid', 'rounding'];
-    autoSaveInputs.forEach(id => {
+    ['patientName', 'medicalRecord', 'weight', 'targetDose', 'fluid', 'rounding', 'giverName', 'checkerName'].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
-        el.addEventListener('input', () => {
-          clearTimeout(draftTimeout);
-          draftTimeout = setTimeout(saveDraft, 500);
-        });
+        el.addEventListener('input', () => { clearTimeout(draftTimeout); draftTimeout = setTimeout(saveDraft, 500); });
         el.addEventListener('change', saveDraft);
       }
     });
@@ -1901,15 +1763,9 @@
       const steps = document.querySelectorAll('.step-item');
       steps.forEach((step, index) => {
         step.classList.remove('active', 'completed');
-        if (index + 1 < stepNumber) {
-          step.classList.add('completed');
-          step.querySelector('.step-dot').textContent = '✓';
-        } else if (index + 1 === stepNumber) {
-          step.classList.add('active');
-          step.querySelector('.step-dot').textContent = stepNumber;
-        } else {
-          step.querySelector('.step-dot').textContent = index + 1;
-        }
+        if (index + 1 < stepNumber) { step.classList.add('completed'); step.querySelector('.step-dot').textContent = '✓'; }
+        else if (index + 1 === stepNumber) { step.classList.add('active'); step.querySelector('.step-dot').textContent = stepNumber; }
+        else { step.querySelector('.step-dot').textContent = index + 1; }
       });
     }
 
@@ -1919,210 +1775,87 @@
       const w = Number(document.getElementById('weight').value);
       const td = Number(document.getElementById('targetDose').value);
       const drugSelected = drugSelect.value !== '';
-
-      if (lastResult) {
-        updateStepIndicator(3);
-      } else if (pn && mr && Number.isFinite(w) && w > 0 && Number.isFinite(td) && td >= 0 && drugSelected) {
-        updateStepIndicator(2);
-      } else {
-        updateStepIndicator(1);
-      }
-    }
-
-    // ===== CHART VISUAL DOSIS =====
-    function renderDoseChart(data) {
-      const container = document.createElement('div');
-      container.className = 'chart-container';
-      container.innerHTML = `
-        <div class="chart-title">📈 Visualisasi Rentang Dosis vs Rate</div>
-        <div class="chart-legend">
-          <span class="chart-legend-item"><span class="chart-legend-dot" style="background:var(--chart-safe)"></span> Aman</span>
-          <span class="chart-legend-item"><span class="chart-legend-dot" style="background:var(--chart-caution)"></span> Hati-hati</span>
-          <span class="chart-legend-item"><span class="chart-legend-dot" style="background:var(--chart-danger)"></span> Bahaya</span>
-          <span class="chart-legend-item"><span class="chart-legend-dot" style="background:var(--primary);border-radius:50%;width:6px;height:6px;"></span> Target saat ini</span>
-        </div>
-        <svg class="chart-svg" viewBox="0 0 400 160" preserveAspectRatio="xMidYMid meet">
-          <line x1="60" y1="10" x2="60" y2="140" stroke="var(--chart-grid)" stroke-width="1"/>
-          <line x1="60" y1="140" x2="380" y2="140" stroke="var(--chart-grid)" stroke-width="1"/>
-          <line x1="60" y1="107" x2="380" y2="107" stroke="var(--chart-grid)" stroke-width="0.5" stroke-dasharray="4"/>
-          <line x1="60" y1="75" x2="380" y2="75" stroke="var(--chart-grid)" stroke-width="0.5" stroke-dasharray="4"/>
-          <line x1="60" y1="42" x2="380" y2="42" stroke="var(--chart-grid)" stroke-width="0.5" stroke-dasharray="4"/>
-
-          <text x="55" y="14" text-anchor="end" font-size="9" fill="var(--muted)">${formatNumber(data.dose * 4, 2)}</text>
-          <text x="55" y="46" text-anchor="end" font-size="9" fill="var(--muted)">${formatNumber(data.dose * 3, 2)}</text>
-          <text x="55" y="79" text-anchor="end" font-size="9" fill="var(--muted)">${formatNumber(data.dose * 2, 2)}</text>
-          <text x="55" y="111" text-anchor="end" font-size="9" fill="var(--muted)">${formatNumber(data.dose, 2)}</text>
-          <text x="55" y="143" text-anchor="end" font-size="9" fill="var(--muted)">0</text>
-
-          <text x="220" y="158" text-anchor="middle" font-size="9" fill="var(--muted)">Dosis Target (${data.doseUnit})</text>
-
-          <rect x="60" y="10" width="320" height="32" fill="var(--danger)" opacity="0.15"/>
-          <rect x="60" y="42" width="320" height="33" fill="var(--chart-caution)" opacity="0.15"/>
-          <rect x="60" y="75" width="320" height="65" fill="var(--chart-safe)" opacity="0.15"/>
-
-          <polyline id="chartCurve" fill="none" stroke="var(--chart-line)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points=""/>
-
-          <circle id="chartMarker" class="chart-marker" cx="0" cy="0" r="6" fill="var(--primary)" stroke="white" stroke-width="2"/>
-          <text id="chartMarkerLabel" x="0" y="0" font-size="9" font-weight="700" fill="var(--ink)" text-anchor="middle"></text>
-        </svg>
-        <div class="chart-tooltip" id="chartTooltip"></div>
-      `;
-
-      const points = [];
-      const doses = [0, data.dose * 0.25, data.dose * 0.5, data.dose * 0.75, data.dose, data.dose * 1.25, data.dose * 1.5, data.dose * 1.75, data.dose * 2, data.dose * 2.5, data.dose * 3, data.dose * 4];
-      
-      doses.forEach((d, i) => {
-        const rate = calculateRate(d, data.weight, data.concentrationMcgPerMl, data.usesHourlyDose);
-        const x = 60 + (i / (doses.length - 1)) * 320;
-        const maxRate = calculateRate(data.dose * 4, data.weight, data.concentrationMcgPerMl, data.usesHourlyDose);
-        const y = 140 - (rate / Math.max(maxRate, 0.01)) * 130;
-        points.push(`${x},${Math.max(10, Math.min(140, y))}`);
-      });
-
-      setTimeout(() => {
-        const polyline = container.querySelector('#chartCurve');
-        if (polyline) polyline.setAttribute('points', points.join(' '));
-
-        const targetX = 60 + (4 / (doses.length - 1)) * 320;
-        const targetRate = calculateRate(data.dose, data.weight, data.concentrationMcgPerMl, data.usesHourlyDose);
-        const maxRate = calculateRate(data.dose * 4, data.weight, data.concentrationMcgPerMl, data.usesHourlyDose);
-        const targetY = 140 - (targetRate / Math.max(maxRate, 0.01)) * 130;
-        
-        const marker = container.querySelector('#chartMarker');
-        const markerLabel = container.querySelector('#chartMarkerLabel');
-        if (marker) {
-          marker.setAttribute('cx', targetX);
-          marker.setAttribute('cy', Math.max(10, Math.min(140, targetY)));
-        }
-        if (markerLabel) {
-          markerLabel.setAttribute('x', targetX);
-          markerLabel.setAttribute('y', Math.max(10, Math.min(140, targetY)) - 10);
-          markerLabel.textContent = data.rateFormatted;
-        }
-      }, 100);
-
-      return container;
+      if (lastResult) { updateStepIndicator(3); }
+      else if (pn && mr && Number.isFinite(w) && w > 0 && Number.isFinite(td) && td >= 0 && drugSelected) { updateStepIndicator(2); }
+      else { updateStepIndicator(1); }
     }
 
     // ===== DRAG & DROP HISTORY =====
     function initDragDrop() {
       const historyList = document.querySelector('.history-list');
       if (!historyList) return;
-
-      let draggedItem = null;
-      let touchStartX = 0;
-      let touchCurrentX = 0;
-      let swipedItem = null;
+      let draggedItem = null, touchStartX = 0, touchCurrentX = 0, swipedItem = null;
 
       historyList.addEventListener('dragstart', (e) => {
         const item = e.target.closest('.history-item');
         if (!item) return;
-        draggedItem = item;
-        item.classList.add('dragging');
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/plain', item.dataset.historyId);
+        draggedItem = item; item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', item.dataset.historyId);
       });
-
       historyList.addEventListener('dragend', (e) => {
         const item = e.target.closest('.history-item');
         if (item) item.classList.remove('dragging');
         draggedItem = null;
         document.querySelectorAll('.history-item.drag-over').forEach(el => el.classList.remove('drag-over'));
       });
-
       historyList.addEventListener('dragover', (e) => {
         e.preventDefault();
         const item = e.target.closest('.history-item');
         if (!item || item === draggedItem) return;
         item.classList.add('drag-over');
       });
-
       historyList.addEventListener('dragleave', (e) => {
         const item = e.target.closest('.history-item');
         if (item) item.classList.remove('drag-over');
       });
-
       historyList.addEventListener('drop', (e) => {
         e.preventDefault();
         const targetItem = e.target.closest('.history-item');
         if (!targetItem || !draggedItem || targetItem === draggedItem) return;
-
         const draggedId = draggedItem.dataset.historyId;
         const targetId = targetItem.dataset.historyId;
-
         const draggedIndex = calculationHistory.findIndex(h => h.id === draggedId);
         const targetIndex = calculationHistory.findIndex(h => h.id === targetId);
-
         if (draggedIndex !== -1 && targetIndex !== -1) {
           const [removed] = calculationHistory.splice(draggedIndex, 1);
           calculationHistory.splice(targetIndex, 0, removed);
-          saveHistory();
-          renderHistoryPanel();
+          saveHistory(); renderHistoryPanel();
           showToast('Urutan riwayat diubah', 'info');
         }
-
         document.querySelectorAll('.history-item.drag-over').forEach(el => el.classList.remove('drag-over'));
-        draggedItem.classList.remove('dragging');
-        draggedItem = null;
+        draggedItem.classList.remove('dragging'); draggedItem = null;
       });
-
-      // Touch swipe to delete
       historyList.addEventListener('touchstart', (e) => {
         const item = e.target.closest('.history-item');
         if (!item) return;
-        touchStartX = e.touches[0].clientX;
-        swipedItem = item;
+        touchStartX = e.touches[0].clientX; swipedItem = item;
       });
-
       historyList.addEventListener('touchmove', (e) => {
         if (!swipedItem) return;
         touchCurrentX = e.touches[0].clientX;
         const diff = touchStartX - touchCurrentX;
-
-        if (diff > 30 && diff < 120) {
-          swipedItem.style.transform = `translateX(-${diff}px)`;
-        }
+        if (diff > 30 && diff < 120) swipedItem.style.transform = `translateX(-${diff}px)`;
       });
-
       historyList.addEventListener('touchend', async (e) => {
         if (!swipedItem) return;
         const diff = touchStartX - touchCurrentX;
-
         if (diff > 80) {
           swipedItem.classList.add('swiped');
           const id = swipedItem.dataset.historyId;
-          
           const confirmed = await showConfirm('Hapus item riwayat ini?', 'Konfirmasi Hapus', '🗑️');
-          if (confirmed) {
-            deleteHistoryItem(id);
-            showToast('Item dihapus', 'success');
-          } else {
-            swipedItem.classList.remove('swiped');
-            swipedItem.style.transform = '';
-          }
-        } else {
-          swipedItem.style.transform = '';
-        }
-
-        touchStartX = 0;
-        touchCurrentX = 0;
-        swipedItem = null;
+          if (confirmed) { deleteHistoryItem(id); showToast('Item dihapus', 'success'); }
+          else { swipedItem.classList.remove('swiped'); swipedItem.style.transform = ''; }
+        } else { swipedItem.style.transform = ''; }
+        touchStartX = 0; touchCurrentX = 0; swipedItem = null;
       });
-
-      // Double click to pin
       historyList.addEventListener('dblclick', (e) => {
         const item = e.target.closest('.history-item');
         if (!item) return;
         item.classList.toggle('pinned');
         const isPinned = item.classList.contains('pinned');
-        
         const id = item.dataset.historyId;
         const historyItem = calculationHistory.find(h => h.id === id);
-        if (historyItem) {
-          historyItem.pinned = isPinned;
-          saveHistory();
-        }
-        
+        if (historyItem) { historyItem.pinned = isPinned; saveHistory(); }
         showToast(isPinned ? '📌 Item disematkan' : '📍 Sematan dilepas', 'info');
         renderHistoryPanel();
       });
@@ -2132,26 +1865,12 @@
     function initFAB() {
       const fabCalculate = document.getElementById('fabCalculate');
       const fabScrollTop = document.getElementById('fabScrollTop');
-
       window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-          fabScrollTop.style.display = 'flex';
-          fabScrollTop.style.opacity = '1';
-        } else {
-          fabScrollTop.style.opacity = '0';
-          setTimeout(() => {
-            if (window.scrollY <= 300) fabScrollTop.style.display = 'none';
-          }, 300);
-        }
+        if (window.scrollY > 300) { fabScrollTop.style.display = 'flex'; fabScrollTop.style.opacity = '1'; }
+        else { fabScrollTop.style.opacity = '0'; setTimeout(() => { if (window.scrollY <= 300) fabScrollTop.style.display = 'none'; }, 300); }
       });
-
-      fabCalculate.addEventListener('click', () => {
-        document.getElementById('doseForm').dispatchEvent(new Event('submit'));
-      });
-
-      fabScrollTop.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
+      fabCalculate.addEventListener('click', () => { document.getElementById('doseForm').dispatchEvent(new Event('submit')); });
+      fabScrollTop.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
     }
 
     // ===== THEME MANAGER =====
@@ -2159,13 +1878,8 @@
     function getSavedTheme() { try { return localStorage.getItem(THEME_KEY) || 'light'; } catch (e) { return 'light'; } }
     function applyTheme(theme) {
       const statusEl = document.getElementById('themeStatus');
-      if (theme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        if (statusEl) statusEl.textContent = 'ON';
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-        if (statusEl) statusEl.textContent = 'OFF';
-      }
+      if (theme === 'dark') { document.documentElement.setAttribute('data-theme', 'dark'); if (statusEl) statusEl.textContent = 'ON'; }
+      else { document.documentElement.removeAttribute('data-theme'); if (statusEl) statusEl.textContent = 'OFF'; }
       try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
     }
     function toggleTheme() {
@@ -2213,22 +1927,17 @@
 
     let lastResult = null;
     let calculationHistory = [];
-    let selectedSyringeSize = '';
 
     applyTheme(getSavedTheme());
     themeToggleBtn.addEventListener('click', toggleTheme);
 
-    function loadHistory() {
-      try { const s = localStorage.getItem(STORAGE_KEY); if (s) calculationHistory = JSON.parse(s); } catch (e) { calculationHistory = []; }
-    }
+    function loadHistory() { try { const s = localStorage.getItem(STORAGE_KEY); if (s) calculationHistory = JSON.parse(s); } catch (e) { calculationHistory = []; } }
     function saveHistory() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(calculationHistory)); } catch (e) {} }
 
     function getDrugColor(drugId) { const d = drugNames.find(d => d.id === drugId); return d ? d.color : '#6b7280'; }
     function getDrugLabel(drugId) { const d = drugNames.find(d => d.id === drugId); return d ? d.label : drugId; }
 
-    function populateDrugNames() {
-      drugNames.forEach(o => { const el = document.createElement('option'); el.value = o.id; el.textContent = o.label; drugSelect.appendChild(el); });
-    }
+    function populateDrugNames() { drugNames.forEach(o => { const el = document.createElement('option'); el.value = o.id; el.textContent = o.label; drugSelect.appendChild(el); }); }
     function getDrugMeta(drugId) { return drugNames.find(d => d.id === drugId) || drugNames[0]; }
 
     function renderDrugQuickSelect() {
@@ -2267,12 +1976,10 @@
 
     function updateDoseHint() {
       const sel = getSelectedDrug();
-      doseUnitHint.textContent = sel ? `Satuan target dosis: ${sel.doseUnit}` : drugSelect.value ? 'Pilih opsi pengoplosan untuk melihat satuan dosis.' : 'Pilih obat untuk melihat satuan dosis.';
+      doseUnitHint.textContent = sel ? `Satuan: ${sel.doseUnit}` : drugSelect.value ? 'Pilih pengoplosan' : 'Pilih obat';
     }
 
-    function calculateRate(dose, weight, conc, usesHourly) {
-      return (usesHourly ? dose * weight : dose * weight * 60) / conc;
-    }
+    function calculateRate(dose, weight, conc, usesHourly) { return (usesHourly ? dose * weight : dose * weight * 60) / conc; }
 
     function formatTimestamp(iso) {
       const d = new Date(iso), now = new Date(), diffMin = Math.floor((now - d) / 60000), diffHr = Math.floor((now - d) / 3600000);
@@ -2288,10 +1995,14 @@
       const mr = document.getElementById('medicalRecord').value.trim();
       const w = Number(document.getElementById('weight').value);
       const td = Number(document.getElementById('targetDose').value);
+      const giver = document.getElementById('giverName').value.trim();
+      const checker = document.getElementById('checkerName').value.trim();
       if (!pn) return 'Nama pasien wajib diisi.';
       if (!mr) return 'Nomor RM wajib diisi.';
       if (!Number.isFinite(w) || w <= 0) return 'Berat badan harus lebih dari 0 kg.';
       if (!Number.isFinite(td) || td < 0) return 'Target dosis tidak boleh kosong atau negatif.';
+      if (!giver) return 'Nama Giver (pemberi) wajib diisi.';
+      if (!checker) return 'Nama Checker (pemeriksa) wajib diisi.';
       if (!drugSelect.value) return 'Pilih nama obat terlebih dahulu.';
       if (!sel) return 'Pilih opsi pengoplosan yang sesuai dengan obat.';
       return '';
@@ -2311,6 +2022,8 @@
       return {
         patientName: document.getElementById('patientName').value.trim(),
         medicalRecord: document.getElementById('medicalRecord').value.trim(),
+        giverName: document.getElementById('giverName').value.trim(),
+        checkerName: document.getElementById('checkerName').value.trim(),
         weight: w, dose, doseUnit: sel.doseUnit, drug: sel.drug, drugId: sel.drugId,
         fluid, amount: sel.amount, amountUnit: sel.amountUnit, volumeMl: sel.volumeMl,
         usesHourlyDose: Boolean(sel.usesHourlyDose),
@@ -2323,7 +2036,10 @@
     }
 
     function getSignatureData() {
-      return { giver: document.getElementById('giverName')?.value.trim() || '', checker: document.getElementById('checkerName')?.value.trim() || '' };
+      return { 
+        giver: document.getElementById('giverName')?.value.trim() || '', 
+        checker: document.getElementById('checkerName')?.value.trim() || '' 
+      };
     }
 
     function getSafetyAlert(data) {
@@ -2337,6 +2053,7 @@
         id: Date.now().toString(36) + Math.random().toString(36).substr(2,5),
         timestamp: new Date().toISOString(),
         patientName: data.patientName, medicalRecord: data.medicalRecord,
+        giverName: data.giverName, checkerName: data.checkerName,
         drug: data.drug, drugId: data.drugId, dose: data.dose, doseUnit: data.doseUnit,
         weight: data.weight, mixture: data.mixture, fluid: data.fluid,
         rateFormatted: data.rateFormatted, rate: data.rate,
@@ -2352,30 +2069,13 @@
       const historyItem = document.querySelector(`[data-history-id="${id}"]`);
       if (historyItem) {
         historyItem.classList.add('removing');
-        setTimeout(() => {
-          calculationHistory = calculationHistory.filter(i => i.id !== id);
-          saveHistory();
-          renderHistoryPanel();
-        }, 300);
-      } else {
-        calculationHistory = calculationHistory.filter(i => i.id !== id);
-        saveHistory();
-        renderHistoryPanel();
-      }
+        setTimeout(() => { calculationHistory = calculationHistory.filter(i => i.id !== id); saveHistory(); renderHistoryPanel(); }, 300);
+      } else { calculationHistory = calculationHistory.filter(i => i.id !== id); saveHistory(); renderHistoryPanel(); }
     }
 
     async function clearAllHistory() {
-      const confirmed = await showConfirm(
-        'Semua riwayat perhitungan akan dihapus permanen.',
-        'Hapus Semua Riwayat?',
-        '🗑️'
-      );
-      if (confirmed) {
-        calculationHistory = [];
-        saveHistory();
-        renderHistoryPanel();
-        showToast('Semua riwayat berhasil dihapus', 'success');
-      }
+      const confirmed = await showConfirm('Semua riwayat perhitungan akan dihapus permanen.', 'Hapus Semua Riwayat?', '🗑️');
+      if (confirmed) { calculationHistory = []; saveHistory(); renderHistoryPanel(); showToast('Semua riwayat berhasil dihapus', 'success'); }
     }
 
     function loadHistoryItem(id) {
@@ -2386,6 +2086,8 @@
       document.getElementById('weight').value = item.weight;
       document.getElementById('targetDose').value = item.dose;
       document.getElementById('fluid').value = item.fluid || 'NS';
+      document.getElementById('giverName').value = item.giverName || '';
+      document.getElementById('checkerName').value = item.checkerName || '';
       drugSelect.value = item.drugId; populateMixtureOptions();
       const mo = drugOptions.find(o => o.drugId === item.drugId && o.amount === item.amount && o.volumeMl === item.volumeMl);
       if (mo) mixtureSelect.value = mo.id;
@@ -2395,14 +2097,11 @@
     }
 
     function exportHistory() {
-      if (!calculationHistory.length) { 
-        showToast('Tidak ada riwayat untuk diekspor', 'warning');
-        return; 
-      }
+      if (!calculationHistory.length) { showToast('Tidak ada riwayat untuk diekspor', 'warning'); return; }
       let t = 'RIWAYAT PERHITUNGAN ACDC - SANS\n' + '='.repeat(50) + '\n\n';
       calculationHistory.forEach((item, i) => {
         t += `#${i+1} - ${formatTimestamp(item.timestamp)}\n`;
-        t += `  Pasien: ${item.patientName||'-'} (RM: ${item.medicalRecord||'-'})\n  BB: ${formatNumber(item.weight,1)} kg\n  Obat: ${item.drug}\n  Campuran: ${item.mixture}\n  Target: ${item.dose} ${item.doseUnit}\n  Rate: ${item.rateFormatted} mL/jam\n${'-'.repeat(40)}\n`;
+        t += `  Pasien: ${item.patientName||'-'} (RM: ${item.medicalRecord||'-'})\n  BB: ${formatNumber(item.weight,1)} kg\n  Obat: ${item.drug}\n  Campuran: ${item.mixture}\n  Target: ${item.dose} ${item.doseUnit}\n  Rate: ${item.rateFormatted} mL/jam\n  Giver: ${item.giverName||'-'} | Checker: ${item.checkerName||'-'}\n${'-'.repeat(40)}\n`;
       });
       const blob = new Blob([t], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
@@ -2412,32 +2111,17 @@
 
     function renderHistoryPanel() {
       if (!calculationHistory.length) { 
-        historyContent.innerHTML = `
-          <div class="history-empty">
-            <svg class="empty-svg" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 16px;width:100px;height:80px;">
-              <rect x="20" y="10" width="80" height="70" rx="6" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2" stroke-dasharray="6 3"/>
-              <rect x="35" y="25" width="50" height="6" rx="3" fill="var(--muted-light)" opacity="0.5"/>
-              <rect x="35" y="40" width="35" height="6" rx="3" fill="var(--muted-light)" opacity="0.4"/>
-              <rect x="35" y="55" width="45" height="6" rx="3" fill="var(--muted-light)" opacity="0.3"/>
-            </svg>
-            Belum ada riwayat perhitungan
-          </div>`; 
+        historyContent.innerHTML = `<div class="history-empty"><svg class="empty-svg" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 16px;width:100px;height:80px;"><rect x="20" y="10" width="80" height="70" rx="6" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2" stroke-dasharray="6 3"/><rect x="35" y="25" width="50" height="6" rx="3" fill="var(--muted-light)" opacity="0.5"/><rect x="35" y="40" width="35" height="6" rx="3" fill="var(--muted-light)" opacity="0.4"/><rect x="35" y="55" width="45" height="6" rx="3" fill="var(--muted-light)" opacity="0.3"/></svg>Belum ada riwayat perhitungan</div>`; 
         return; 
       }
-      
       const sortedHistory = [...calculationHistory].sort((a, b) => {
         if (a.pinned && !b.pinned) return -1;
         if (!a.pinned && b.pinned) return 1;
         return new Date(b.timestamp) - new Date(a.timestamp);
       });
-      
       const items = sortedHistory.map(item => `
         <div class="history-item${item.pinned ? ' pinned' : ''}" data-history-id="${item.id}" draggable="true">
-          <div class="drag-handle">
-            <span class="drag-handle-dot"></span>
-            <span class="drag-handle-dot"></span>
-            <span class="drag-handle-dot"></span>
-          </div>
+          <div class="drag-handle"><span class="drag-handle-dot"></span><span class="drag-handle-dot"></span><span class="drag-handle-dot"></span></div>
           <div class="history-item-swipe-bg">🗑️ Hapus</div>
           <div class="history-item-main">
             <div class="history-item-top">
@@ -2446,7 +2130,7 @@
               <span class="history-drug-badge" style="background:${getDrugColor(item.drugId)}">${getDrugLabel(item.drugId)}</span>
             </div>
             <div class="history-patient">${escapeHtml(item.patientName)||'Tanpa nama'} · RM: ${escapeHtml(item.medicalRecord)||'-'}</div>
-            <div class="history-detail">BB ${formatNumber(item.weight,1)} kg · Target ${item.dose} ${item.doseUnit} · ${item.mixture}</div>
+            <div class="history-detail">BB ${formatNumber(item.weight,1)} kg · Target ${item.dose} ${item.doseUnit} · G: ${escapeHtml(item.giverName)||'-'} / C: ${escapeHtml(item.checkerName)||'-'}</div>
             <div class="history-time">🕐 ${formatTimestamp(item.timestamp)}</div>
           </div>
           <div class="history-item-actions">
@@ -2454,33 +2138,25 @@
             <button class="btn btn-sm btn-danger" data-action="delete" data-id="${item.id}" title="Hapus">✕</button>
           </div>
         </div>`).join('');
-        
       historyContent.innerHTML = `
         <div class="history-header">
           <div class="history-title-section"><span class="history-title-text">📜 Daftar Riwayat</span><span class="history-count">${calculationHistory.length} data</span></div>
           <div class="history-actions"><button class="btn btn-sm btn-secondary" id="exportHistoryBtn">📥 Ekspor</button><button class="btn btn-sm btn-danger" id="clearHistoryBtn">🗑 Hapus Semua</button></div>
         </div>
         <div class="history-list">${items}</div>
-        <p style="font-size:0.65rem;color:var(--muted-light);margin-top:8px;text-align:center;">💡 Tips: Geser ke kiri untuk hapus · Double-click untuk pin · Drag untuk ubah urutan</p>
-      `;
-      
+        <p style="font-size:0.65rem;color:var(--muted-light);margin-top:8px;text-align:center;">💡 Geser ke kiri untuk hapus · Double-click untuk pin · Drag untuk ubah urutan</p>`;
       historyContent.querySelectorAll('[data-action="load"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); loadHistoryItem(b.dataset.id); }));
       historyContent.querySelectorAll('[data-action="delete"]').forEach(b => b.addEventListener('click', async e => { 
         e.stopPropagation();
         const confirmed = await showConfirm('Item riwayat ini akan dihapus.', 'Hapus Item?', '🗑️');
-        if (confirmed) {
-          deleteHistoryItem(b.dataset.id);
-          showToast('Item berhasil dihapus', 'success');
-        }
+        if (confirmed) { deleteHistoryItem(b.dataset.id); showToast('Item berhasil dihapus', 'success'); }
       }));
       historyContent.querySelectorAll('.history-item').forEach(item => item.addEventListener('click', (e) => {
         if (e.target.closest('button')) return;
         loadHistoryItem(item.dataset.historyId);
       }));
-      
       document.getElementById('exportHistoryBtn')?.addEventListener('click', exportHistory);
       document.getElementById('clearHistoryBtn')?.addEventListener('click', clearAllHistory);
-      
       setTimeout(initDragDrop, 100);
     }
 
@@ -2490,23 +2166,14 @@
       const now = new Date();
       const dateStr = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
       const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-      
       const dimensions = {
         '10 cc': { width: '50mm', height: '30mm', fontSize: '10px', rateSize: '18px', titleSize: '12px' },
         '20 cc': { width: '60mm', height: '35mm', fontSize: '11px', rateSize: '20px', titleSize: '13px' },
         '50 cc': { width: '70mm', height: '40mm', fontSize: '12px', rateSize: '22px', titleSize: '14px' }
       };
       const dim = dimensions[syringeSize] || dimensions['20 cc'];
-
       const labelHTML = `
-        <div style="
-          width: ${dim.width}; height: ${dim.height};
-          border: 2px solid #000; padding: 8px;
-          font-family: Arial, sans-serif; font-size: ${dim.fontSize};
-          display: flex; flex-direction: column; justify-content: center;
-          background: white; color: #000;
-          page-break-inside: avoid; margin-bottom: 4mm;
-        ">
+        <div style="width: ${dim.width}; height: ${dim.height}; border: 2px solid #000; padding: 8px; font-family: Arial, sans-serif; font-size: ${dim.fontSize}; display: flex; flex-direction: column; justify-content: center; background: white; color: #000; page-break-inside: avoid; margin-bottom: 4mm;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
             <strong style="font-size: ${dim.titleSize}; text-transform: uppercase;">${data.drug}</strong>
             <span style="font-size: 8px; color: #555;">${syringeSize}</span>
@@ -2524,25 +2191,14 @@
           </div>
           <div style="font-size: 7px; color: #888; text-align: center; margin-top: 2px;">${data.mixture}</div>
         </div>`;
-
       const printWindow = window.open('', '_blank', `width=400,height=300`);
-      printWindow.document.write(`
-        <!DOCTYPE html>
-        <html><head><title>Label Spuit ${syringeSize}</title>
-        <style>
-          @page { size: ${dim.width} ${dim.height}; margin: 0; }
-          body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-          @media print { body { margin: 0; } }
-        </style></head>
-        <body>${labelHTML}</body></html>
-      `);
-      printWindow.document.close();
-      printWindow.focus();
+      printWindow.document.write(`<!DOCTYPE html><html><head><title>Label Spuit ${syringeSize}</title><style>@page { size: ${dim.width} ${dim.height}; margin: 0; } body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; } @media print { body { margin: 0; } }</style></head><body>${labelHTML}</body></html>`);
+      printWindow.document.close(); printWindow.focus();
       setTimeout(() => { printWindow.print(); printWindow.close(); }, 300);
       showToast(`Label spuit ${syringeSize} siap dicetak`, 'info');
     }
 
-    function renderResult(data, signatures = getSignatureData()) {
+    function renderResult(data) {
       const safetyAlert = getSafetyAlert(data);
       resultContent.innerHTML = `
         <div class="result-content">
@@ -2557,6 +2213,8 @@
                 <li><span class="info-label">Nomor RM</span><span class="info-value">${escapeHtml(data.medicalRecord) || '-'}</span></li>
                 <li><span class="info-label">Berat Badan</span><span class="info-value">${formatNumber(data.weight, 1)} kg</span></li>
                 <li><span class="info-label">Obat</span><span class="info-value">${data.drug}</span></li>
+                <li><span class="info-label">Giver</span><span class="info-value">${escapeHtml(data.giverName) || '-'}</span></li>
+                <li><span class="info-label">Checker</span><span class="info-value">${escapeHtml(data.checkerName) || '-'}</span></li>
               </ul>
             </div>
             <div class="result-right">
@@ -2574,55 +2232,21 @@
               ${safetyAlert ? `<div class="safety-warning">⚠️ ${safetyAlert}</div>` : ''}
             </div>
           </div>
-          
-          <div id="chartArea"></div>
-          
-          <div class="signature-section" style="margin-top: 16px;">
-            <div class="form-group">
-              <label class="form-label" for="giverName">Giver (Pemberi)</label>
-              <input type="text" id="giverName" class="form-input" placeholder="Nama pemberi obat" value="${escapeHtml(signatures.giver)}">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="checkerName">Checker (Pemeriksa)</label>
-              <input type="text" id="checkerName" class="form-input" placeholder="Nama pemeriksa" value="${escapeHtml(signatures.checker)}">
-            </div>
-          </div>
-
           <div class="syringe-size-section">
             <div class="syringe-size-title">🖨️ Cetak Label Spuit — Pilih Ukuran</div>
             <div class="syringe-size-selector">
-              <button type="button" class="syringe-btn" data-syringe="10 cc">
-                <span class="syringe-icon">💉</span>
-                <span>10 cc</span>
-                <span class="syringe-label">50 × 30 mm</span>
-              </button>
-              <button type="button" class="syringe-btn" data-syringe="20 cc">
-                <span class="syringe-icon">💉</span>
-                <span>20 cc</span>
-                <span class="syringe-label">60 × 35 mm</span>
-              </button>
-              <button type="button" class="syringe-btn" data-syringe="50 cc">
-                <span class="syringe-icon">💉</span>
-                <span>50 cc</span>
-                <span class="syringe-label">70 × 40 mm</span>
-              </button>
+              <button type="button" class="syringe-btn" data-syringe="10 cc"><span class="syringe-icon">💉</span><span>10 cc</span><span class="syringe-label">50 × 30 mm</span></button>
+              <button type="button" class="syringe-btn" data-syringe="20 cc"><span class="syringe-icon">💉</span><span>20 cc</span><span class="syringe-label">60 × 35 mm</span></button>
+              <button type="button" class="syringe-btn" data-syringe="50 cc"><span class="syringe-icon">💉</span><span>50 cc</span><span class="syringe-label">70 × 40 mm</span></button>
             </div>
           </div>
-
           <div class="action-buttons" style="margin-top: 14px;">
             <button type="button" class="btn btn-secondary" id="kitirButton">📋 Cetak Label Titrasi</button>
             <button type="button" class="btn btn-secondary" id="copyButton">📋 Salin Ringkasan</button>
           </div>
           <div class="copy-status" id="copyStatus" aria-live="polite"></div>
           <p class="note-warning">⚠️ Wajib verifikasi ulang secara independen sebelum obat dijalankan.</p>
-        </div>
-      `;
-
-      const chartArea = document.getElementById('chartArea');
-      if (chartArea && data) {
-        const chart = renderDoseChart(data);
-        chartArea.appendChild(chart);
-      }
+        </div>`;
     }
 
     function buildKitirRows(data) {
@@ -2642,83 +2266,59 @@
             <div style="border:2px solid #000;background:#f3f4f6;padding:10px;text-align:center;font-weight:bold;font-size:14px;">DOUBLE<br>CHECK</div>
           </div>
           <div style="border:1px solid #000;padding:10px;text-align:center;margin-bottom:20px;font-weight:bold;">Pengoplosan: ${data.mixture}</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
-            <div style="border:1px solid #000;padding:10px;"><div style="font-size:11px;font-weight:bold;">Nama Pasien</div><div style="font-size:16px;font-weight:bold;">${escapeHtml(data.patientName)||'-'}</div></div>
-            <div style="border:1px solid #000;padding:10px;"><div style="font-size:11px;font-weight:bold;">Nomor RM</div><div style="font-size:16px;font-weight:bold;">${escapeHtml(data.medicalRecord)||'-'}</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:20px;">
+            <div style="border:1px solid #000;padding:8px;"><div style="font-size:10px;font-weight:bold;">Pasien</div><div style="font-size:14px;font-weight:bold;">${escapeHtml(data.patientName)||'-'}</div></div>
+            <div style="border:1px solid #000;padding:8px;"><div style="font-size:10px;font-weight:bold;">RM</div><div style="font-size:14px;font-weight:bold;">${escapeHtml(data.medicalRecord)||'-'}</div></div>
+            <div style="border:1px solid #000;padding:8px;"><div style="font-size:10px;font-weight:bold;">Giver</div><div style="font-size:14px;font-weight:bold;">${escapeHtml(data.giverName)||'-'}</div></div>
+            <div style="border:1px solid #000;padding:8px;"><div style="font-size:10px;font-weight:bold;">Checker</div><div style="font-size:14px;font-weight:bold;">${escapeHtml(data.checkerName)||'-'}</div></div>
           </div>
-          <div style="border:1px solid #000;padding:10px;text-align:center;margin-bottom:20px;width:60%;margin:0 auto 20px;">
+          <div style="border:1px solid #000;padding:10px;text-align:center;margin-bottom:20px;width:40%;margin:0 auto 20px;">
             <div style="font-size:11px;font-weight:bold;">Berat Badan</div><div style="font-size:18px;font-weight:bold;">${formatNumber(data.weight,1)} kg</div>
           </div>
           <table style="width:100%;border-collapse:collapse;margin-bottom:20px;font-size:13px;">
             <thead><tr style="background:#f0f0f0;"><th style="border:1px solid #000;padding:8px;">No</th><th style="border:1px solid #000;padding:8px;">Target Dosis</th><th style="border:1px solid #000;padding:8px;">Rate Syringe Pump</th></tr></thead>
             <tbody>${buildKitirRows(data)}</tbody>
           </table>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-            <div style="border:1px solid #000;padding:10px;"><div style="font-size:11px;font-weight:bold;">Checker</div><div style="font-size:16px;font-weight:bold;">${escapeHtml(sig.checker)||'-'}</div></div>
-            <div style="border:1px solid #000;padding:10px;"><div style="font-size:11px;font-weight:bold;">Giver</div><div style="font-size:16px;font-weight:bold;">${escapeHtml(sig.giver)||'-'}</div></div>
-          </div>
         </div>`;
     }
 
     function updateCalculation(shouldRemember = true) {
-      const signatures = getSignatureData();
       const data = collectData();
-      
       if (!data) {
         const msg = getValidationMessage();
-        
         document.querySelectorAll('.form-input.error, .form-select.error').forEach(el => el.classList.remove('error'));
-        
         if (!document.getElementById('patientName').value.trim()) document.getElementById('patientName').classList.add('error');
         if (!document.getElementById('medicalRecord').value.trim()) document.getElementById('medicalRecord').classList.add('error');
         if (!Number.isFinite(Number(document.getElementById('weight').value)) || Number(document.getElementById('weight').value) <= 0) document.getElementById('weight').classList.add('error');
-        
-        resultContent.innerHTML = `
-          <div class="result-empty">
-            <svg class="empty-svg" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="60" cy="40" r="20" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="2"/>
-              <text x="60" y="45" text-anchor="middle" font-size="18" fill="var(--danger)">!</text>
-              <rect x="30" y="72" width="60" height="6" rx="3" fill="var(--muted-light)" opacity="0.5"/>
-            </svg>
-            <div style="color: var(--danger); font-weight: 600;">${msg || 'Mohon lengkapi data dengan benar.'}</div>
-          </div>
-        `;
-        
+        if (!document.getElementById('giverName').value.trim()) document.getElementById('giverName').classList.add('error');
+        if (!document.getElementById('checkerName').value.trim()) document.getElementById('checkerName').classList.add('error');
+        resultContent.innerHTML = `<div class="result-empty"><svg class="empty-svg" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="40" r="20" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="2"/><text x="60" y="45" text-anchor="middle" font-size="18" fill="var(--danger)">!</text><rect x="30" y="72" width="60" height="6" rx="3" fill="var(--muted-light)" opacity="0.5"/></svg><div style="color: var(--danger); font-weight: 600;">${msg || 'Mohon lengkapi data dengan benar.'}</div></div>`;
         if (msg) showToast(msg, 'error');
         updateStepIndicator(1);
         return null;
       }
-      
       document.querySelectorAll('.form-input.error, .form-select.error').forEach(el => el.classList.remove('error'));
       showSkeletonLoading(resultContent);
-      
       setTimeout(() => {
         lastResult = data;
         if (shouldRemember) rememberCalculation(data);
-        renderResult(data, signatures);
+        renderResult(data);
         renderKitir(data);
         document.getElementById('resultPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
         updateStepIndicator(3);
         clearDraft();
       }, 600);
-      
       return data;
     }
 
     async function copyResultSummary(data) {
-      const text = `Pasien: ${data.patientName||'-'}\nRM: ${data.medicalRecord||'-'}\nBB: ${formatNumber(data.weight,1)} kg\nObat: ${data.drug}\nPengoplosan: ${data.mixture}\nKonsentrasi: ${data.concentrationFormatted} mcg/mL\nTarget: ${data.dose} ${data.doseUnit}\nRate: ${data.rateFormatted} mL/jam`;
+      const text = `Pasien: ${data.patientName||'-'}\nRM: ${data.medicalRecord||'-'}\nBB: ${formatNumber(data.weight,1)} kg\nGiver: ${data.giverName||'-'}\nChecker: ${data.checkerName||'-'}\nObat: ${data.drug}\nPengoplosan: ${data.mixture}\nKonsentrasi: ${data.concentrationFormatted} mcg/mL\nTarget: ${data.dose} ${data.doseUnit}\nRate: ${data.rateFormatted} mL/jam`;
       try {
-        if (navigator.clipboard?.writeText) { 
-          await navigator.clipboard.writeText(text);
-          showToast('📋 Ringkasan berhasil disalin ke clipboard!', 'success');
-          return;
-        }
+        if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); showToast('📋 Ringkasan berhasil disalin!', 'success'); return; }
         const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
         document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
         showToast('📋 Ringkasan berhasil disalin!', 'success');
-      } catch (e) {
-        showToast('❌ Gagal menyalin ringkasan', 'error');
-      }
+      } catch (e) { showToast('❌ Gagal menyalin', 'error'); }
     }
 
     function printKitir() {
@@ -2736,43 +2336,24 @@
     form.addEventListener('submit', e => { e.preventDefault(); updateCalculation(); });
 
     resetButton.addEventListener('click', async () => {
-      if (lastResult) {
-        const confirmed = await showConfirm('Data yang sudah dihitung akan direset.', 'Reset Form?', '🔄');
-        if (!confirmed) return;
-      }
+      if (lastResult) { const confirmed = await showConfirm('Data akan direset.', 'Reset?', '🔄'); if (!confirmed) return; }
       form.reset(); drugSelect.value = ''; mixtureSelect.value = ''; mixtureSelect.disabled = true;
-      lastResult = null; selectedSyringeSize = '';
+      lastResult = null;
       populateMixtureOptions(); updateDoseHint(); renderQuickSelects();
       document.getElementById('kitirSheet').innerHTML = '';
       document.getElementById('mixtureQuickSelectSection').style.display = 'none';
-      resultContent.innerHTML = `
-        <div class="result-empty">
-          <svg class="empty-svg" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="10" y="15" width="100" height="75" rx="8" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2"/>
-            <rect x="25" y="30" width="70" height="8" rx="4" fill="var(--muted-light)"/>
-            <rect x="35" y="48" width="50" height="8" rx="4" fill="var(--muted-light)" opacity="0.6"/>
-            <circle cx="60" cy="72" r="12" fill="var(--primary)" opacity="0.3"/>
-            <text x="60" y="76" text-anchor="middle" font-size="12" fill="var(--primary)">?</text>
-          </svg>
-          Masukkan data pasien, pilih obat, lalu tekan Hitung Rate
-        </div>`;
+      resultContent.innerHTML = `<div class="result-empty"><svg class="empty-svg" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="15" width="100" height="75" rx="8" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2"/><rect x="25" y="30" width="70" height="8" rx="4" fill="var(--muted-light)"/><rect x="35" y="48" width="50" height="8" rx="4" fill="var(--muted-light)" opacity="0.6"/><circle cx="60" cy="72" r="12" fill="var(--primary)" opacity="0.3"/><text x="60" y="76" text-anchor="middle" font-size="12" fill="var(--primary)">?</text></svg>Masukkan data pasien, pilih obat, lalu tekan Hitung Rate</div>`;
       document.querySelectorAll('.form-input.error, .form-select.error').forEach(el => el.classList.remove('error'));
-      updateStepIndicator(1);
-      clearDraft();
+      updateStepIndicator(1); clearDraft();
       showToast('Form berhasil direset', 'info');
     });
 
     resultContent.addEventListener('click', event => {
       if (!event.target) return;
       const syringeBtn = event.target.closest('[data-syringe]');
-      if (syringeBtn && lastResult) {
-        printSyringeLabel(lastResult, syringeBtn.dataset.syringe);
-        return;
-      }
+      if (syringeBtn && lastResult) { printSyringeLabel(lastResult, syringeBtn.dataset.syringe); return; }
       if (event.target.id === 'kitirButton' || event.target.closest('#kitirButton')) printKitir();
-      if (event.target.id === 'copyButton' || event.target.closest('#copyButton')) {
-        if (lastResult) copyResultSummary(lastResult);
-      }
+      if (event.target.id === 'copyButton' || event.target.closest('#copyButton')) { if (lastResult) copyResultSummary(lastResult); }
     });
 
     drugQuickSelect.addEventListener('click', event => {
@@ -2780,8 +2361,7 @@
       if (!btn) return;
       drugSelect.value = btn.dataset.drugId;
       populateMixtureOptions(); updateDoseHint(); renderQuickSelects();
-      autoDetectStep();
-      saveDraft();
+      autoDetectStep(); saveDraft();
       if (lastResult) updateCalculation(false);
     });
 
@@ -2790,8 +2370,7 @@
       if (!btn) return;
       mixtureSelect.value = btn.dataset.mixtureId;
       updateDoseHint(); renderQuickSelects();
-      autoDetectStep();
-      saveDraft();
+      autoDetectStep(); saveDraft();
       if (lastResult) updateCalculation(false);
     });
 
@@ -2800,18 +2379,8 @@
       autoDetectStep();
       if (lastResult) updateCalculation(false); 
     });
-    
-    drugSelect.addEventListener('change', () => { 
-      populateMixtureOptions(); updateDoseHint(); renderQuickSelects(); 
-      autoDetectStep(); saveDraft();
-      if (lastResult) updateCalculation(false); 
-    });
-    
-    mixtureSelect.addEventListener('change', () => { 
-      updateDoseHint(); renderQuickSelects(); 
-      autoDetectStep(); saveDraft();
-      if (lastResult) updateCalculation(false); 
-    });
+    drugSelect.addEventListener('change', () => { populateMixtureOptions(); updateDoseHint(); renderQuickSelects(); autoDetectStep(); saveDraft(); if (lastResult) updateCalculation(false); });
+    mixtureSelect.addEventListener('change', () => { updateDoseHint(); renderQuickSelects(); autoDetectStep(); saveDraft(); if (lastResult) updateCalculation(false); });
 
     // ===== INIT =====
     populateDrugNames();
@@ -2824,12 +2393,7 @@
     autoDetectStep();
 
     const draftLoaded = loadDraft();
-    if (draftLoaded) {
-      showToast('📝 Draft form sebelumnya dimuat', 'info');
-      autoDetectStep();
-      updateDoseHint();
-      renderQuickSelects();
-    }
+    if (draftLoaded) { showToast('📝 Draft form sebelumnya dimuat', 'info'); autoDetectStep(); updateDoseHint(); renderQuickSelects(); }
   </script>
 </body>
 </html>
