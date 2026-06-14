@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kalkulator Dosis Obat ICU</title>
+  <style>
+    /* ===== TEMA TERANG (DEFAULT) ===== */
+    :root {
+      --bg: #eef3f7; --bg-gradient-1: #dfeaf2; --bg-gradient-2: #eef3f7; --bg-gradient-3: #f7f9fc;
+      --panel: #ffffff; --panel-hover: #f9fafb; --ink: #152033; --ink-secondary: #374151;
+      --muted: #627085; --muted-light: #9ca3af; --line: #d8e0ea; --line-light: #e5e7eb;
+      --line-soft: #f3f4f6; --primary: #087568; --primary-dark: #07584f; --primary-soft: #e7f4f2;
+      --primary-light: #ecfdf5; --primary-glow: rgba(8, 117, 104, 0.1); --accent: #2563eb;
+      --soft: #f3f8f7; --danger: #b91c1c; --danger-soft: #fef2f2; --danger-border: #fecaca;
+      --warn: #8a4b00; --warn-bg: #fffbeb; --warn-border: #fde68a; --warn-left: #f59e0b;
+      --active-yellow: #fbbf24; --active-yellow-bg: #fffbeb; --active-yellow-border: #fcd34d;
+      --badge-high-bg: #fee2e2; --badge-high-text: #991b1b; --badge-high-border: #fecaca;
+      --badge-warn-bg: #fef3c7; --badge-warn-text: #92400e; --badge-warn-border: #fde68a;
+      --shadow: 0 18px 45px rgba(28, 41, 61, 0.11); --shadow-soft: 0 8px 24px rgba(28, 41, 61, 0.08);
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05); --input-bg: #f9fafb; --input-border: #e5e7eb;
+      --input-focus: #ffffff; --btn-secondary-bg: #f3f4f6; --btn-secondary-hover: #e5e7eb;
+      --rate-bg-1: #ecfdf5; --rate-bg-2: #f0fdf4; --rate-border: #6ee7b7; --rate-text: #065f46;
+      --rate-value-text: #064e3b; --rate-unit-text: #047857; --calc-bg: #f9fafb;
+      --calc-border: #e5e7eb; --history-item-bg: #f9fafb; --history-item-border: #e5e7eb;
+      --history-item-hover-bg: #f0fdf4; --history-item-hover-border: #6ee7b7;
+      --history-count-bg: #e5e7eb; --history-count-text: #6b7280; --history-empty-border: #e5e7eb;
+      --scrollbar-track: #f3f4f6; --scrollbar-thumb: #d1d5db; --logo-kejaksaan-1: #1a5632;
+      --logo-kejaksaan-2: #0d3b1f; --header-bg: rgba(255, 255, 255, 0.75);
+      --header-border: rgba(255, 255, 255, 0.5); --toggle-bg: #e5e7eb; --toggle-text: #374151;
+      --toggle-knob: #ffffff; --modal-overlay: rgba(0, 0, 0, 0.5); --skeleton-base: #e5e7eb;
+      --skeleton-shine: #f3f4f6; --draft-badge-bg: #dbeafe; --draft-badge-text: #1e40af;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a; --bg-gradient-1: #0f172a; --bg-gradient-2: #1e293b; --bg-gradient-3: #1e293b;
+      --panel: #1e293b; --panel-hover: #263348; --ink: #e2e8f0; --ink-secondary: #cbd5e1;
+      --muted: #94a3b8; --muted-light: #64748b; --line: #334155; --line-light: #334155;
+      --line-soft: #263348; --primary: #14b8a6; --primary-dark: #0d9488; --primary-soft: #0f2f2b;
+      --primary-light: #0f2f2b; --primary-glow: rgba(20, 184, 166, 0.15); --accent: #3b82f6;
+      --soft: #1a2a2a; --danger: #ef4444; --danger-soft: #2d1b1b; --danger-border: #5c1a1a;
+      --warn: #f59e0b; --warn-bg: #2d2410; --warn-border: #5c4a10; --warn-left: #f59e0b;
+      --active-yellow: #fbbf24; --active-yellow-bg: #2d2410; --active-yellow-border: #fcd34d;
+      --badge-high-bg: #2d1b1b; --badge-high-text: #fca5a5; --badge-high-border: #5c1a1a;
+      --badge-warn-bg: #2d2410; --badge-warn-text: #fcd34d; --badge-warn-border: #5c4a10;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.3); --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.25);
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2); --input-bg: #263348; --input-border: #334155;
+      --input-focus: #1e293b; --btn-secondary-bg: #263348; --btn-secondary-hover: #334155;
+      --rate-bg-1: #0f2f2b; --rate-bg-2: #0f2f2b; --rate-border: #0d9488; --rate-text: #5eead4;
+      --rate-value-text: #99f6e4; --rate-unit-text: #5eead4; --calc-bg: #263348;
+      --calc-border: #334155; --history-item-bg: #263348; --history-item-border: #334155;
+      --history-item-hover-bg: #0f2f2b; --history-item-hover-border: #0d9488;
+      --history-count-bg: #334155; --history-count-text: #94a3b8; --history-empty-border: #334155;
+      --scrollbar-track: #263348; --scrollbar-thumb: #475569; --logo-kejaksaan-1: #0d3b1f;
+      --logo-kejaksaan-2: #0a2a15; --header-bg: rgba(30, 41, 59, 0.8);
+      --header-border: rgba(51, 65, 85, 0.6); --toggle-bg: #334155; --toggle-text: #cbd5e1;
+      --toggle-knob: #14b8a6; --modal-overlay: rgba(0, 0, 0, 0.7); --skeleton-base: #334155;
+      --skeleton-shine: #475569; --draft-badge-bg: #1e3a5f; --draft-badge-text: #93c5fd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 20%, #fef3c7 40%, #ffe4e6 60%, #f3e8ff 80%, #e0f2fe 100%);
+      background-size: 400% 400%; animation: gradientShift 20s ease infinite;
+      color: var(--ink); line-height: 1.6; min-height: 100vh; transition: color 0.3s ease, background 0.3s ease; padding-bottom: 80px;
+    }
+    [data-theme="dark"] body {
+      background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 25%, #16213e 50%, #1a1a2e 75%, #0f172a 100%);
+      background-size: 400% 400%; animation: gradientShiftDark 20s ease infinite;
+    }
+    @keyframes gradientShift { 0%{background-position:0% 50%} 25%{background-position:100% 0%} 50%{background-position:100% 100%} 75%{background-position:0% 100%} 100%{background-position:0% 50%} }
+    @keyframes gradientShiftDark { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+    .app-container { max-width: 960px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+    .draft-indicator { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--draft-badge-bg); color: var(--draft-badge-text); border-radius: 20px; font-size: 0.68rem; font-weight: 700; transition: all 0.3s ease; opacity: 0; transform: translateY(-5px); pointer-events: none; white-space: nowrap; }
+    .draft-indicator.visible { opacity: 1; transform: translateY(0); }
+    .draft-indicator .draft-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: draftBlink 1.5s ease infinite; }
+    @keyframes draftBlink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .history-item { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 12px 14px; background: var(--history-item-bg); border: 1px solid var(--history-item-border); border-radius: 10px; cursor: grab; transition: all 0.2s ease; align-items: start; position: relative; overflow: hidden; user-select: none; touch-action: pan-y; }
+    .history-item:active { cursor: grabbing; }
+    .history-item.dragging { opacity: 0.5; transform: scale(0.95); box-shadow: var(--shadow); }
+    .history-item.drag-over { border-color: var(--primary); background: var(--primary-soft); box-shadow: 0 0 0 4px var(--primary-glow); }
+    .history-item-swipe-bg { position: absolute; top: 0; right: 0; height: 100%; width: 80px; background: linear-gradient(90deg, transparent, var(--danger)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.8rem; transform: translateX(100%); transition: transform 0.2s ease; pointer-events: none; border-radius: 0 10px 10px 0; }
+    .history-item.swiped .history-item-swipe-bg { transform: translateX(0); }
+    .history-item-main { transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); z-index: 1; min-width: 0; }
+    .history-item.swiped .history-item-main { transform: translateX(-80px); }
+    .drag-handle { position: absolute; left: 4px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 2px; opacity: 0; transition: opacity 0.2s ease; padding: 4px; cursor: grab; z-index: 2; }
+    .history-item:hover .drag-handle, .history-item.swiped .drag-handle { opacity: 0.5; }
+    .drag-handle:hover { opacity: 1 !important; }
+    .drag-handle-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--muted-light); }
+    .history-item.pinned { border-left: 4px solid var(--primary); padding-left: 10px; }
+    .pin-indicator { font-size: 0.7rem; color: var(--primary); font-weight: 700; }
+    .step-indicator { display: flex; justify-content: center; align-items: center; gap: 0; margin-bottom: 4px; position: relative; padding: 0 20px; }
+    .step-item { display: flex; align-items: center; gap: 0; flex: 1; position: relative; }
+    .step-item:not(:last-child)::after { content: ''; position: absolute; top: 18px; left: calc(50% + 20px); right: calc(-50% + 20px); height: 3px; background: var(--line); z-index: 0; transition: background 0.4s ease; border-radius: 2px; }
+    .step-item.completed:not(:last-child)::after { background: var(--primary); }
+    .step-dot { width: 36px; height: 36px; border-radius: 50%; background: var(--panel); border: 3px solid var(--line); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; transition: all 0.4s ease; z-index: 1; flex-shrink: 0; position: relative; color: var(--muted-light); }
+    .step-item.active .step-dot { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 0 0 6px var(--primary-glow); animation: stepPulse 2s infinite; }
+    @keyframes stepPulse { 0%,100%{box-shadow:0 0 0 6px var(--primary-glow)} 50%{box-shadow:0 0 0 12px rgba(8,117,104,0.05)} }
+    .step-item.completed .step-dot { background: var(--primary); border-color: var(--primary); color: white; }
+    .step-content { margin-left: 12px; z-index: 1; }
+    .step-title { font-size: 0.75rem; font-weight: 700; color: var(--muted); transition: color 0.3s ease; white-space: nowrap; }
+    .step-item.active .step-title, .step-item.completed .step-title { color: var(--primary); }
+    .step-desc { font-size: 0.65rem; color: var(--muted-light); transition: color 0.3s ease; white-space: nowrap; }
+    @keyframes skeletonShimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+    .skeleton { background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%); background-size: 200% 100%; animation: skeletonShimmer 1.5s ease infinite; border-radius: 8px; }
+    .skeleton-result { padding: 24px; }
+    .skeleton-rate { height: 80px; width: 70%; margin: 0 auto 20px; border-radius: 14px; }
+    .skeleton-row { height: 16px; margin-bottom: 12px; border-radius: 6px; }
+    .skeleton-row:last-child { width: 60%; }
+    .app-header { background: var(--header-bg); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid var(--header-border); border-radius: 20px; padding: 24px 28px; padding-right: 180px; display: flex; align-items: center; gap: 20px; box-shadow: 0 8px 32px rgba(28,41,61,0.08), inset 0 1px 0 rgba(255,255,255,0.6); position: relative; transition: all 0.3s ease; overflow: hidden; }
+    .app-header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 45%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.3) 55%, transparent 60%); animation: glassShimmer 6s ease-in-out infinite; pointer-events: none; }
+    @keyframes glassShimmer { 0%,100%{transform:translateX(-100%) rotate(45deg)} 50%{transform:translateX(100%) rotate(45deg)} }
+    [data-theme="dark"] .app-header { box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05); }
+    [data-theme="dark"] .app-header::before { background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.05) 45%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.05) 55%, transparent 60%); }
+    .header-logo-left { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .logo-placeholder { width: 55px; height: 55px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; flex-shrink: 0; transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .logo-kejaksaan { background: linear-gradient(135deg, #0d3b1f 0%, #1a5632 100%); box-shadow: 0 8px 25px rgba(26,86,50,0.35), inset 0 1px 0 rgba(255,255,255,0.2); }
+    .logo-placeholder::after { content:''; position:absolute; top:-30%; left:-30%; width:60%; height:100%; background:linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%); transform:rotate(25deg); }
+    .header-center { text-align: left; flex: 1; min-width: 0; }
+    .header-center h1 { font-size: clamp(1.1rem, 2.2vw, 1.4rem); font-weight: 800; color: var(--ink); margin-bottom: 2px; line-height: 1.2; letter-spacing: -0.3px; transition: color 0.3s ease; }
+    .header-center .subtitle { color: var(--muted); font-size: 0.75rem; line-height: 1.4; transition: color 0.3s ease; }
+    .header-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .badge { padding: 4px 8px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; transition: background 0.3s ease, color 0.3s ease, border 0.3s ease; }
+    .badge-danger { background: var(--badge-high-bg); color: var(--badge-high-text); border: 1px solid var(--badge-high-border); }
+    .badge-warning { background: var(--badge-warn-bg); color: var(--badge-warn-text); border: 1px solid var(--badge-warn-border); }
+    .theme-toggle-wrapper { position: absolute; top: 50%; right: 20px; transform: translateY(-50%); z-index: 10; }
+    .theme-toggle { display: flex; align-items: center; gap: 8px; background: var(--toggle-bg); border: 2px solid var(--line-light); border-radius: 30px; padding: 5px 5px 5px 12px; cursor: pointer; transition: all 0.3s ease; user-select: none; min-width: 120px; }
+    .theme-toggle:hover { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+    .theme-toggle-label { font-size: 0.75rem; font-weight: 700; color: var(--toggle-text); transition: color 0.3s ease; white-space: nowrap; }
+    .theme-toggle-status { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 5px 10px; border-radius: 20px; background: var(--toggle-knob); color: var(--ink); transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.12); min-width: 38px; text-align: center; }
+    .warning-box { background: var(--warn-bg); border: 1px solid var(--warn-border); border-left: 4px solid var(--warn-left); border-radius: 12px; padding: 14px 18px; font-size: 0.85rem; color: var(--warn); box-shadow: 0 4px 6px rgba(245,158,11,0.08); display: flex; align-items: flex-start; gap: 10px; transition: background 0.3s ease, border 0.3s ease, color 0.3s ease; }
+    .warning-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: -1px; }
+    .main-layout { display: flex; flex-direction: column; gap: 24px; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; transition: all 0.3s ease; }
+    .panel:hover { transform: translateY(-2px); box-shadow: 0 22px 50px rgba(28,41,61,0.14); }
+    .panel-header { padding: 18px 24px; border-bottom: 2px solid var(--line-soft); display: flex; align-items: center; gap: 12px; transition: border-color 0.3s ease; }
+    .panel-header-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: background 0.3s ease; }
+    .panel-header h2 { font-size: 1rem; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.3s ease; }
+    .panel-body { padding: 24px; transition: background 0.3s ease; }
+    .panel-body.compact { padding: 20px; }
+    .form-group { margin-bottom: 0; }
+    .form-label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; color: var(--ink-secondary); transition: color 0.3s ease; }
+    .form-label .required { color: var(--danger); margin-left: 2px; }
+    .form-input, .form-select { width: 100%; padding: 12px 16px; border: 2px solid var(--input-border); border-radius: 10px; font-size: 0.95rem; color: var(--ink); background: var(--input-bg); transition: all 0.2s ease; outline: none; }
+    .form-input:hover, .form-select:hover { border-color: var(--muted-light); }
+    .form-input:focus, .form-select:focus { border-color: var(--primary); background: var(--input-focus); box-shadow: 0 0 0 3px var(--primary-glow); }
+    .form-input.error, .form-select.error { border-color: var(--danger) !important; animation: shake 0.5s ease; background: var(--danger-soft) !important; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 10%,30%,50%,70%,90%{transform:translateX(-4px)} 20%,40%,60%,80%{transform:translateX(4px)} }
+    .form-input::placeholder { color: var(--muted-light); }
+    .form-hint { margin-top: 6px; font-size: 0.8rem; color: var(--muted); transition: color 0.3s ease; }
+    .quick-select-section { margin-bottom: 20px; }
+    .quick-select-title { font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; transition: color 0.3s ease; }
+    .quick-select-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .quick-select-btn { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--input-bg); border: 2px solid var(--input-border); border-radius: 12px; cursor: pointer; transition: all 0.25s cubic-bezier(0.16,1,0.3,1); text-align: left; font-size: 0.85rem; color: var(--ink-secondary); user-select: none; }
+    .quick-select-btn:hover { border-color: var(--muted-light); background: var(--panel-hover); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+    .quick-select-btn:active { transform: scale(0.95) !important; }
+    .quick-select-btn.active { border-color: var(--active-yellow-border); background: var(--active-yellow-bg); box-shadow: 0 0 0 4px rgba(251,191,36,0.2); transform: translateY(-1px); }
+    .quick-select-btn .btn-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.7rem; color: white; flex-shrink: 0; }
+    .quick-select-btn .btn-text { flex: 1; min-width: 0; }
+    .quick-select-btn .btn-text strong { display: block; font-size: 0.82rem; color: var(--ink); margin-bottom: 2px; word-wrap: break-word; line-height: 1.2; transition: color 0.3s ease; }
+    .quick-select-btn .btn-text small { display: block; font-size: 0.72rem; color: var(--muted); transition: color 0.3s ease; }
+    .hidden-select { display: none; }
+    .btn { padding: 10px 18px; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; position: relative; overflow: hidden; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn::after { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: rgba(255,255,255,0.3); transform: translate(-50%,-50%); transition: width 0.6s ease, height 0.6s ease; }
+    .btn:active::after { width: 300px; height: 300px; }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 12px rgba(8,117,104,0.3); animation: pulse 2s infinite; }
+    .btn-primary:hover { animation: none; box-shadow: 0 8px 25px rgba(8,117,104,0.5); }
+    @keyframes pulse { 0%,100%{box-shadow:0 4px 12px rgba(8,117,104,0.3)} 50%{box-shadow:0 8px 25px rgba(8,117,104,0.5)} }
+    .btn-secondary { background: var(--btn-secondary-bg); color: var(--ink-secondary); border: 1px solid var(--line-light); }
+    .btn-secondary:hover { background: var(--btn-secondary-hover); }
+    .btn-danger { background: var(--danger-soft); color: var(--danger); border: 1px solid var(--danger-border); }
+    .btn-danger:hover { background: var(--danger-border); }
+    .btn-sm { padding: 5px 10px; font-size: 0.72rem; min-height: 28px; border-radius: 6px; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+    .result-section { width: 100%; }
+    .result-empty { text-align: center; padding: 50px 20px; color: var(--muted-light); font-weight: 600; font-size: 0.95rem; transition: color 0.3s ease; }
+    .result-empty .empty-svg { display: block; margin: 0 auto 16px; width: 120px; height: 100px; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .result-content { transition: all 0.4s cubic-bezier(0.16,1,0.3,1); animation: fadeInScale 0.4s ease; }
+    @keyframes fadeInScale { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .result-left, .result-right { display: flex; flex-direction: column; gap: 16px; }
+    .rate-display { background: linear-gradient(135deg, var(--rate-bg-1), var(--rate-bg-2)); border: 2px solid var(--rate-border); border-radius: 14px; padding: 24px; text-align: center; transition: background 0.3s ease, border 0.3s ease; }
+    .rate-label { font-size: 0.8rem; font-weight: 700; color: var(--rate-text); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; transition: color 0.3s ease; }
+    .rate-value { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; color: var(--rate-value-text); line-height: 1; transition: color 0.3s ease; }
+    .rate-unit { font-size: 0.95rem; color: var(--rate-unit-text); font-weight: 600; transition: color 0.3s ease; }
+    .info-list { list-style: none; padding: 0; margin: 0; }
+    .info-list li { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line-soft); transition: border-color 0.3s ease; }
+    .info-list li:last-child { border-bottom: none; }
+    .info-label { font-size: 0.82rem; color: var(--muted); font-weight: 500; transition: color 0.3s ease; }
+    .info-value { font-size: 0.85rem; font-weight: 600; color: var(--ink); text-align: right; transition: color 0.3s ease; }
+    .calculation-detail { background: var(--calc-bg); border: 1px solid var(--calc-border); border-radius: 10px; padding: 14px; transition: background 0.3s ease, border 0.3s ease; }
+    .calculation-detail p { margin-bottom: 6px; font-size: 0.82rem; color: var(--ink-secondary); transition: color 0.3s ease; }
+    .calculation-detail p:last-child { margin-bottom: 0; }
+    .calculation-detail strong { color: var(--ink); transition: color 0.3s ease; }
+    .safety-warning { background: var(--danger-soft); border: 1px solid var(--danger-border); border-left: 4px solid var(--danger); border-radius: 10px; padding: 12px 16px; color: var(--danger); font-size: 0.82rem; font-weight: 600; display: flex; align-items: flex-start; gap: 8px; transition: background 0.3s ease, border 0.3s ease, color 0.3s ease; }
+    .action-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+    .syringe-size-section { margin-top: 14px; padding: 16px; background: var(--calc-bg); border: 1px solid var(--calc-border); border-radius: 10px; transition: background 0.3s ease, border 0.3s ease; }
+    .syringe-size-title { font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; transition: color 0.3s ease; }
+    .syringe-size-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .syringe-btn { padding: 14px 12px; background: var(--panel); border: 2px solid var(--line-light); border-radius: 12px; cursor: pointer; transition: all 0.2s ease; text-align: center; font-weight: 700; font-size: 0.85rem; color: var(--ink); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .syringe-btn:hover { border-color: var(--primary); background: var(--primary-soft); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .syringe-btn .syringe-icon { font-size: 1.5rem; }
+    .syringe-btn .syringe-label { font-size: 0.7rem; color: var(--muted); font-weight: 500; }
+    .history-panel { margin-top: 24px; }
+    .history-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .history-title-section { display: flex; align-items: center; gap: 10px; }
+    .history-title-text { font-weight: 700; font-size: 0.9rem; color: var(--ink-secondary); transition: color 0.3s ease; }
+    .history-count { background: var(--history-count-bg); color: var(--history-count-text); padding: 2px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; transition: background 0.3s ease, color 0.3s ease; }
+    .history-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .history-list { display: grid; gap: 8px; max-height: 480px; overflow-y: auto; padding-right: 4px; }
+    .history-list::-webkit-scrollbar { width: 6px; }
+    .history-list::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 10px; }
+    .history-list::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 10px; }
+    .history-item:hover { background: var(--history-item-hover-bg); border-color: var(--history-item-hover-border); box-shadow: 0 2px 8px rgba(8,117,104,0.06); transform: translateY(-1px); }
+    .history-item.removing { animation: slideOutRight 0.3s ease forwards; }
+    @keyframes slideOutRight { from{transform:translateX(0);opacity:1} to{transform:translateX(60px);opacity:0} }
+    .history-item-main { display: grid; gap: 4px; }
+    .history-item-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .history-rate { font-weight: 800; color: var(--rate-value-text); font-size: 1rem; transition: color 0.3s ease; }
+    .history-drug-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; color: white; }
+    .history-patient { font-size: 0.8rem; color: var(--ink-secondary); font-weight: 600; transition: color 0.3s ease; }
+    .history-detail { font-size: 0.74rem; color: var(--muted); transition: color 0.3s ease; }
+    .history-time { font-size: 0.7rem; color: var(--muted-light); transition: color 0.3s ease; }
+    .history-item-actions { display: flex; gap: 4px; flex-shrink: 0; }
+    .history-empty { text-align: center; padding: 40px 20px; color: var(--muted-light); font-size: 0.9rem; border: 2px dashed var(--history-empty-border); border-radius: 12px; transition: color 0.3s ease, border-color 0.3s ease; }
+    .copy-status { margin-top: 8px; font-size: 0.82rem; }
+    .note-warning { color: var(--danger); font-size: 0.78rem; margin-top: 12px; font-weight: 600; transition: color 0.3s ease; }
+    .toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
+    .toast { padding: 16px 22px; border-radius: 14px; font-weight: 600; font-size: 0.85rem; color: white; box-shadow: 0 12px 35px rgba(0,0,0,0.25); animation: toastSlideIn 0.35s cubic-bezier(0.16,1,0.3,1), toastFadeOut 0.3s ease 2.8s forwards; max-width: 380px; display: flex; align-items: center; gap: 12px; backdrop-filter: blur(12px); pointer-events: auto; }
+    .toast-success { background: linear-gradient(135deg, #065f46, #047857); border: 1px solid rgba(52,211,153,0.4); }
+    .toast-error { background: linear-gradient(135deg, #991b1b, #b91c1c); border: 1px solid rgba(248,113,113,0.4); }
+    .toast-warning { background: linear-gradient(135deg, #92400e, #b45309); border: 1px solid rgba(251,191,36,0.4); }
+    .toast-info { background: linear-gradient(135deg, #1e40af, #2563eb); border: 1px solid rgba(96,165,250,0.4); }
+    .toast-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .toast-message { flex: 1; min-width: 0; }
+    @keyframes toastSlideIn { from{transform:translateX(120%);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes toastFadeOut { from{transform:translateX(0);opacity:1} to{transform:translateX(40px);opacity:0} }
+    .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--modal-overlay); z-index:10000; display:flex; align-items:center; justify-content:center; animation:modalFadeIn 0.2s ease; backdrop-filter:blur(4px); }
+    @keyframes modalFadeIn { from{opacity:0} to{opacity:1} }
+    .modal-dialog { background:var(--panel); border-radius:20px; padding:28px; max-width:400px; width:90%; box-shadow:0 25px 60px rgba(0,0,0,0.3); animation:modalScaleIn 0.3s cubic-bezier(0.16,1,0.3,1); border:1px solid var(--line); }
+    @keyframes modalScaleIn { from{transform:scale(0.9);opacity:0} to{transform:scale(1);opacity:1} }
+    .modal-icon { font-size:2.5rem; text-align:center; margin-bottom:12px; }
+    .modal-title { font-size:1.1rem; font-weight:700; color:var(--ink); text-align:center; margin-bottom:8px; }
+    .modal-message { font-size:0.85rem; color:var(--muted); text-align:center; margin-bottom:24px; line-height:1.5; }
+    .modal-actions { display:flex; gap:10px; justify-content:center; }
+    .fab-container { position:fixed; bottom:24px; right:24px; z-index:999; display:flex; flex-direction:column; gap:12px; align-items:flex-end; }
+    .fab { width:56px; height:56px; border-radius:50%; border:none; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,0.2); display:flex; align-items:center; justify-content:center; font-size:1.5rem; transition:all 0.3s cubic-bezier(0.16,1,0.3,1); position:relative; overflow:hidden; }
+    .fab-primary { background:linear-gradient(135deg, var(--primary), var(--primary-dark)); color:white; width:60px; height:60px; animation:fabPulse 2s infinite; }
+    @keyframes fabPulse { 0%,100%{box-shadow:0 8px 24px rgba(8,117,104,0.3)} 50%{box-shadow:0 12px 32px rgba(8,117,104,0.5)} }
+    .fab-primary:hover { transform:scale(1.08); animation:none; }
+    .fab-secondary { background:var(--panel); color:var(--ink); border:2px solid var(--line); width:44px; height:44px; font-size:1.2rem; }
+    .fab-secondary:hover { transform:scale(1.08); border-color:var(--primary); }
+    .fab-label { position:absolute; right:70px; background:var(--ink); color:white; padding:6px 14px; border-radius:20px; font-size:0.75rem; font-weight:600; white-space:nowrap; opacity:0; transform:translateX(10px); transition:all 0.2s ease; pointer-events:none; }
+    .fab:hover .fab-label { opacity:1; transform:translateX(0); }
+    @media (max-width:768px) {
+      .app-container { padding:12px; gap:14px; }
+      .app-header { padding:14px 16px; padding-top:50px; flex-direction:column; gap:10px; }
+      .theme-toggle-wrapper { top:10px; right:12px; transform:none; }
+      .logo-placeholder { width:42px; height:42px; font-size:1.5rem; }
+      .result-grid { grid-template-columns:1fr; }
+      .quick-select-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap:8px; }
+      .quick-select-btn { padding:10px; gap:8px; }
+      .quick-select-btn .btn-icon { width:32px; height:32px; font-size:0.65rem; }
+      .panel-body { padding:16px; }
+      .panel-header { padding:14px 16px; }
+      .btn { width:100%; }
+      .btn-group { flex-direction:column; }
+      .action-buttons { flex-direction:column; }
+      .syringe-size-selector { grid-template-columns: 1fr 1fr 1fr; }
+      .history-header { flex-direction:column; align-items:flex-start; }
+      .history-item { grid-template-columns:1fr; cursor:default; }
+      .history-item-actions { justify-content:flex-end; }
+      .theme-toggle { min-width:110px; padding:4px 4px 4px 10px; }
+      .theme-toggle-label { font-size:0.7rem; }
+      .theme-toggle-status { font-size:0.65rem; padding:5px 10px; }
+      .drag-handle { display:none; }
+      .step-indicator { flex-direction:column; gap:12px; padding:0; }
+      .step-item:not(:last-child)::after { display:none; }
+      .step-item { width:100%; }
+    }
+    @media (max-width:480px) {
+      .quick-select-grid { grid-template-columns:1fr 1fr; }
+      .syringe-size-selector { grid-template-columns:1fr; }
+      .toast-container { top:12px; right:12px; left:12px; }
+      .toast { max-width:100%; font-size:0.8rem; padding:14px 18px; }
+    }
+    @media print {
+      @page { size: A4; margin: 15mm; }
+      body { background: white !important; animation: none !important; padding-bottom: 0 !important; }
+      .app-header, .warning-box, .action-buttons, .syringe-size-section, .btn-group, #copyStatus, .note-warning, .history-panel, .theme-toggle-wrapper, .toast-container, .fab-container, .step-indicator, .modal-overlay, .draft-indicator, .drag-handle { display: none !important; }
+      .main-layout { gap: 0; }
+      .panel { box-shadow: none; border: 1px solid #000; border-radius: 0; background: white !important; }
+      .panel:hover { transform: none; }
+      .result-grid { grid-template-columns: 1fr; }
+      .app-container { padding: 0; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-logo-left"><div class="logo-placeholder logo-kejaksaan" title="Kejaksaan Republik Indonesia">⚖️</div></div>
+      <div class="header-center">
+        <h1>ACDC - Adhyaksa Critical Dose Calculator</h1>
+        <p class="subtitle">SANS (System Adhyaksa Nurse Support) - Kalkulator obat support</p>
+        <div class="header-badges">
+          <span class="badge badge-danger">⚠ High Alert</span>
+          <span class="badge badge-warning">✓ Double Check</span>
+          <span class="draft-indicator" id="draftIndicator"><span class="draft-dot"></span> Draft tersimpan</span>
+        </div>
+      </div>
+      <div class="theme-toggle-wrapper">
+        <button class="theme-toggle" id="themeToggle"><span class="theme-toggle-label">Darkmode</span><span class="theme-toggle-status" id="themeStatus">OFF</span></button>
+      </div>
+    </header>
+
+    <div class="warning-box"><span class="warning-icon">⚠️</span><span>Dimohon untuk selalu melakukan double checker dan double verifikasi. Konsultasikan dengan tim farmasi dan tim dokter, sesuaikan dengan kebutuhan dan kebijakan rumah sakit Anda.</span></div>
+
+    <div class="step-indicator" id="stepIndicator">
+      <div class="step-item active" data-step="1"><div class="step-dot">1</div><div class="step-content"><div class="step-title">Data Pasien</div><div class="step-desc">Isi nama, RM, BB</div></div></div>
+      <div class="step-item" data-step="2"><div class="step-dot">2</div><div class="step-content"><div class="step-title">Pilih Obat</div><div class="step-desc">Obat & pengoplosan</div></div></div>
+      <div class="step-item" data-step="3"><div class="step-dot">3</div><div class="step-content"><div class="step-title">Hasil</div><div class="step-desc">Rate syringe pump</div></div></div>
+    </div>
+
+    <div class="main-layout">
+      <form class="panel" id="doseForm">
+        <div class="panel-header"><div class="panel-header-icon">📋</div><h2>Data Pasien & Obat</h2></div>
+        <div class="panel-body">
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px;">
+            <div class="form-group"><label class="form-label" for="patientName">Nama Pasien <span class="required">*</span></label><input type="text" id="patientName" class="form-input" placeholder="Tn. Ahmad" autocomplete="off" required></div>
+            <div class="form-group"><label class="form-label" for="medicalRecord">Nomor RM <span class="required">*</span></label><input type="text" id="medicalRecord" class="form-input" placeholder="123456" autocomplete="off" required></div>
+            <div class="form-group"><label class="form-label" for="weight">Berat Badan (Kg) <span class="required">*</span></label><input type="number" id="weight" class="form-input" min="0.1" step="0.1" placeholder="60" required></div>
+            <div class="form-group"><label class="form-label" for="targetDose">Target Dosis <span class="required">*</span></label><input type="number" id="targetDose" class="form-input" min="0" step="0.01" placeholder="0.1" required><div class="form-hint" id="doseUnitHint">Pilih obat</div></div>
+          </div>
+          <div class="quick-select-section"><div class="quick-select-title">🔍 Pilih Obat</div><div class="quick-select-grid" id="drugQuickSelect"></div></div>
+          <div class="quick-select-section" id="mixtureQuickSelectSection" style="display:none;"><div class="quick-select-title">💊 Pilih Pengoplosan</div><div class="quick-select-grid" id="mixtureQuickSelect"></div></div>
+          <div class="hidden-select"><select id="drugName" required><option value="" disabled selected hidden>Pilih nama obat</option></select><select id="drugOption" required disabled><option value="">Pilih obat terlebih dahulu</option></select></div>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:0;">
+            <div class="form-group"><label class="form-label" for="fluid">Pelarut</label><select id="fluid" class="form-select"><option value="NS">NS (NaCl 0.9%)</option><option value="D5">D5 (Dextrose 5%)</option></select></div>
+            <div class="form-group"><label class="form-label" for="rounding">Pembulatan</label><select id="rounding" class="form-select"><option value="2">2 desimal</option><option value="1">1 desimal</option><option value="0">Bulat</option></select></div>
+            <div class="form-group"><label class="form-label" for="giverName">Giver <span class="required">*</span></label><input type="text" id="giverName" class="form-input" placeholder="Nama pemberi" autocomplete="off" required></div>
+            <div class="form-group"><label class="form-label" for="checkerName">Checker <span class="required">*</span></label><input type="text" id="checkerName" class="form-input" placeholder="Nama pemeriksa" autocomplete="off" required></div>
+          </div>
+          <div class="btn-group"><button type="submit" class="btn btn-primary">🔢 Hitung Rate</button><button type="button" class="btn btn-secondary" id="resetButton">🔄 Reset</button></div>
+        </div>
+      </form>
+
+      <section class="result-section panel" id="resultPanel"><div class="panel-header"><div class="panel-header-icon">📊</div><h2>Hasil Perhitungan</h2></div><div class="panel-body compact" id="resultContent"><div class="result-empty"><svg class="empty-svg" viewBox="0 0 120 100"><rect x="10" y="15" width="100" height="75" rx="8" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2"/><rect x="25" y="30" width="70" height="8" rx="4" fill="var(--muted-light)"/><rect x="35" y="48" width="50" height="8" rx="4" fill="var(--muted-light)" opacity="0.6"/><circle cx="60" cy="72" r="12" fill="var(--primary)" opacity="0.3"/><text x="60" y="76" text-anchor="middle" font-size="12" fill="var(--primary)">?</text></svg>Masukkan data pasien, pilih obat, lalu tekan Hitung Rate</div></div></section>
+
+      <section class="panel history-panel" id="historyPanel"><div class="panel-header"><div class="panel-header-icon">📜</div><h2>Riwayat Penggunaan</h2></div><div class="panel-body compact" id="historyContent"><div class="history-empty"><svg viewBox="0 0 120 100" style="display:block;margin:0 auto 16px;width:100px;height:80px;"><rect x="20" y="10" width="80" height="70" rx="6" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2" stroke-dasharray="6 3"/><rect x="35" y="25" width="50" height="6" rx="3" fill="var(--muted-light)" opacity="0.5"/><rect x="35" y="40" width="35" height="6" rx="3" fill="var(--muted-light)" opacity="0.4"/><rect x="35" y="55" width="45" height="6" rx="3" fill="var(--muted-light)" opacity="0.3"/></svg>Belum ada riwayat perhitungan</div></div></section>
+    </div>
+  </div>
+
+  <div id="printSheet" style="display:none;"></div>
+  <div id="kitirSheet" style="display:none;"></div>
+
+  <div class="fab-container" id="fabContainer">
+    <button class="fab fab-secondary" id="fabScrollTop" style="display:none;"><span>↑</span><span class="fab-label">Ke Atas</span></button>
+    <button class="fab fab-primary" id="fabCalculate"><span>🔢</span><span class="fab-label">Hitung Rate</span></button>
+  </div>
+
+  <script>
+    // ===== TOAST =====
+    function showToast(m,t='info',d=3000){ let c=document.querySelector('.toast-container'); if(!c){c=document.createElement('div');c.className='toast-container';document.body.appendChild(c)} const i={success:'✅',error:'❌',warning:'⚠️',info:'ℹ️'}; const el=document.createElement('div');el.className=`toast toast-${t}`;el.innerHTML=`<span class="toast-icon">${i[t]}</span><span class="toast-message">${m}</span>`; c.appendChild(el); setTimeout(()=>{if(el.parentNode)el.remove()},d+300) }
+
+    // ===== KONFIRMASI CETAK =====
+    async function confirmBeforePrint(actionName) {
+      const ok = await showConfirm(`Apakah data sudah benar? Anda akan mencetak ${actionName}.`, 'Konfirmasi Cetak', '🖨️');
+      return ok;
+    }
+
+    // ===== CONFIRM DIALOG =====
+    function showConfirm(msg,title='Konfirmasi',icon='⚠️'){ return new Promise(resolve=>{ const old=document.querySelector('.modal-overlay');if(old)old.remove(); const overlay=document.createElement('div');overlay.className='modal-overlay'; overlay.innerHTML=`<div class="modal-dialog"><div class="modal-icon">${icon}</div><div class="modal-title">${title}</div><div class="modal-message">${msg}</div><div class="modal-actions"><button class="btn btn-primary" id="modalYes">Ya</button><button class="btn btn-secondary" id="modalNo">Batal</button></div></div>`; document.body.appendChild(overlay); const close=r=>{overlay.style.opacity='0';setTimeout(()=>overlay.remove(),200);resolve(r)}; overlay.querySelector('#modalYes').onclick=()=>close(true); overlay.querySelector('#modalNo').onclick=()=>close(false); overlay.onclick=e=>{if(e.target===overlay)close(false)} }) }
+
+    // ===== SKELETON =====
+    function showSkeletonLoading(c){ c.innerHTML='<div class="skeleton-result"><div class="skeleton skeleton-rate"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row" style="width:70%"></div></div>' }
+
+    // ===== DRAFT =====
+    const DRAFT_KEY='acdc_form_draft'; let draftTimeout;
+    function saveDraft(){ const d={patientName:document.getElementById('patientName').value,medicalRecord:document.getElementById('medicalRecord').value,weight:document.getElementById('weight').value,targetDose:document.getElementById('targetDose').value,drugName:drugSelect.value,drugOption:mixtureSelect.value,fluid:document.getElementById('fluid').value,rounding:document.getElementById('rounding').value,giverName:document.getElementById('giverName').value,checkerName:document.getElementById('checkerName').value,timestamp:new Date().toISOString()}; try{localStorage.setItem(DRAFT_KEY,JSON.stringify(d));document.getElementById('draftIndicator').classList.add('visible');clearTimeout(draftTimeout);draftTimeout=setTimeout(()=>document.getElementById('draftIndicator').classList.remove('visible'),2000)}catch(e){} }
+    function loadDraft(){ try{ const s=localStorage.getItem(DRAFT_KEY);if(!s)return false; const d=JSON.parse(s); if(Date.now()-new Date(d.timestamp).getTime()>86400000){localStorage.removeItem(DRAFT_KEY);return false} if(d.patientName)document.getElementById('patientName').value=d.patientName; if(d.medicalRecord)document.getElementById('medicalRecord').value=d.medicalRecord; if(d.weight)document.getElementById('weight').value=d.weight; if(d.targetDose)document.getElementById('targetDose').value=d.targetDose; if(d.fluid)document.getElementById('fluid').value=d.fluid; if(d.rounding)document.getElementById('rounding').value=d.rounding; if(d.giverName)document.getElementById('giverName').value=d.giverName; if(d.checkerName)document.getElementById('checkerName').value=d.checkerName; if(d.drugName){drugSelect.value=d.drugName;populateMixtureOptions();renderQuickSelects();if(d.drugOption){mixtureSelect.value=d.drugOption;updateDoseHint();renderQuickSelects()}} return true }catch(e){return false} }
+    function clearDraft(){ try{localStorage.removeItem(DRAFT_KEY)}catch(e){} }
+    ['patientName','medicalRecord','weight','targetDose','fluid','rounding','giverName','checkerName'].forEach(id=>{ const el=document.getElementById(id); if(el){el.addEventListener('input',()=>{clearTimeout(draftTimeout);draftTimeout=setTimeout(saveDraft,500)});el.addEventListener('change',saveDraft)} });
+
+    // ===== STEP =====
+    function updateStepIndicator(n){ document.querySelectorAll('.step-item').forEach((s,i)=>{ s.classList.remove('active','completed'); if(i+1<n){s.classList.add('completed');s.querySelector('.step-dot').textContent='✓'} else if(i+1===n){s.classList.add('active');s.querySelector('.step-dot').textContent=n} else s.querySelector('.step-dot').textContent=i+1 }) }
+    function autoDetectStep(){ const pn=document.getElementById('patientName').value.trim(),mr=document.getElementById('medicalRecord').value.trim(),w=+document.getElementById('weight').value,td=+document.getElementById('targetDose').value; if(lastResult)updateStepIndicator(3); else if(pn&&mr&&Number.isFinite(w)&&w>0&&Number.isFinite(td)&&td>=0&&drugSelect.value)updateStepIndicator(2); else updateStepIndicator(1) }
+
+    // ===== DRAG & DROP =====
+    function initDragDrop(){ const list=document.querySelector('.history-list'); if(!list)return; let dragged=null,startX=0,curX=0,swiped=null; list.addEventListener('dragstart',e=>{ const it=e.target.closest('.history-item'); if(!it)return; dragged=it;it.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',it.dataset.historyId) }); list.addEventListener('dragend',e=>{ const it=e.target.closest('.history-item'); if(it)it.classList.remove('dragging'); dragged=null;list.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over')) }); list.addEventListener('dragover',e=>{ e.preventDefault(); const it=e.target.closest('.history-item'); if(!it||it===dragged)return; it.classList.add('drag-over') }); list.addEventListener('dragleave',e=>{ const it=e.target.closest('.history-item'); if(it)it.classList.remove('drag-over') }); list.addEventListener('drop',e=>{ e.preventDefault(); const target=e.target.closest('.history-item'); if(!target||!dragged||target===dragged)return; const a=dragged.dataset.historyId,b=target.dataset.historyId; const ai=calculationHistory.findIndex(h=>h.id===a),bi=calculationHistory.findIndex(h=>h.id===b); if(ai!==-1&&bi!==-1){const[rem]=calculationHistory.splice(ai,1);calculationHistory.splice(bi,0,rem);saveHistory();renderHistoryPanel();showToast('Urutan diubah','info')} }); list.addEventListener('touchstart',e=>{ const it=e.target.closest('.history-item'); if(!it)return; startX=e.touches[0].clientX; swiped=it }); list.addEventListener('touchmove',e=>{ if(!swiped)return; curX=e.touches[0].clientX; const diff=startX-curX; if(diff>30&&diff<120)swiped.style.transform=`translateX(-${diff}px)` }); list.addEventListener('touchend',async e=>{ if(!swiped)return; const diff=startX-curX; if(diff>80){ swiped.classList.add('swiped'); const id=swiped.dataset.historyId; const ok=await showConfirm('Hapus item?','Hapus','🗑️'); if(ok){deleteHistoryItem(id);showToast('Item dihapus','success')} else{swiped.classList.remove('swiped');swiped.style.transform=''} } else swiped.style.transform=''; startX=curX=0;swiped=null }); list.addEventListener('dblclick',e=>{ const it=e.target.closest('.history-item'); if(!it)return; it.classList.toggle('pinned'); const pinned=it.classList.contains('pinned'); const id=it.dataset.historyId; const hi=calculationHistory.find(h=>h.id===id); if(hi){hi.pinned=pinned;saveHistory()} showToast(pinned?'📌 Disematkan':'📍 Dilepas','info'); renderHistoryPanel() }) }
+
+    // ===== FAB =====
+    function initFAB(){ const calc=document.getElementById('fabCalculate'),top=document.getElementById('fabScrollTop'); window.addEventListener('scroll',()=>{ if(scrollY>300){top.style.display='flex';top.style.opacity='1'}else{top.style.opacity='0';setTimeout(()=>{if(scrollY<=300)top.style.display='none'},300)} }); calc.onclick=()=>document.getElementById('doseForm').dispatchEvent(new Event('submit')); top.onclick=()=>scrollTo({top:0,behavior:'smooth'}) }
+
+    // ===== THEME =====
+    const THEME_KEY='acdc_theme';
+    function getSavedTheme(){ try{return localStorage.getItem(THEME_KEY)||'light'}catch(e){return'light'} }
+    function applyTheme(t){ const s=document.getElementById('themeStatus'); if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');if(s)s.textContent='ON'}else{document.documentElement.removeAttribute('data-theme');if(s)s.textContent='OFF'} try{localStorage.setItem(THEME_KEY,t)}catch(e){} }
+    function toggleTheme(){ const cur=document.documentElement.hasAttribute('data-theme')?'dark':'light'; applyTheme(cur==='dark'?'light':'dark'); showToast(`Mode ${cur==='dark'?'terang':'gelap'}`,'info') }
+
+    // ===== DATA OBAT =====
+    const drugNames = [
+      {id:'norepi',label:'Norepinephrine/Vascon',logo:'NE',color:'#087568',subtitle:'Vasopressor'},
+      {id:'epi',label:'Epinephrine',logo:'EPI',color:'#b91c1c',subtitle:'Inotropik'},
+      {id:'dopamine',label:'Dopamin',logo:'Dopa',color:'#2563eb',subtitle:'Katekolamin'},
+      {id:'dobutamine',label:'Dobutamin',logo:'Dobu',color:'#7c3aed',subtitle:'Inotropik'},
+      {id:'nicardipine',label:'Nicardipin',logo:'Nica',color:'#0891b2',subtitle:'Ca-Channel Blocker'},
+      {id:'ntg',label:'Nitrogliserin (NTG)',logo:'NTG',color:'#a855f7',subtitle:'Nitrat/Vasodilator'},
+      {id:'dexmed',label:'Dexmedetomidine',logo:'DEX',color:'#f97316',subtitle:'Sedasi'}
+    ];
+    const drugOptions = [
+      {id:'norepi-8-40',drugId:'norepi',label:'8 mg up to NS/D5 40 mL',drug:'Norepinephrine/Vascon',amount:8,amountUnit:'mg',amountMcg:8000,volumeMl:40,doseUnit:'mcg/kg/menit'},
+      {id:'norepi-8-50',drugId:'norepi',label:'8 mg up to NS/D5 50 mL',drug:'Norepinephrine/Vascon',amount:8,amountUnit:'mg',amountMcg:8000,volumeMl:50,doseUnit:'mcg/kg/menit'},
+      {id:'norepi-4-40',drugId:'norepi',label:'4 mg up to NS/D5 40 mL',drug:'Norepinephrine/Vascon',amount:4,amountUnit:'mg',amountMcg:4000,volumeMl:40,doseUnit:'mcg/kg/menit'},
+      {id:'norepi-4-50',drugId:'norepi',label:'4 mg up to NS/D5 50 mL',drug:'Norepinephrine/Vascon',amount:4,amountUnit:'mg',amountMcg:4000,volumeMl:50,doseUnit:'mcg/kg/menit'},
+      {id:'epi-8-40',drugId:'epi',label:'8 mg up to NS/D5 40 mL',drug:'Epinephrine',amount:8,amountUnit:'mg',amountMcg:8000,volumeMl:40,doseUnit:'mcg/kg/menit'},
+      {id:'epi-8-50',drugId:'epi',label:'8 mg up to NS/D5 50 mL',drug:'Epinephrine',amount:8,amountUnit:'mg',amountMcg:8000,volumeMl:50,doseUnit:'mcg/kg/menit'},
+      {id:'epi-4-40',drugId:'epi',label:'4 mg up to NS/D5 40 mL',drug:'Epinephrine',amount:4,amountUnit:'mg',amountMcg:4000,volumeMl:40,doseUnit:'mcg/kg/menit'},
+      {id:'epi-4-50',drugId:'epi',label:'4 mg up to NS/D5 50 mL',drug:'Epinephrine',amount:4,amountUnit:'mg',amountMcg:4000,volumeMl:50,doseUnit:'mcg/kg/menit'},
+      {id:'dopamine-200-40',drugId:'dopamine',label:'200 mg up to NS/D5 40 mL',drug:'Dopamin',amount:200,amountUnit:'mg',amountMcg:200000,volumeMl:40,doseUnit:'mcg/kg/menit'},
+      {id:'dobutamine-250-50',drugId:'dobutamine',label:'250 mg up to NS/D5 50 mL',drug:'Dobutamin',amount:250,amountUnit:'mg',amountMcg:250000,volumeMl:50,doseUnit:'mcg/kg/menit'},
+      {id:'nicardipine-10-50',drugId:'nicardipine',label:'10 mg up to NS/D5 50 mL',drug:'Nicardipin',amount:10,amountUnit:'mg',amountMcg:10000,volumeMl:50,doseUnit:'mcg/kg/menit'},
+      {id:'ntg-10-50',drugId:'ntg',label:'10 mg up to NS/D5 50 mL',drug:'Nitrogliserin (NTG)',amount:10,amountUnit:'mg',amountMcg:10000,volumeMl:50,doseUnit:'mcg/menit',usesFixedDose:true},
+      {id:'dexmed-200-50',drugId:'dexmed',label:'200 mcg up to NS/D5 50 mL',drug:'Dexmedetomidine',amount:200,amountUnit:'mcg',amountMcg:200,volumeMl:50,doseUnit:'mcg/kg/jam',usesHourlyDose:true}
+    ];
+    const STORAGE_KEY='acdc_calculation_history';
+
+    const form=document.getElementById('doseForm'),drugSelect=document.getElementById('drugName'),mixtureSelect=document.getElementById('drugOption');
+    const drugQuickSelect=document.getElementById('drugQuickSelect'),mixtureQuickSelect=document.getElementById('mixtureQuickSelect');
+    const doseUnitHint=document.getElementById('doseUnitHint'),resultContent=document.getElementById('resultContent'),historyContent=document.getElementById('historyContent');
+    const resetButton=document.getElementById('resetButton'),themeToggleBtn=document.getElementById('themeToggle');
+    let lastResult=null,calculationHistory=[];
+
+    applyTheme(getSavedTheme());themeToggleBtn.onclick=toggleTheme;
+
+    function loadHistory(){ try{const s=localStorage.getItem(STORAGE_KEY);if(s)calculationHistory=JSON.parse(s)}catch(e){calculationHistory=[]} }
+    function saveHistory(){ try{localStorage.setItem(STORAGE_KEY,JSON.stringify(calculationHistory))}catch(e){} }
+    function getDrugColor(id){ const d=drugNames.find(x=>x.id===id); return d?d.color:'#6b7280' }
+    function getDrugLabel(id){ const d=drugNames.find(x=>x.id===id); return d?d.label:id }
+    function populateDrugNames(){ drugNames.forEach(o=>{ const el=document.createElement('option');el.value=o.id;el.textContent=o.label;drugSelect.appendChild(el) }) }
+    function getDrugMeta(id){ return drugNames.find(d=>d.id===id)||drugNames[0] }
+    function renderDrugQuickSelect(){ drugQuickSelect.innerHTML=drugNames.map(d=>`<div class="quick-select-btn${drugSelect.value===d.id?' active':''}" data-drug-id="${d.id}"><div class="btn-icon" style="background:${d.color}">${d.logo}</div><div class="btn-text"><strong>${d.label}</strong><small>${d.subtitle}</small></div></div>`).join('') }
+    function renderMixtureQuickSelect(){ if(!drugSelect.value){mixtureQuickSelect.innerHTML='';document.getElementById('mixtureQuickSelectSection').style.display='none';return} document.getElementById('mixtureQuickSelectSection').style.display='block'; const drug=getDrugMeta(drugSelect.value); mixtureQuickSelect.innerHTML=drugOptions.filter(o=>o.drugId===drugSelect.value).map(o=>`<div class="quick-select-btn${mixtureSelect.value===o.id?' active':''}" data-mixture-id="${o.id}"><div class="btn-icon" style="background:${drug.color}">${o.amount}${o.amountUnit==='mcg'?'mcg':'mg'}</div><div class="btn-text"><strong>${o.amount} ${o.amountUnit} / ${o.volumeMl} mL</strong><small>${o.doseUnit}</small></div></div>`).join('') }
+    function renderQuickSelects(){ renderDrugQuickSelect();renderMixtureQuickSelect() }
+    function populateMixtureOptions(){ mixtureSelect.innerHTML=''; const ph=document.createElement('option');ph.value='';ph.disabled=true;ph.hidden=true;ph.selected=true; ph.textContent=drugSelect.value?'Pilih opsi pengoplosan':'Pilih obat terlebih dahulu'; mixtureSelect.appendChild(ph);mixtureSelect.disabled=!drugSelect.value; if(!drugSelect.value){renderMixtureQuickSelect();return} drugOptions.filter(o=>o.drugId===drugSelect.value).forEach(o=>{ const el=document.createElement('option');el.value=o.id;el.textContent=o.label;mixtureSelect.appendChild(el) }); renderMixtureQuickSelect() }
+    function formatNumber(v,d=2){ return Number(v).toLocaleString('id-ID',{minimumFractionDigits:d,maximumFractionDigits:d}) }
+    function escapeHtml(v){ return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])) }
+    function getSelectedDrug(){ return drugOptions.find(o=>o.id===mixtureSelect.value&&o.drugId===drugSelect.value) }
+    function updateDoseHint(){ const sel=getSelectedDrug(); doseUnitHint.textContent=sel?`Satuan: ${sel.doseUnit}`:drugSelect.value?'Pilih pengoplosan':'Pilih obat' }
+
+    function calculateRate(dose,weight,conc,usesHourly,usesFixedDose){
+      if(usesFixedDose) return (dose*60)/conc;
+      else if(usesHourly) return (dose*weight)/conc;
+      else return (dose*weight*60)/conc;
+    }
+
+    function formatTimestamp(iso){ const d=new Date(iso),n=new Date(),dm=Math.floor((n-d)/60000),dh=Math.floor((n-d)/3600000); if(dm<1)return'Baru saja'; if(dm<60)return`${dm} menit lalu`; if(dh<24)return`${dh} jam lalu`; return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}` }
+
+    function getValidationMessage(){ const sel=getSelectedDrug(); const pn=document.getElementById('patientName').value.trim(),mr=document.getElementById('medicalRecord').value.trim(),w=+document.getElementById('weight').value,td=+document.getElementById('targetDose').value,giver=document.getElementById('giverName').value.trim(),checker=document.getElementById('checkerName').value.trim(); if(!pn)return'Nama pasien wajib diisi'; if(!mr)return'Nomor RM wajib diisi'; if(!sel)return'Pilih obat & pengoplosan'; if(sel.usesFixedDose){ if(!Number.isFinite(td)||td<=0)return'Target dosis (mcg/menit) wajib diisi > 0' } else { if(!Number.isFinite(w)||w<=0)return'Berat badan harus > 0 kg'; if(!Number.isFinite(td)||td<0)return'Target dosis tidak boleh kosong/negatif' } if(!giver)return'Nama Giver wajib diisi'; if(!checker)return'Nama Checker wajib diisi'; if(!drugSelect.value)return'Pilih nama obat'; return'' }
+
+    function collectData(){ const sel=getSelectedDrug(); if(getValidationMessage())return null; const w=+document.getElementById('weight').value,dose=+document.getElementById('targetDose').value,r=+document.getElementById('rounding').value,fluid=document.getElementById('fluid').value; const conc=sel.amountMcg/sel.volumeMl; let dph,rate; if(sel.usesFixedDose){ dph=dose*60; rate=(dose*60)/conc } else if(sel.usesHourlyDose){ dph=dose*w; rate=(dose*w)/conc } else { dph=dose*w*60; rate=(dose*w*60)/conc } const dur=rate>0?sel.volumeMl/rate:0; return { patientName:document.getElementById('patientName').value.trim(),medicalRecord:document.getElementById('medicalRecord').value.trim(),giverName:document.getElementById('giverName').value.trim(),checkerName:document.getElementById('checkerName').value.trim(),weight:w,dose,doseUnit:sel.doseUnit,drug:sel.drug,drugId:sel.drugId,fluid,amount:sel.amount,amountUnit:sel.amountUnit,volumeMl:sel.volumeMl,usesHourlyDose:!!sel.usesHourlyDose,usesFixedDose:!!sel.usesFixedDose,mixture:`${sel.amount} ${sel.amountUnit} up to ${fluid} ${sel.volumeMl} mL`,concentrationMcgPerMl:conc,concentrationFormatted:formatNumber(conc,2),dosePerHour:dph,dosePerHourFormatted:formatNumber(dph,2),rate,rateFormatted:formatNumber(rate,r),syringeDurationHours:dur,syringeDurationFormatted:dur>0?formatNumber(dur,1):'-' } }
+    function getSignatureData(){ return {giver:document.getElementById('giverName')?.value.trim()||'',checker:document.getElementById('checkerName')?.value.trim()||''} }
+    function getSafetyAlert(data){ if(data.rate<=0)return'Rate 0 mL/jam'; if(data.rate>data.volumeMl)return'Rate > volume spuit/jam'; return'' }
+
+    function rememberCalculation(data){ calculationHistory=[{id:Date.now().toString(36)+Math.random().toString(36).substr(2,5),timestamp:new Date().toISOString(),...data,pinned:false},...calculationHistory].slice(0,20); saveHistory();renderHistoryPanel() }
+    function deleteHistoryItem(id){ const el=document.querySelector(`[data-history-id="${id}"]`); if(el){el.classList.add('removing');setTimeout(()=>{calculationHistory=calculationHistory.filter(i=>i.id!==id);saveHistory();renderHistoryPanel()},300)} else{calculationHistory=calculationHistory.filter(i=>i.id!==id);saveHistory();renderHistoryPanel()} }
+    async function clearAllHistory(){ const ok=await showConfirm('Hapus semua riwayat?','Hapus Semua','🗑️'); if(ok){calculationHistory=[];saveHistory();renderHistoryPanel();showToast('Semua riwayat dihapus','success')} }
+    function loadHistoryItem(id){ const item=calculationHistory.find(h=>h.id===id); if(!item)return; document.getElementById('patientName').value=item.patientName||''; document.getElementById('medicalRecord').value=item.medicalRecord||''; document.getElementById('weight').value=item.weight; document.getElementById('targetDose').value=item.dose; document.getElementById('fluid').value=item.fluid||'NS'; document.getElementById('giverName').value=item.giverName||''; document.getElementById('checkerName').value=item.checkerName||''; drugSelect.value=item.drugId;populateMixtureOptions(); const mo=drugOptions.find(o=>o.drugId===item.drugId&&o.amount===item.amount&&o.volumeMl===item.volumeMl); if(mo)mixtureSelect.value=mo.id; updateDoseHint();renderQuickSelects();updateCalculation(false); document.getElementById('resultPanel').scrollIntoView({behavior:'smooth',block:'start'}); showToast('Data riwayat dimuat','info') }
+    function exportHistory(){ if(!calculationHistory.length){showToast('Tidak ada riwayat','warning');return} let t='RIWAYAT ACDC\n'+'='.repeat(50)+'\n\n'; calculationHistory.forEach((item,i)=>{ t+=`#${i+1} - ${formatTimestamp(item.timestamp)}\n  Pasien: ${item.patientName||'-'} (RM: ${item.medicalRecord||'-'})\n  BB: ${formatNumber(item.weight,1)} kg\n  Obat: ${item.drug}\n  Campuran: ${item.mixture}\n  Target: ${item.dose} ${item.doseUnit}\n  Rate: ${item.rateFormatted} mL/jam\n  Giver: ${item.giverName||'-'} | Checker: ${item.checkerName||'-'}\n${'-'.repeat(40)}\n` }); const blob=new Blob([t],{type:'text/plain;charset=utf-8'}); const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`riwayat-acdc-${new Date().toISOString().slice(0,10)}.txt`;a.click(); showToast('Riwayat diekspor','success') }
+
+    function renderHistoryPanel(){ if(!calculationHistory.length){historyContent.innerHTML='<div class="history-empty"><svg viewBox="0 0 120 100" style="display:block;margin:0 auto 16px;width:100px;height:80px;"><rect x="20" y="10" width="80" height="70" rx="6" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2" stroke-dasharray="6 3"/><rect x="35" y="25" width="50" height="6" rx="3" fill="var(--muted-light)" opacity="0.5"/><rect x="35" y="40" width="35" height="6" rx="3" fill="var(--muted-light)" opacity="0.4"/><rect x="35" y="55" width="45" height="6" rx="3" fill="var(--muted-light)" opacity="0.3"/></svg>Belum ada riwayat</div>';return} const sorted=[...calculationHistory].sort((a,b)=>(a.pinned&&!b.pinned?-1:!a.pinned&&b.pinned?1:new Date(b.timestamp)-new Date(a.timestamp))); const items=sorted.map(item=>`<div class="history-item${item.pinned?' pinned':''}" data-history-id="${item.id}" draggable="true"><div class="drag-handle"><span class="drag-handle-dot"></span><span class="drag-handle-dot"></span><span class="drag-handle-dot"></span></div><div class="history-item-swipe-bg">🗑️ Hapus</div><div class="history-item-main"><div class="history-item-top">${item.pinned?'<span class="pin-indicator">📌</span>':''}<span class="history-rate">${item.rateFormatted} mL/jam</span><span class="history-drug-badge" style="background:${getDrugColor(item.drugId)}">${getDrugLabel(item.drugId)}</span></div><div class="history-patient">${escapeHtml(item.patientName)||'Tanpa nama'} · RM: ${escapeHtml(item.medicalRecord)||'-'}</div><div class="history-detail">BB ${formatNumber(item.weight,1)} kg · Target ${item.dose} ${item.doseUnit} · Giver: ${escapeHtml(item.giverName)||'-'} | Checker: ${escapeHtml(item.checkerName)||'-'}</div><div class="history-time">🕐 ${formatTimestamp(item.timestamp)}</div></div><div class="history-item-actions"><button class="btn btn-sm btn-secondary" data-action="load" data-id="${item.id}">📋</button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${item.id}">✕</button></div></div>`).join(''); historyContent.innerHTML=`<div class="history-header"><div class="history-title-section"><span class="history-title-text">📜 Riwayat</span><span class="history-count">${calculationHistory.length} data</span></div><div class="history-actions"><button class="btn btn-sm btn-secondary" id="exportHistoryBtn">📥 Ekspor</button><button class="btn btn-sm btn-danger" id="clearHistoryBtn">🗑 Hapus Semua</button></div></div><div class="history-list">${items}</div><p style="font-size:0.65rem;color:var(--muted-light);margin-top:8px;text-align:center;">💡 Geser kiri hapus · Double-click pin · Drag ubah urutan</p>`; historyContent.querySelectorAll('[data-action="load"]').forEach(b=>b.onclick=e=>{e.stopPropagation();loadHistoryItem(b.dataset.id)}); historyContent.querySelectorAll('[data-action="delete"]').forEach(b=>b.onclick=async e=>{e.stopPropagation();const ok=await showConfirm('Hapus item?','Hapus','🗑️');if(ok){deleteHistoryItem(b.dataset.id);showToast('Item dihapus','success')}}); historyContent.querySelectorAll('.history-item').forEach(item=>item.onclick=e=>{if(e.target.closest('button'))return;loadHistoryItem(item.dataset.historyId)}); document.getElementById('exportHistoryBtn').onclick=exportHistory; document.getElementById('clearHistoryBtn').onclick=clearAllHistory; setTimeout(initDragDrop,100) }
+
+    // ===== CETAK LABEL SPUIT =====
+    async function printSyringeLabel(data,size){
+      const ok = await confirmBeforePrint(`Label spuit ${size}`);
+      if (!ok) return;
+      const sig=getSignatureData(); 
+      const now=new Date(); 
+      const ds=`${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+      const ts=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      const dims={
+        '10 cc':{w:'50mm',h:'30mm',fs:'10px',rs:'20px',ds:'12px',sf:'8px',bs:'11px'},
+        '20 cc':{w:'60mm',h:'35mm',fs:'11px',rs:'24px',ds:'14px',sf:'9px',bs:'12px'},
+        '50 cc':{w:'70mm',h:'40mm',fs:'12px',rs:'28px',ds:'16px',sf:'10px',bs:'14px'}
+      };
+      const dim=dims[size]||dims['20 cc'];
+      const html=`<div style="width:${dim.w};height:${dim.h};border:2px solid #000;font-family:Arial;background:#fff;color:#000;display:flex;flex-direction:column;box-sizing:border-box;"><div style="background:#0072C6;color:#fff;padding:2px 4px;display:flex;justify-content:space-between;align-items:center;font-size:${dim.ds};font-weight:700;"><span>${data.drug}</span><span style="color:#FF0000;font-size:${dim.sf};font-weight:800;background:#fff;padding:0 4px;border-radius:3px;">⚠ HIGH ALERT</span></div><div style="font-weight:700;color:#000;font-size:${dim.fs};padding:2px 4px;text-align:center;border-bottom:1px solid #ccc;">${data.mixture}</div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:4px;"><span style="font-size:${dim.rs};font-weight:900;color:#000;">${data.rateFormatted} mL/jam</span></div><div style="display:flex;justify-content:space-between;padding:2px 4px;font-size:${dim.sf};border-top:1px solid #ccc;"><span>${escapeHtml(data.patientName)||'-'}</span><span>${ds} ${ts}</span></div><div style="text-align:center;padding:2px 4px;font-size:${dim.bs};font-weight:700;background:#f0f8ff;">BB: ${formatNumber(data.weight,1)} KgBB</div><div style="display:flex;justify-content:space-between;padding:2px 4px;font-size:${dim.sf};color:#333;"><span>Checker: ${escapeHtml(sig.checker)||'-'}</span><span>Giver: ${escapeHtml(sig.giver)||'-'}</span></div></div>`;
+      const w=window.open('','_blank','width=800,height=600'); w.document.write(`<!DOCTYPE html><html><head><title>Label Spuit</title><style>@page{size:A4;margin:0}body{margin:0;display:flex;justify-content:flex-start;align-items:flex-start;min-height:100vh}</style></head><body>${html}</body></html>`); w.document.close();w.focus();setTimeout(()=>w.print(),500);
+      showToast(`Label spuit siap cetak`,'info');
+    }
+
+    // ===== CETAK TITRASI =====
+    async function printKitir(){
+      const ok = await confirmBeforePrint('Label titrasi');
+      if (!ok) return;
+      const data=collectData(); if(!data)return; lastResult=data; renderKitir(data);
+      const w=window.open('','_blank','width=800,height=400');
+      w.document.write(`<!DOCTYPE html><html><head><title>Label Titrasi</title><style>@page{size:20cm 10cm;margin:0}body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#fff;font-family:Arial}</style></head><body>${document.getElementById('kitirSheet').innerHTML}</body></html>`);
+      w.document.close();w.focus();w.print(); showToast('Label titrasi siap cetak','info');
+    }
+
+    function generateSmallSyringeLabel(data,sizeLabel){
+      const sig=getSignatureData(); 
+      const now=new Date(); 
+      const ds=`${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+      const ts=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      return `<div style="width:45mm;height:28mm;border:1.5px solid #000;font-family:Arial;background:#fff;color:#000;display:flex;flex-direction:column;font-size:7px;box-sizing:border-box;page-break-inside:avoid;"><div style="background:#0072C6;color:#fff;padding:1px 3px;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:8px;"><span>${data.drug}</span><span style="color:#FF0000;font-size:6px;font-weight:800;background:#fff;padding:0 2px;border-radius:2px;">HIGH ALERT</span></div><div style="font-weight:700;font-size:7px;padding:1px 3px;text-align:center;border-bottom:0.5px solid #ccc;">${data.mixture}</div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:2px;"><span style="font-size:16px;font-weight:900;">${data.rateFormatted} mL/jam</span></div><div style="display:flex;justify-content:space-between;padding:1px 3px;font-size:6px;border-top:0.5px solid #ccc;"><span>${escapeHtml(data.patientName)||'-'}</span><span>${ds} ${ts}</span></div><div style="text-align:center;padding:1px 3px;font-size:9px;font-weight:700;background:#f0f8ff;">BB: ${formatNumber(data.weight,1)} KgBB</div><div style="display:flex;justify-content:space-between;padding:1px 3px;font-size:6px;color:#333;"><span>Checker: ${escapeHtml(sig.checker)||'-'}</span><span>Giver: ${escapeHtml(sig.giver)||'-'}</span></div></div>`;
+    }
+
+    function generateKitirCompact(data){
+      const rows=Array.from({length:10},(_,i)=>{ const d=(i+1)/10; const r=calculateRate(d,data.weight,data.concentrationMcgPerMl,data.usesHourlyDose,data.usesFixedDose); return `<tr><td style="border:0.5px solid #000;padding:2px 4px;text-align:center;font-size:8px;">${i+1}</td><td style="border:0.5px solid #000;padding:2px 4px;text-align:center;font-size:8px;">${formatNumber(d,1)} ${data.doseUnit}</td><td style="border:0.5px solid #000;padding:2px 4px;text-align:center;font-size:8px;">${formatNumber(r,2)} mL/jam</td></tr>` }).join('');
+      return `<div style="background:#fff;padding:8px;font-family:Arial;color:#000;width:170mm;box-sizing:border-box;page-break-inside:avoid;"><div style="background:#0072C6;color:#fff;padding:5px 8px;display:flex;justify-content:space-between;align-items:center;border-radius:3px 3px 0 0;"><div><div style="font-size:14px;font-weight:800;">${data.drug}</div><div style="font-size:10px;font-weight:700;">${data.mixture}</div></div><div style="text-align:right;"><div style="font-size:9px;">Berat Badan</div><div style="font-size:16px;font-weight:800;">${data.usesFixedDose?'-':formatNumber(data.weight,1)+' KgBB'}</div></div><div style="background:#b91c1c;color:#fff;padding:4px 8px;border-radius:3px;font-weight:800;font-size:12px;">⚠ DOUBLE CHECK</div></div><div style="display:flex;justify-content:space-between;padding:6px 8px;border-bottom:0.5px solid #ccc;"><div><span style="font-size:9px;">Pasien</span><br><strong style="font-size:11px;">${escapeHtml(data.patientName)||'-'}</strong></div><div><span style="font-size:9px;">No. RM</span><br><strong style="font-size:11px;">${escapeHtml(data.medicalRecord)||'-'}</strong></div></div><div style="display:flex;justify-content:space-between;padding:6px 8px;border-bottom:1.5px solid #000;"><div><span style="font-size:9px;">Checker</span><br><strong style="font-size:11px;">${escapeHtml(data.checkerName)||'-'}</strong></div><div><span style="font-size:9px;">Giver</span><br><strong style="font-size:11px;">${escapeHtml(data.giverName)||'-'}</strong></div></div><table style="width:100%;border-collapse:collapse;margin-top:6px;"><thead><tr style="background:#f0f0f0;"><th style="border:0.5px solid #000;padding:2px 4px;font-size:8px;">No</th><th style="border:0.5px solid #000;padding:2px 4px;font-size:8px;">Target Dosis</th><th style="border:0.5px solid #000;padding:2px 4px;font-size:8px;">Rate (mL/jam)</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    }
+
+    async function printAllLabels(){
+      if(!lastResult)return;
+      const ok = await confirmBeforePrint('Semua label (spuit + titrasi)');
+      if (!ok) return;
+      const data=lastResult;
+      const html=`<!DOCTYPE html><html><head><title>Label Obat & Titrasi</title><style>@page{size:A4;margin:8mm}body{margin:0;font-family:Arial;background:#fff;display:flex;flex-direction:column;align-items:center}.label-row{display:flex;justify-content:center;gap:8px;margin-bottom:10px}</style></head><body><div class="label-row"><div>${generateSmallSyringeLabel(data,'10 cc')}</div><div>${generateSmallSyringeLabel(data,'20 cc')}</div><div>${generateSmallSyringeLabel(data,'50 cc')}</div></div>${generateKitirCompact(data)}</body></html>`;
+      const w=window.open('','_blank'); w.document.write(html); w.document.close();w.focus();setTimeout(()=>w.print(),500);
+      showToast('Cetak semua label & titrasi','info');
+    }
+
+    function renderResult(data){
+      const alert=getSafetyAlert(data);
+      let rumusText='';
+      if(data.usesFixedDose) rumusText=`(${data.dose} × 60) ÷ ${data.concentrationFormatted} = ${data.rateFormatted} mL/jam`;
+      else if(data.usesHourlyDose) rumusText=`(${data.dose} × ${formatNumber(data.weight,1)}) ÷ ${data.concentrationFormatted} = ${data.rateFormatted} mL/jam`;
+      else rumusText=`(${data.dose} × ${formatNumber(data.weight,1)} × 60) ÷ ${data.concentrationFormatted} = ${data.rateFormatted} mL/jam`;
+      resultContent.innerHTML=`<div class="result-content"><div class="result-grid"><div class="result-left"><div class="rate-display"><div class="rate-label">Rate Syringe Pump</div><div class="rate-value">${data.rateFormatted} <span class="rate-unit">mL/jam</span></div></div><ul class="info-list"><li><span class="info-label">Pasien</span><span class="info-value">${escapeHtml(data.patientName)||'-'}</span></li><li><span class="info-label">RM</span><span class="info-value">${escapeHtml(data.medicalRecord)||'-'}</span></li><li><span class="info-label">BB</span><span class="info-value">${data.usesFixedDose?'- (tidak digunakan)':formatNumber(data.weight,1)+' KgBB'}</span></li><li><span class="info-label">Obat</span><span class="info-value">${data.drug}</span></li><li><span class="info-label">Giver</span><span class="info-value">${escapeHtml(data.giverName)||'-'}</span></li><li><span class="info-label">Checker</span><span class="info-value">${escapeHtml(data.checkerName)||'-'}</span></li></ul></div><div class="result-right"><ul class="info-list"><li><span class="info-label">Pengoplosan</span><span class="info-value">${data.mixture}</span></li><li><span class="info-label">Pelarut</span><span class="info-value">${data.fluid}</span></li><li><span class="info-label">Konsentrasi</span><span class="info-value">${data.concentrationFormatted} mcg/mL</span></li><li><span class="info-label">Target Dosis</span><span class="info-value">${data.dose} ${data.doseUnit}</span></li></ul><div class="calculation-detail"><p><strong>Rumus:</strong> ${rumusText}</p><p><strong>Kebutuhan/jam:</strong> ${data.dosePerHourFormatted} mcg/jam</p><p><strong>Estimasi habis:</strong> ${data.syringeDurationFormatted} jam (${data.volumeMl} mL)</p></div>${alert?`<div class="safety-warning">⚠️ ${alert}</div>`:''}</div></div><div class="syringe-size-section"><div class="syringe-size-title">🖨️ Cetak Label Spuit</div><div class="syringe-size-selector"><button class="syringe-btn" data-syringe="10 cc"><span class="syringe-icon">💉</span><span>10 cc</span></button><button class="syringe-btn" data-syringe="20 cc"><span class="syringe-icon">💉</span><span>20 cc</span></button><button class="syringe-btn" data-syringe="50 cc"><span class="syringe-icon">💉</span><span>50 cc</span></button></div></div><div class="action-buttons" style="margin-top:14px;"><button class="btn btn-secondary" id="kitirButton">📋 Cetak Label Titrasi</button><button class="btn btn-secondary" id="copyButton">📋 Salin Ringkasan</button><button class="btn btn-primary" id="printAllButton" style="background:#0072C6;border-color:#0072C6;">🖨️ Cetak Semua Label (Spuit + Titrasi)</button></div><div class="copy-status" id="copyStatus"></div><p class="note-warning">⚠️ Wajib verifikasi ulang secara independen sebelum obat dijalankan.</p></div>`;
+    }
+
+    function renderKitir(data){
+      document.getElementById('kitirSheet').innerHTML=`<div style="background:#fff;padding:12px;font-family:Arial;color:#000;width:100%;height:100%;box-sizing:border-box;"><div style="background:#0072C6;color:#fff;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;border-radius:4px 4px 0 0;"><div><div style="font-size:18px;font-weight:800;">${data.drug}</div><div style="font-size:13px;font-weight:700;">${data.mixture}</div></div><div style="text-align:right;"><div style="font-size:11px;">Berat Badan</div><div style="font-size:20px;font-weight:800;">${data.usesFixedDose?'-':formatNumber(data.weight,1)+' KgBB'}</div></div><div style="background:#b91c1c;color:#fff;padding:6px 12px;border-radius:4px;font-weight:800;font-size:14px;">⚠ DOUBLE CHECK</div></div><div style="display:flex;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #ccc;"><div><span style="font-size:11px;">Pasien</span><br><strong>${escapeHtml(data.patientName)||'-'}</strong></div><div><span style="font-size:11px;">No. RM</span><br><strong>${escapeHtml(data.medicalRecord)||'-'}</strong></div></div><div style="display:flex;justify-content:space-between;padding:10px 12px;border-bottom:2px solid #000;"><div><span style="font-size:11px;">Checker</span><br><strong>${escapeHtml(data.checkerName)||'-'}</strong></div><div><span style="font-size:11px;">Giver</span><br><strong>${escapeHtml(data.giverName)||'-'}</strong></div></div><table style="width:100%;border-collapse:collapse;margin-top:10px;"><thead><tr style="background:#f0f0f0;"><th style="border:1px solid #000;padding:6px 8px;font-size:11px;">No</th><th style="border:1px solid #000;padding:6px 8px;font-size:11px;">Target Dosis</th><th style="border:1px solid #000;padding:6px 8px;font-size:11px;">Rate Syringe Pump</th></tr></thead><tbody>${buildKitirRows(data)}</tbody></table></div>`;
+    }
+
+    function buildKitirRows(data){ return Array.from({length:10},(_,i)=>{ const d=(i+1)/10; const r=calculateRate(d,data.weight,data.concentrationMcgPerMl,data.usesHourlyDose,data.usesFixedDose); return `<tr><td style="border:1px solid #000;padding:6px 8px;text-align:center;font-size:11px;">${i+1}</td><td style="border:1px solid #000;padding:6px 8px;text-align:center;font-size:11px;">${formatNumber(d,1)} ${data.doseUnit}</td><td style="border:1px solid #000;padding:6px 8px;text-align:center;font-size:11px;">${formatNumber(r,2)} mL/jam</td></tr>` }).join('') }
+
+    function updateCalculation(shouldRemember=true){
+      const data=collectData();
+      if(!data){
+        const msg=getValidationMessage(); document.querySelectorAll('.form-input.error,.form-select.error').forEach(el=>el.classList.remove('error'));
+        if(!document.getElementById('patientName').value.trim())document.getElementById('patientName').classList.add('error');
+        if(!document.getElementById('medicalRecord').value.trim())document.getElementById('medicalRecord').classList.add('error');
+        const sel=getSelectedDrug();
+        if(!sel||!sel.usesFixedDose){
+          if(!Number.isFinite(+document.getElementById('weight').value)||+document.getElementById('weight').value<=0)document.getElementById('weight').classList.add('error');
+        }
+        if(!document.getElementById('giverName').value.trim())document.getElementById('giverName').classList.add('error');
+        if(!document.getElementById('checkerName').value.trim())document.getElementById('checkerName').classList.add('error');
+        if (!shouldRemember) {
+          resultContent.innerHTML=`<div class="result-empty"><svg viewBox="0 0 120 100"><circle cx="60" cy="40" r="20" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="2"/><text x="60" y="45" text-anchor="middle" font-size="18" fill="var(--danger)">!</text><rect x="30" y="72" width="60" height="6" rx="3" fill="var(--muted-light)" opacity="0.5"/></svg><div style="color:var(--danger);font-weight:600;">${msg||'Lengkapi data.'}</div></div>`;
+        }
+        if(msg&&shouldRemember)showToast(msg,'error');
+        updateStepIndicator(1); return null;
+      }
+      document.querySelectorAll('.form-input.error,.form-select.error').forEach(el=>el.classList.remove('error'));
+      showSkeletonLoading(resultContent);
+      setTimeout(()=>{ lastResult=data; if(shouldRemember)rememberCalculation(data); renderResult(data);renderKitir(data); document.getElementById('resultPanel').scrollIntoView({behavior:'smooth',block:'start'}); updateStepIndicator(3);clearDraft() },600);
+      return data;
+    }
+
+    async function copyResultSummary(data){
+      const text=`Pasien: ${data.patientName||'-'}\nRM: ${data.medicalRecord||'-'}\nBB: ${data.usesFixedDose?'- (tidak digunakan)':formatNumber(data.weight,1)+' KgBB'}\nGiver: ${data.giverName||'-'}\nChecker: ${data.checkerName||'-'}\nObat: ${data.drug}\nPengoplosan: ${data.mixture}\nKonsentrasi: ${data.concentrationFormatted} mcg/mL\nTarget: ${data.dose} ${data.doseUnit}\nRate: ${data.rateFormatted} mL/jam`;
+      try{ if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);showToast('📋 Disalin!','success');return} }catch(e){}
+      const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove(); showToast('📋 Disalin!','success');
+    }
+
+    // ===== EVENT LISTENERS =====
+    form.addEventListener('submit',e=>{e.preventDefault();updateCalculation(true)});
+    resetButton.addEventListener('click',async()=>{ if(lastResult){const ok=await showConfirm('Reset data?','Reset','🔄');if(!ok)return} form.reset();drugSelect.value='';mixtureSelect.value='';mixtureSelect.disabled=true;lastResult=null; populateMixtureOptions();updateDoseHint();renderQuickSelects(); document.getElementById('kitirSheet').innerHTML='';document.getElementById('mixtureQuickSelectSection').style.display='none'; resultContent.innerHTML='<div class="result-empty"><svg viewBox="0 0 120 100"><rect x="10" y="15" width="100" height="75" rx="8" fill="var(--line-soft)" stroke="var(--line)" stroke-width="2"/><rect x="25" y="30" width="70" height="8" rx="4" fill="var(--muted-light)"/><rect x="35" y="48" width="50" height="8" rx="4" fill="var(--muted-light)" opacity="0.6"/><circle cx="60" cy="72" r="12" fill="var(--primary)" opacity="0.3"/><text x="60" y="76" text-anchor="middle" font-size="12" fill="var(--primary)">?</text></svg>Masukkan data pasien, pilih obat, lalu tekan Hitung Rate</div>'; document.querySelectorAll('.form-input.error,.form-select.error').forEach(el=>el.classList.remove('error')); updateStepIndicator(1);clearDraft();showToast('Form direset','info') });
+
+    resultContent.addEventListener('click',e=>{
+      const btn=e.target.closest('[data-syringe]'); if(btn&&lastResult){printSyringeLabel(lastResult,btn.dataset.syringe);return}
+      if(e.target.id==='kitirButton'||e.target.closest('#kitirButton'))printKitir();
+      if(e.target.id==='copyButton'||e.target.closest('#copyButton')){if(lastResult)copyResultSummary(lastResult)}
+      if(e.target.id==='printAllButton'||e.target.closest('#printAllButton')){if(lastResult)printAllLabels()}
+    });
+
+    drugQuickSelect.addEventListener('click',e=>{ const btn=e.target.closest('[data-drug-id]');if(!btn)return; drugSelect.value=btn.dataset.drugId;populateMixtureOptions();updateDoseHint();renderQuickSelects();autoDetectStep();saveDraft() });
+    mixtureQuickSelect.addEventListener('click',e=>{ const btn=e.target.closest('[data-mixture-id]');if(!btn)return; mixtureSelect.value=btn.dataset.mixtureId;updateDoseHint();renderQuickSelects();autoDetectStep();saveDraft() });
+    
+    const allInputs = document.querySelectorAll('#doseForm input, #doseForm select');
+    allInputs.forEach(input => {
+      input.addEventListener('input', () => { document.querySelectorAll('.form-input.error,.form-select.error').forEach(el=>el.classList.remove('error')); autoDetectStep() });
+      input.addEventListener('change', () => { autoDetectStep() });
+    });
+    
+    drugSelect.addEventListener('change',()=>{populateMixtureOptions();updateDoseHint();renderQuickSelects();autoDetectStep();saveDraft()});
+    mixtureSelect.addEventListener('change',()=>{updateDoseHint();renderQuickSelects();autoDetectStep();saveDraft()});
+
+    // ===== INIT =====
+    populateDrugNames();populateMixtureOptions();renderQuickSelects();updateDoseHint(); loadHistory();renderHistoryPanel();initFAB();autoDetectStep();
+    if(loadDraft()){showToast('📝 Draft dimuat','info');autoDetectStep();updateDoseHint();renderQuickSelects()}
+  </script>
+</body>
+</html>

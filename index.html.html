@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SANS Hub - System Adhyaksa Nurse Support</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --primary: #14b8a6;
+      --primary-dark: #0d9488;
+      --text: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --border: #334155;
+      --hover: #263348;
+      --danger: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 50%, #16213e 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    /* ===== PROFILE SECTION ===== */
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1a5632, #0d3b1f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      border: 3px solid var(--primary);
+      box-shadow: 0 0 30px rgba(20, 184, 166, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(20, 184, 166, 0.5);
+    }
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-green {
+      background: rgba(20, 184, 166, 0.2);
+      color: #5eead4;
+      border: 1px solid rgba(20, 184, 166, 0.3);
+    }
+
+    .badge-red {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* ===== LINKS ===== */
+    .links {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+      color: var(--text);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .link-card:hover {
+      background: var(--hover);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .link-card:active {
+      transform: scale(0.98);
+    }
+
+    .link-card.coming-soon {
+      opacity: 0.7;
+      cursor: default;
+    }
+
+    .link-card.coming-soon:hover {
+      background: var(--card-bg);
+      border-color: var(--border);
+      transform: none;
+      box-shadow: none;
+    }
+
+    .link-card.coming-soon .link-arrow {
+      display: none;
+    }
+
+    .coming-soon-badge {
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: rgba(251, 191, 36, 0.2);
+      color: #fcd34d;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      flex-shrink: 0;
+    }
+
+    .link-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      color: white;
+      font-weight: 700;
+    }
+
+    /* Icon EWSS dengan background terang */
+    .link-icon.ewss-icon {
+      background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+      color: #3730a3;
+      font-size: 1.6rem;
+    }
+
+    .link-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .link-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 2px;
+    }
+
+    .link-desc {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .link-arrow {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .link-card:hover .link-arrow {
+      transform: translateX(4px);
+      color: var(--primary);
+    }
+
+    /* ===== FEATURED CARD ===== */
+    .featured-card {
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(135deg, #1a5632, #0d3b1f);
+      border: 2px solid var(--primary);
+      border-radius: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .featured-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(20, 184, 166, 0.3);
+    }
+
+    .featured-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #fbbf24;
+      color: #000;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .featured-icon {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+
+    .featured-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .featured-desc {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 8px;
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .link-card:nth-child(1) { animation: fadeInUp 0.3s ease 0.1s both; }
+    .link-card:nth-child(2) { animation: fadeInUp 0.3s ease 0.15s both; }
+    .link-card:nth-child(3) { animation: fadeInUp 0.3s ease 0.2s both; }
+
+    @media (max-width: 480px) {
+      body { padding: 20px 12px; }
+      .avatar { width: 70px; height: 70px; font-size: 2rem; }
+      .title { font-size: 1.3rem; }
+      .link-card { padding: 14px 16px; gap: 10px; }
+      .link-icon { width: 40px; height: 40px; font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- ===== PROFILE ===== -->
+    <div class="profile">
+      <div class="avatar">⚖️</div>
+      <h1 class="title">SANS Hub</h1>
+      <p class="subtitle">System Adhyaksa Nurse Support<br>Tools pendukung tenaga medis</p>
+      <div class="badges">
+        <span class="badge badge-green">🚑 ICU Tools</span>
+        <span class="badge badge-red">⚠ High Alert</span>
+      </div>
+    </div>
+
+    <!-- ===== FEATURED: ACDC CALCULATOR ===== -->
+    <a href="acdc-calculator.html" class="featured-card" target="_blank">
+      <span class="featured-badge">⭐ Utama</span>
+      <div class="featured-icon">💉</div>
+      <div class="featured-title">ACDC — Adhyaksa Critical Dose Calculator</div>
+      <div class="featured-desc">Kalkulator dosis obat ICU (Vasopressor, Inotropik, Sedasi)</div>
+    </a>
+
+    <!-- ===== DIVIDER ===== -->
+    <div class="divider">Coming Soon</div>
+
+    <!-- ===== LINKS ===== -->
+    <div class="links">
+      
+      <!-- Calculator TTV Normal Perina-Pediatri -->
+      <div class="link-card coming-soon">
+        <div class="link-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">👶</div>
+        <div class="link-info">
+          <div class="link-title">Calculator TTV Normal Perina-Pediatri</div>
+          <div class="link-desc">Kalkulator tanda-tanda vital normal untuk perinatal & pediatri</div>
+        </div>
+        <span class="coming-soon-badge">Coming Soon</span>
+      </div>
+
+      <!-- Sistem Permudah EWSS -->
+      <div class="link-card coming-soon">
+        <div class="link-icon ewss-icon">🩺</div>
+        <div class="link-info">
+          <div class="link-title">Sistem Permudah EWSS</div>
+          <div class="link-desc">Early Warning Score System — deteksi dini perburukan pasien</div>
+        </div>
+        <span class="coming-soon-badge">Coming Soon</span>
+      </div>
+
+      <!-- ACDC Calculator (link tambahan) -->
+      <a href="acdc-calculator.html" class="link-card" target="_blank">
+        <div class="link-icon" style="background: linear-gradient(135deg, #087568, #07584f);">📊</div>
+        <div class="link-info">
+          <div class="link-title">ACDC Calculator</div>
+          <div class="link-desc">Hitung rate syringe pump dengan cepat & akurat</div>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer">
+      © 2024-2026 <a href="#">System Adhyaksa Nurse Support</a><br>
+      Keperawatan Rumah Sakit Adhyaksa Jawa Timur
+    </div>
+
+  </div>
+</body>
+</html>
