@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>APeVS - Adhyaksa Pediatric Vital Signs</title>
     <style>
-        /* ========== IMPORT FONT ========== */
-        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
-
         /* ========== CSS VARIABLES ========== */
         :root {
             --bg-primary: #fef9f0;
@@ -34,8 +31,6 @@
             --default-border: #a78bfa;
             --status-normal-bg: #d1fae5;
             --status-normal-text: #065f46;
-            --status-abnormal-bg: #fee2e2;
-            --status-abnormal-text: #991b1b;
             --footer-text: #8a7a9a;
             --toggle-bg: #f0e4d8;
             --scrollbar-track: #fdf6f0;
@@ -72,8 +67,6 @@
             --default-border: #a78bfa;
             --status-normal-bg: #1a3a2a;
             --status-normal-text: #6ddb9a;
-            --status-abnormal-bg: #3a1a1a;
-            --status-abnormal-text: #f08080;
             --footer-text: #8a7a9a;
             --toggle-bg: #4a2d5a;
             --scrollbar-track: #1a1025;
@@ -575,6 +568,33 @@
             opacity: 0.6;
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, #34d399, #059669);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            box-shadow: 0 3px 12px rgba(52, 211, 153, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 211, 153, 0.4);
+        }
+
+        .btn-success:active {
+            transform: translateY(0px) scale(0.97);
+        }
+
         .btn-danger {
             background: linear-gradient(135deg, #f87171, #ef4444);
             color: white;
@@ -806,6 +826,15 @@
             color: #60a5fa;
         }
 
+        /* ========== ACTION BUTTONS ========== */
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            justify-content: flex-end;
+        }
+
         /* ========== RESULT NOTE ========== */
         .result-note {
             padding: 14px 20px 20px;
@@ -998,6 +1027,150 @@
             transition: color 0.3s ease;
         }
 
+        /* ================================================================
+           STYLING KITIR (CETAK)
+           ================================================================ */
+        .kitir-container {
+            display: none; /* disembunyikan, hanya muncul saat print */
+        }
+
+        @media print {
+            /* Sembunyikan semua elemen yang tidak perlu saat cetak */
+            body * {
+                visibility: hidden;
+            }
+            .kitir-container,
+            .kitir-container * {
+                visibility: visible;
+            }
+            .kitir-container {
+                display: block !important;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: white;
+                padding: 30px 40px;
+                z-index: 9999;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                color: #1a1a2e;
+                overflow-y: auto;
+            }
+
+            .kitir-header {
+                text-align: center;
+                border-bottom: 3px solid #ec4899;
+                padding-bottom: 15px;
+                margin-bottom: 20px;
+            }
+            .kitir-header h1 {
+                font-size: 26px;
+                color: #ec4899;
+                margin: 0;
+                font-weight: 700;
+            }
+            .kitir-header .sub {
+                font-size: 14px;
+                color: #5a3d6b;
+                margin-top: 4px;
+            }
+            .kitir-header .badge-print {
+                background: #ec4899;
+                color: white;
+                padding: 2px 16px;
+                border-radius: 20px;
+                font-size: 11px;
+                font-weight: 700;
+                display: inline-block;
+                margin-top: 6px;
+            }
+
+            .kitir-patient {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px 40px;
+                background: #f8f0f5;
+                padding: 14px 20px;
+                border-radius: 10px;
+                margin-bottom: 20px;
+                font-size: 14px;
+            }
+            .kitir-patient .item {
+                font-weight: 600;
+                color: #2d1b3d;
+            }
+            .kitir-patient .item span {
+                font-weight: 400;
+                color: #4a2d5a;
+                margin-left: 4px;
+            }
+
+            .kitir-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 16px 0;
+                font-size: 14px;
+            }
+            .kitir-table th {
+                background: #f472b6;
+                color: white;
+                padding: 10px 12px;
+                text-align: left;
+                font-weight: 700;
+                border: 1px solid #f472b6;
+            }
+            .kitir-table td {
+                padding: 8px 12px;
+                border: 1px solid #e2d0dc;
+            }
+            .kitir-table tr:nth-child(even) {
+                background: #fcf8fa;
+            }
+            .kitir-table .label-col {
+                font-weight: 600;
+                color: #2d1b3d;
+            }
+            .kitir-table .normal-col {
+                color: #059669;
+                font-weight: 600;
+            }
+
+            .kitir-footer {
+                margin-top: 25px;
+                padding-top: 15px;
+                border-top: 2px solid #e2d0dc;
+                font-size: 12px;
+                color: #8a7a9a;
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .kitir-footer .left {
+                text-align: left;
+            }
+            .kitir-footer .right {
+                text-align: right;
+            }
+
+            .kitir-watermark {
+                position: fixed;
+                bottom: 20px;
+                right: 30px;
+                font-size: 12px;
+                color: #d4c0d0;
+                font-weight: 600;
+                letter-spacing: 2px;
+                opacity: 0.5;
+            }
+
+            /* Sembunyikan tombol cetak di dalam kitir */
+            .kitir-no-print {
+                display: none !important;
+            }
+        }
+
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
             body { padding: 8px; }
@@ -1018,6 +1191,7 @@
             .result-header .patient-info { font-size: 11px; text-align: left; width: 100%; }
             .result-header .patient-info .name { font-size: 13px; }
             .btn-primary { padding: 12px 18px; font-size: 15px; }
+            .action-bar { justify-content: center; }
             .result-note { padding: 10px 14px 14px; font-size: 11px; }
             .result-note .legend { gap: 10px; }
             .result-note .legend-item { font-size: 10px; }
@@ -1054,6 +1228,9 @@
             .result-card .range { font-size: 10px; }
             .result-card .card-emoji { font-size: 18px; }
             .btn-primary { padding: 10px 14px; font-size: 13px; border-radius: 12px; }
+            .action-bar { flex-direction: column; align-items: stretch; }
+            .action-bar .btn-success,
+            .action-bar .btn-secondary { justify-content: center; }
             .result-note { padding: 8px 12px 12px; font-size: 10px; }
             .result-note .time-info { font-size: 10px; padding: 4px 10px; }
             .result-note .legend-item { font-size: 9px; }
@@ -1069,6 +1246,13 @@
             .birthdate-row { grid-template-columns: 1fr; gap: 4px; }
             .btn-primary { font-size: 12px; padding: 8px 12px; }
             body::before { font-size: 25px; letter-spacing: 10px; }
+        }
+
+        /* ========== PRINT KITIR ========== */
+        @media print {
+            .kitir-container {
+                display: block !important;
+            }
         }
     </style>
 </head>
@@ -1210,9 +1394,13 @@
                 <div class="ref">📚 Sumber: American Academy of Pediatrics (AAP) 2017 &amp; AHA PALS</div>
             </div>
 
-            <div style="margin-top:16px; text-align:right; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
+            <!-- Action Bar: Simpan Riwayat & Cetak Kitir -->
+            <div class="action-bar">
                 <button class="btn-secondary" id="saveHistoryBtn" style="padding:8px 20px; font-size:13px;">
-                    💾 Simpan ke Riwayat
+                    💾 Simpan Riwayat
+                </button>
+                <button class="btn-success" id="printKitirBtn">
+                    📄 Cetak Kitir
                 </button>
             </div>
         </section>
@@ -1235,6 +1423,51 @@
             💖 &copy; 2026 <strong>APeVS</strong> — Alat bantu penentuan nilai normal tanda vital anak.<br>
             <span style="font-size:11px;">🩺 Untuk digunakan oleh tenaga kesehatan profesional. Selalu konfirmasi dengan pemeriksaan klinis langsung.</span>
         </footer>
+    </div>
+
+    <!-- ================================================================
+         KITIR (Container untuk cetak)
+         ================================================================ -->
+    <div class="kitir-container" id="kitirContainer">
+        <div class="kitir-header">
+            <h1>🩺 APeVS</h1>
+            <div class="sub">Adhyaksa Pediatric Vital Signs</div>
+            <div class="badge-print">NILAI NORMAL TANDA VITAL ANAK</div>
+        </div>
+
+        <div class="kitir-patient" id="kitirPatient">
+            <div class="item">Nama: <span id="kitirName">-</span></div>
+            <div class="item">RM: <span id="kitirRM">-</span></div>
+            <div class="item">Usia: <span id="kitirAge">-</span></div>
+            <div class="item">Jenis Kelamin: <span id="kitirGender">-</span></div>
+            <div class="item">Kategori: <span id="kitirCategory">-</span></div>
+            <div class="item">Berat: <span id="kitirWeight">-</span></div>
+            <div class="item">Tinggi: <span id="kitirHeight">-</span></div>
+        </div>
+
+        <table class="kitir-table" id="kitirTable">
+            <thead>
+                <tr>
+                    <th style="width:30%;">Parameter</th>
+                    <th style="width:35%;">Rentang Normal</th>
+                    <th style="width:35%;">Satuan</th>
+                </tr>
+            </thead>
+            <tbody id="kitirTableBody">
+                <!-- diisi oleh JS -->
+            </tbody>
+        </table>
+
+        <div class="kitir-footer">
+            <div class="left">
+                Dicetak: <span id="kitirDate"></span><br>
+                Sumber: AAP 2017 &amp; AHA PALS
+            </div>
+            <div class="right">
+                <strong>APeVS</strong> — Alat bantu tenaga kesehatan
+            </div>
+        </div>
+        <div class="kitir-watermark">APeVS</div>
     </div>
 
     <script>
@@ -1498,30 +1731,34 @@
             const categoryLabel = currentRange.label;
 
             let wDisplay = '';
+            let wRaw = '';
             if (weight !== null && !isNaN(weight) && weight > 0) {
                 let wv = weight,
                     wu = weightUnit;
                 if (weightUnit === 'gram') { wv = weight / 1000;
                     wu = 'kg'; }
                 wDisplay = `| ⚖️ ${wv.toFixed(2)} ${wu}`;
+                wRaw = `${wv.toFixed(2)} ${wu}`;
             }
 
             let hDisplay = '';
+            let hRaw = '';
             if (height !== null && !isNaN(height) && height > 0) {
                 let hv = height,
                     hu = heightUnit;
                 if (heightUnit === 'feet') { hv = height * 30.48;
                     hu = 'cm'; }
                 hDisplay = `| 📏 ${hv.toFixed(1)} ${hu}`;
+                hRaw = `${hv.toFixed(1)} ${hu}`;
             }
 
             const cards = [
-                { id: 'nadi-day', emoji: '☀️', label: 'Denyut Nadi', rangeData: getMinMax(currentRange.nadi.daytime),
-                    unit: '/menit', range: currentRange.nadi.daytime, type: 'daytime',
-                sub: '🌙 Malam: ' + currentRange.nadi.nighttime },
-                { id: 'nadi-night', emoji: '🌙', label: 'Denyut Nadi', rangeData: getMinMax(currentRange.nadi.nighttime),
-                    unit: '/menit', range: currentRange.nadi.nighttime, type: 'nighttime',
-                sub: '☀️ Siang: ' + currentRange.nadi.daytime },
+                { id: 'nadi-day', emoji: '☀️', label: 'Denyut Nadi (Siang)', rangeData: getMinMax(currentRange.nadi
+                        .daytime), unit: '/menit', range: currentRange.nadi.daytime, type: 'daytime',
+                    sub: '🌙 Malam: ' + currentRange.nadi.nighttime },
+                { id: 'nadi-night', emoji: '🌙', label: 'Denyut Nadi (Malam)', rangeData: getMinMax(currentRange.nadi
+                        .nighttime), unit: '/menit', range: currentRange.nadi.nighttime, type: 'nighttime',
+                    sub: '☀️ Siang: ' + currentRange.nadi.daytime },
                 { id: 'napas', emoji: '🫁', label: 'Laju Pernapasan', rangeData: getMinMax(currentRange.napas),
                     unit: '/menit', range: currentRange.napas, type: 'default' },
                 { id: 'sistol', emoji: '🩸', label: 'TD Sistolik', rangeData: getMinMax(currentRange.sistol),
@@ -1563,7 +1800,9 @@
             });
 
             const genderLabel = gender === 'L' ? '🧑 Laki-laki' : '👩 Perempuan';
+            const genderRaw = gender === 'L' ? 'Laki-laki' : 'Perempuan';
             const ageDisplay = `${age.years}th ${age.months}bl ${age.days}hr`;
+            const ageFull = `${age.years} tahun ${age.months} bulan ${age.days} hari`;
             document.getElementById('displayName').textContent = '👤 ' + patientName;
             document.getElementById('displayRM').textContent = '📋 RM: ' + medicalRecord;
             document.getElementById('displayAgeResult').textContent =
@@ -1573,22 +1812,87 @@
                 `✨ Pasien ${patientName} (${ageDisplay}) memiliki nilai normal berdasarkan pedoman AAP 2017. ` +
                 (weight || height ? '📊 Data antropometri digunakan sebagai referensi tambahan.' : '');
 
+            // Simpan data untuk riwayat dan kitir
             lastResultData = {
                 patientName,
                 medicalRecord,
-                ageDisplay,
-                gender: genderLabel,
+                ageDisplay: ageFull,
+                ageShort: ageDisplay,
+                gender: genderRaw,
+                genderLabel,
                 category: categoryLabel,
-                weight: wDisplay,
-                height: hDisplay,
+                weight: wRaw || '-',
+                height: hRaw || '-',
                 range: currentRange,
                 timestamp: new Date().toLocaleString('id-ID'),
-                hasAbnormal: false
+                hasAbnormal: false,
+                cards: cards
             };
 
             document.getElementById('resultSection').classList.add('show');
             document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+
+        // ============================================================
+        //  KITIR (CETAK)
+        // ============================================================
+
+        function generateKitir() {
+            if (!lastResultData) {
+                alert('😅 Tidak ada data untuk dicetak. Silakan lakukan pemeriksaan terlebih dahulu!');
+                return;
+            }
+
+            const data = lastResultData;
+
+            // Isi data pasien
+            document.getElementById('kitirName').textContent = data.patientName;
+            document.getElementById('kitirRM').textContent = data.medicalRecord;
+            document.getElementById('kitirAge').textContent = data.ageDisplay;
+            document.getElementById('kitirGender').textContent = data.gender;
+            document.getElementById('kitirCategory').textContent = data.category;
+            document.getElementById('kitirWeight').textContent = data.weight;
+            document.getElementById('kitirHeight').textContent = data.height;
+            document.getElementById('kitirDate').textContent = new Date().toLocaleString('id-ID');
+
+            // Isi tabel
+            const tbody = document.getElementById('kitirTableBody');
+            tbody.innerHTML = '';
+
+            const parameters = [
+                { label: 'Denyut Nadi (Siang)', range: data.range.nadi.daytime, unit: '/menit' },
+                { label: 'Denyut Nadi (Malam)', range: data.range.nadi.nighttime, unit: '/menit' },
+                { label: 'Laju Pernapasan', range: data.range.napas, unit: '/menit' },
+                { label: 'Tekanan Darah Sistolik', range: data.range.sistol, unit: 'mmHg' },
+                { label: 'Tekanan Darah Diastolik', range: data.range.diastol, unit: 'mmHg' },
+                { label: 'MAP', range: data.range.map, unit: 'mmHg' },
+                { label: 'Suhu Tubuh', range: data.range.suhu, unit: '°C' }
+            ];
+
+            parameters.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="label-col">${p.label}</td>
+                    <td class="normal-col">${p.range}</td>
+                    <td>${p.unit}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Tampilkan kitir dan cetak
+            const kitir = document.getElementById('kitirContainer');
+            kitir.style.display = 'block';
+
+            // Cetak
+            window.print();
+
+            // Sembunyikan lagi setelah cetak (dengan timeout agar print selesai)
+            setTimeout(() => {
+                kitir.style.display = 'none';
+            }, 1000);
+        }
+
+        document.getElementById('printKitirBtn').addEventListener('click', generateKitir);
 
         // ============================================================
         //  RIWAYAT (LocalStorage)
@@ -1656,7 +1960,6 @@
                 alert('😅 Tidak ada hasil yang disimpan. Silakan lakukan pemeriksaan terlebih dahulu!');
                 return;
             }
-
             saveHistory(lastResultData);
             alert('✅ Riwayat berhasil disimpan! ✨');
         });
@@ -1704,7 +2007,7 @@
         });
 
         console.log('✨ APeVS siap digunakan! 🎉');
-        console.log('👶 Tema anak-anak | 🩺 Emotikon lucu | 🌙 Dark Mode | 📜 Riwayat');
+        console.log('📄 Fitur Kitir (Cetak) telah ditambahkan!');
     </script>
 
 </body>
