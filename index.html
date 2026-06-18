@@ -3,7 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SANS Hub - System Adhyaksa Nurse Support</title>
+  <title>SANS Hub — System Adhyaksa Nurse Support</title>
+  <meta name="description" content="System Adhyaksa Nurse Support — Tools pendukung tenaga medis Rumah Sakit Adhyaksa Jawa Timur." />
+  <meta name="keywords" content="SANS, Adhyaksa, nurse support, ICU calculator, pediatric vital signs, EWSS" />
+  <meta name="author" content="System Adhyaksa Nurse Support" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+      <rect width='100' height='100' rx='20' fill='%230f172a'/>
+      <text y='0.8em' font-size='60' text-anchor='middle' x='50' dy='0.1em'>⚖️</text>
+    </svg>" />
+
   <style>
     :root {
       --bg: #0f172a;
@@ -235,6 +246,7 @@
       color: white;
       position: relative;
       overflow: hidden;
+      display: block;
     }
 
     .featured-card:hover {
@@ -314,7 +326,6 @@
 
     .link-card:nth-child(1) { animation: fadeInUp 0.3s ease 0.1s both; }
     .link-card:nth-child(2) { animation: fadeInUp 0.3s ease 0.15s both; }
-    .link-card:nth-child(3) { animation: fadeInUp 0.3s ease 0.2s both; }
 
     @media (max-width: 480px) {
       body { padding: 20px 12px; }
@@ -327,7 +338,7 @@
 </head>
 <body>
   <div class="container">
-    
+
     <!-- ===== PROFILE ===== -->
     <div class="profile">
       <div class="avatar">⚖️</div>
@@ -348,22 +359,22 @@
     </a>
 
     <!-- ===== DIVIDER ===== -->
-    <div class="divider">Coming Soon</div>
+    <div class="divider">Tools Lainnya</div>
 
     <!-- ===== LINKS ===== -->
     <div class="links">
-      
-      <!-- APeVS (Adhyaksa Pediatric Vital Signs) -->
-      <div class="link-card coming-soon">
+
+      <!-- APeVS — AKTIF -->
+      <a href="apevs.html" class="link-card">
         <div class="link-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">👶</div>
         <div class="link-info">
           <div class="link-title">APeVS (Adhyaksa Pediatric Vital Signs)</div>
           <div class="link-desc">Kalkulator tanda-tanda vital normal untuk perinatal & pediatri</div>
         </div>
-        <span class="coming-soon-badge">Coming Soon</span>
-      </div>
+        <span class="link-arrow">→</span>
+      </a>
 
-      <!-- Sistem Permudah EWSS -->
+      <!-- EWSS — COMING SOON -->
       <div class="link-card coming-soon">
         <div class="link-icon ewss-icon">🩺</div>
         <div class="link-info">
@@ -372,16 +383,6 @@
         </div>
         <span class="coming-soon-badge">Coming Soon</span>
       </div>
-
-      <!-- ACDC Calculator (link tambahan) -->
-      <a href="acdc-calculator.html" class="link-card">
-        <div class="link-icon" style="background: linear-gradient(135deg, #087568, #07584f);">📊</div>
-        <div class="link-info">
-          <div class="link-title">ACDC Calculator</div>
-          <div class="link-desc">Hitung rate syringe pump dengan cepat & akurat</div>
-        </div>
-        <span class="link-arrow">→</span>
-      </a>
 
     </div>
 
