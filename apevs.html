@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>APeVS - Adhyaksa Pediatric Vital Signs</title>
     <style>
         /* ========== CSS VARIABLES ========== */
@@ -96,20 +96,22 @@
 
         html {
             scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 20px;
+            padding: 12px;
             transition: background 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: var(--scrollbar-track);
@@ -124,9 +126,9 @@
             max-width: 1100px;
             margin: 0 auto;
             background: var(--bg-secondary);
-            border-radius: 20px;
+            border-radius: 16px;
             box-shadow: var(--shadow);
-            padding: 30px 35px 45px;
+            padding: 20px 18px 30px;
             transition: all 0.3s ease;
         }
 
@@ -136,84 +138,92 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            padding-bottom: 25px;
+            padding-bottom: 18px;
             border-bottom: 3px solid var(--border-color);
-            margin-bottom: 30px;
-            gap: 15px;
+            margin-bottom: 20px;
+            gap: 12px;
             transition: border-color 0.3s ease;
         }
 
         .header .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .header .logo-icon {
             background: var(--btn-bg);
             color: white;
-            width: 55px;
-            height: 55px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 22px;
             font-weight: bold;
             letter-spacing: 1px;
             transition: background 0.3s ease;
+            flex-shrink: 0;
         }
 
         .header h1 {
             color: var(--text-primary);
-            font-size: 32px;
+            font-size: 26px;
             font-weight: 700;
             transition: color 0.3s ease;
         }
 
         .header .subtitle {
             color: var(--text-secondary);
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 400;
-            margin-top: 2px;
-            letter-spacing: 0.5px;
+            margin-top: 0px;
+            letter-spacing: 0.3px;
             transition: color 0.3s ease;
         }
 
         .header .badge {
             background: var(--badge-bg);
             color: white;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 20px;
             display: inline-block;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
             transition: background 0.3s ease;
+        }
+
+        .header .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .theme-toggle {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
             cursor: pointer;
             user-select: none;
         }
 
         .theme-toggle .toggle-track {
-            width: 50px;
-            height: 26px;
+            width: 44px;
+            height: 24px;
             background: var(--toggle-bg);
-            border-radius: 13px;
+            border-radius: 12px;
             position: relative;
             transition: background 0.3s ease;
             flex-shrink: 0;
         }
 
         .theme-toggle .toggle-thumb {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background: white;
             border-radius: 50%;
             position: absolute;
@@ -224,12 +234,12 @@
         }
 
         [data-theme="dark"] .theme-toggle .toggle-thumb {
-            transform: translateX(24px);
+            transform: translateX(20px);
             background: #1a2035;
         }
 
         .theme-toggle .toggle-label {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--text-secondary);
             transition: color 0.3s ease;
@@ -238,9 +248,9 @@
         /* ========== FORM ========== */
         .form-section {
             background: var(--bg-form);
-            border-radius: 15px;
-            padding: 25px 30px;
-            margin-bottom: 30px;
+            border-radius: 12px;
+            padding: 18px 16px;
+            margin-bottom: 20px;
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
@@ -248,7 +258,7 @@
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 14px;
         }
 
         .form-grid .full-width {
@@ -261,10 +271,10 @@
         }
 
         .form-group label {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-secondary);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             transition: color 0.3s ease;
         }
 
@@ -275,31 +285,34 @@
 
         .form-group input,
         .form-group select {
-            padding: 10px 14px;
+            padding: 9px 12px;
             border: 2px solid var(--input-border);
-            border-radius: 10px;
-            font-size: 15px;
+            border-radius: 8px;
+            font-size: 14px;
             font-family: inherit;
             transition: all 0.3s ease;
             background: var(--input-bg);
             color: var(--text-primary);
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
             border-color: var(--input-focus);
-            box-shadow: 0 0 0 4px rgba(26, 82, 118, 0.15);
+            box-shadow: 0 0 0 3px rgba(26, 82, 118, 0.15);
         }
 
         .form-group input::placeholder {
             color: var(--text-muted);
+            font-size: 13px;
         }
 
         .form-group .hint {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
-            margin-top: 4px;
+            margin-top: 3px;
             transition: color 0.3s ease;
         }
 
@@ -310,9 +323,9 @@
         }
 
         .form-group .error-text {
-            font-size: 12px;
+            font-size: 11px;
             color: #e74c3c;
-            margin-top: 4px;
+            margin-top: 3px;
             display: none;
         }
 
@@ -323,74 +336,78 @@
         .form-group input.error,
         .form-group select.error {
             border-color: #e74c3c;
-            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15);
         }
 
         .row-name-rm {
             display: grid;
-            grid-template-columns: 2fr 1.5fr;
-            gap: 20px;
+            grid-template-columns: 1.8fr 1.2fr;
+            gap: 14px;
         }
 
         .birthdate-row {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
+            gap: 8px;
         }
 
         .birthdate-row select {
-            padding: 10px 14px;
+            padding: 9px 10px;
             border: 2px solid var(--input-border);
-            border-radius: 10px;
-            font-size: 15px;
-            font-family: inherit;
-            background: var(--input-bg);
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            appearance: auto;
-        }
-
-        .birthdate-row select:focus {
-            outline: none;
-            border-color: var(--input-focus);
-            box-shadow: 0 0 0 4px rgba(26, 82, 118, 0.15);
-        }
-
-        .input-with-unit {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .input-with-unit input {
-            flex: 1;
-        }
-
-        .input-with-unit select {
-            width: 80px;
-            flex-shrink: 0;
-            padding: 10px 8px;
-            border: 2px solid var(--input-border);
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 14px;
             font-family: inherit;
             background: var(--input-bg);
             color: var(--text-primary);
             cursor: pointer;
             transition: all 0.3s ease;
+            -webkit-appearance: auto;
+            appearance: auto;
+        }
+
+        .birthdate-row select:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(26, 82, 118, 0.15);
+        }
+
+        .input-with-unit {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .input-with-unit input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .input-with-unit select {
+            width: 70px;
+            flex-shrink: 0;
+            padding: 9px 6px;
+            border: 2px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-appearance: auto;
+            appearance: auto;
         }
 
         .input-with-unit select:focus {
             outline: none;
             border-color: var(--input-focus);
-            box-shadow: 0 0 0 4px rgba(26, 82, 118, 0.15);
+            box-shadow: 0 0 0 3px rgba(26, 82, 118, 0.15);
         }
 
         .age-display {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
+            gap: 8px;
         }
 
         .age-display input {
@@ -399,9 +416,9 @@
             font-weight: 600;
             text-align: center;
             border: 2px solid var(--border-color);
-            border-radius: 10px;
-            padding: 10px 14px;
-            font-size: 15px;
+            border-radius: 8px;
+            padding: 9px 10px;
+            font-size: 14px;
             font-family: inherit;
             transition: all 0.3s ease;
         }
@@ -410,15 +427,16 @@
             background: var(--btn-bg);
             color: white;
             border: none;
-            padding: 13px 40px;
-            font-size: 17px;
+            padding: 12px 24px;
+            font-size: 16px;
             font-weight: 600;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 10px;
-            letter-spacing: 0.5px;
+            margin-top: 8px;
+            letter-spacing: 0.3px;
             width: 100%;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-primary:hover {
@@ -429,18 +447,20 @@
 
         .btn-primary:active {
             transform: translateY(0px);
+            opacity: 0.8;
         }
 
         .btn-secondary {
             background: var(--border-color);
             color: var(--text-primary);
             border: none;
-            padding: 10px 20px;
-            font-size: 14px;
+            padding: 8px 16px;
+            font-size: 13px;
             font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-secondary:hover {
@@ -448,16 +468,22 @@
             transform: translateY(-1px);
         }
 
+        .btn-secondary:active {
+            transform: translateY(0px);
+            opacity: 0.6;
+        }
+
         .btn-success {
             background: #27ae60;
             color: white;
             border: none;
-            padding: 10px 24px;
+            padding: 10px 20px;
             font-size: 14px;
             font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-success:hover {
@@ -465,26 +491,36 @@
             transform: translateY(-1px);
         }
 
+        .btn-success:active {
+            transform: translateY(0px);
+            opacity: 0.8;
+        }
+
         .btn-danger {
             background: #e74c3c;
             color: white;
             border: none;
-            padding: 6px 14px;
-            font-size: 12px;
+            padding: 5px 12px;
+            font-size: 11px;
             font-weight: 600;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-danger:hover {
             background: #c0392b;
         }
 
+        .btn-danger:active {
+            opacity: 0.8;
+        }
+
         /* ========== RESULTS ========== */
         .result-section {
             display: none;
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.4s ease;
         }
 
         .result-section.show {
@@ -492,47 +528,47 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(16px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .result-header {
             background: var(--header-bg);
             color: white;
-            padding: 18px 25px;
-            border-radius: 15px 15px 0 0;
+            padding: 14px 18px;
+            border-radius: 12px 12px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
             transition: background 0.3s ease;
         }
 
         .result-header h2 {
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 600;
         }
 
         .result-header .patient-info {
-            font-size: 14px;
+            font-size: 12px;
             opacity: 0.9;
             text-align: right;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .result-header .patient-info .name {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .result-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            padding: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            padding: 18px;
             background: var(--result-bg);
-            border-radius: 0 0 15px 15px;
+            border-radius: 0 0 12px 12px;
             border: 1px solid var(--border-color);
             border-top: none;
             transition: all 0.3s ease;
@@ -541,22 +577,21 @@
         /* ========== RESULT CARDS ========== */
         .result-card {
             background: var(--card-bg);
-            padding: 18px 16px;
-            border-radius: 12px;
+            padding: 14px 12px;
+            border-radius: 10px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
             transition: all 0.2s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .result-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        .result-card:active {
+            transform: scale(0.97);
         }
 
         .result-card.daytime {
-            border-left: 5px solid var(--daytime-border);
+            border-left: 4px solid var(--daytime-border);
             background: var(--daytime-bg);
         }
 
@@ -565,7 +600,7 @@
         }
 
         .result-card.nighttime {
-            border-left: 5px solid var(--nighttime-border);
+            border-left: 4px solid var(--nighttime-border);
             background: var(--nighttime-bg);
         }
 
@@ -574,7 +609,7 @@
         }
 
         .result-card.default-card {
-            border-left: 5px solid var(--default-border);
+            border-left: 4px solid var(--default-border);
         }
 
         .result-card.default-card .label {
@@ -582,30 +617,30 @@
         }
 
         .result-card .label {
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             transition: color 0.3s ease;
         }
 
         .result-card .value {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--text-primary);
-            margin: 6px 0 2px;
+            margin: 4px 0 2px;
             transition: color 0.3s ease;
         }
 
         .result-card .value .unit {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 400;
             color: var(--text-muted);
             margin-left: 2px;
         }
 
         .result-card .range {
-            font-size: 13px;
+            font-size: 11px;
             color: var(--text-secondary);
             transition: color 0.3s ease;
         }
@@ -621,7 +656,7 @@
         }
 
         .result-card .sub-range {
-            font-size: 12px;
+            font-size: 10px;
             color: var(--text-muted);
             margin-top: 2px;
             transition: color 0.3s ease;
@@ -629,11 +664,11 @@
 
         .result-card .status {
             display: inline-block;
-            padding: 3px 12px;
+            padding: 2px 10px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
         .status-normal {
@@ -648,11 +683,11 @@
 
         .result-card .time-badge {
             display: inline-block;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 10px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-size: 9px;
             font-weight: 700;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
             margin-top: 2px;
         }
 
@@ -679,10 +714,10 @@
         /* ========== COMPARE SECTION ========== */
         .compare-section {
             display: none;
-            margin-top: 25px;
-            padding: 20px 25px 25px;
+            margin-top: 18px;
+            padding: 16px 16px 20px;
             background: var(--compare-bg);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 2px solid var(--compare-border);
             transition: all 0.3s ease;
         }
@@ -693,39 +728,44 @@
         }
 
         .compare-section h3 {
-            font-size: 18px;
+            font-size: 16px;
             color: var(--text-primary);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .compare-grid {
+        .compare-section .subtitle-compare {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        /* Compare Input - Mobile Friendly */
+        .compare-input-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
 
         .compare-input-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-            gap: 10px;
-        }
-
-        .compare-input-group .form-group {
             display: flex;
             flex-direction: column;
         }
 
-        .compare-input-group .form-group label {
-            font-size: 11px;
+        .compare-input-group label {
+            font-size: 10px;
             font-weight: 600;
             color: var(--text-muted);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            transition: color 0.3s ease;
         }
 
-        .compare-input-group .form-group input {
+        .compare-input-group input {
             padding: 8px 10px;
             border: 2px solid var(--input-border);
             border-radius: 8px;
@@ -735,32 +775,59 @@
             color: var(--text-primary);
             transition: all 0.3s ease;
             width: 100%;
+            min-height: 40px;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
-        .compare-input-group .form-group input:focus {
+        .compare-input-group input:focus {
             outline: none;
             border-color: var(--input-focus);
-            box-shadow: 0 0 0 4px rgba(26, 82, 118, 0.15);
+            box-shadow: 0 0 0 3px rgba(26, 82, 118, 0.15);
         }
 
-        .compare-input-group .form-group input::placeholder {
+        .compare-input-group input::placeholder {
             color: var(--text-muted);
             font-size: 12px;
         }
 
+        /* MAP Auto-fill highlight */
+        .compare-input-group input.map-auto {
+            background: var(--status-normal-bg);
+            border-color: #27ae60;
+            font-weight: 700;
+        }
+
+        .compare-input-group input.map-auto:focus {
+            border-color: #27ae60;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+        }
+
         .compare-btn-wrapper {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-top: 15px;
+            margin-top: 14px;
             justify-content: flex-end;
+        }
+
+        .compare-btn-wrapper .btn-success,
+        .compare-btn-wrapper .btn-secondary {
+            flex: 1;
+            min-width: 100px;
+            justify-content: center;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
         }
 
         /* ========== COMPARE RESULTS ========== */
         .compare-results {
             display: none;
-            margin-top: 20px;
-            padding-top: 20px;
+            margin-top: 16px;
+            padding-top: 16px;
             border-top: 2px solid var(--border-color);
         }
 
@@ -770,11 +837,11 @@
         }
 
         .compare-results .summary {
-            padding: 12px 18px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 12px;
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .compare-results .summary.all-normal {
@@ -795,31 +862,33 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 16px;
-            border-radius: 8px;
-            margin-bottom: 6px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 4px;
             transition: all 0.3s ease;
+            flex-wrap: wrap;
+            gap: 4px;
         }
 
         .compare-item.normal {
             background: var(--status-normal-bg);
-            border-left: 4px solid #27ae60;
+            border-left: 3px solid #27ae60;
         }
 
         .compare-item.abnormal {
             background: var(--abnormal-bg);
-            border-left: 4px solid #e74c3c;
+            border-left: 3px solid #e74c3c;
             border-color: var(--abnormal-border);
         }
 
         .compare-item .param {
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-primary);
         }
 
         .compare-item .detail {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-secondary);
         }
 
@@ -829,12 +898,13 @@
 
         .compare-item .detail .range {
             color: var(--text-muted);
+            font-size: 12px;
         }
 
         .compare-item .status-badge {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
-            padding: 2px 12px;
+            padding: 2px 10px;
             border-radius: 12px;
         }
 
@@ -850,11 +920,11 @@
 
         /* ========== RESULT NOTE ========== */
         .result-note {
-            padding: 15px 25px 25px;
-            font-size: 13px;
+            padding: 12px 18px 18px;
+            font-size: 12px;
             color: var(--text-secondary);
             background: var(--result-bg);
-            border-radius: 0 0 15px 15px;
+            border-radius: 0 0 12px 12px;
             border: 1px solid var(--border-color);
             border-top: none;
             border-top: 1px solid var(--border-color);
@@ -868,28 +938,28 @@
 
         .result-note .ref {
             color: var(--text-muted);
-            font-size: 12px;
-            margin-top: 8px;
+            font-size: 11px;
+            margin-top: 6px;
             transition: color 0.3s ease;
         }
 
         .result-note .time-info {
             background: var(--bg-form);
-            padding: 8px 14px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
             display: inline-block;
-            margin-top: 6px;
-            font-size: 13px;
+            margin-top: 4px;
+            font-size: 12px;
             color: var(--text-secondary);
             transition: all 0.3s ease;
         }
 
         .result-note .legend {
             display: flex;
-            gap: 20px;
+            gap: 14px;
             flex-wrap: wrap;
-            margin-top: 10px;
-            padding-top: 10px;
+            margin-top: 8px;
+            padding-top: 8px;
             border-top: 1px dashed var(--border-color);
             transition: border-color 0.3s ease;
         }
@@ -897,16 +967,17 @@
         .result-note .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 12px;
+            gap: 6px;
+            font-size: 11px;
             color: var(--text-secondary);
             transition: color 0.3s ease;
         }
 
         .result-note .legend-item .color-box {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border-radius: 4px;
+            flex-shrink: 0;
         }
 
         .color-box.day {
@@ -919,8 +990,8 @@
 
         /* ========== HISTORY ========== */
         .history-section {
-            margin-top: 30px;
-            padding-top: 20px;
+            margin-top: 24px;
+            padding-top: 16px;
             border-top: 2px solid var(--border-color);
             transition: border-color 0.3s ease;
         }
@@ -930,33 +1001,35 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .history-header h3 {
-            font-size: 18px;
+            font-size: 16px;
             color: var(--text-primary);
             transition: color 0.3s ease;
         }
 
         .history-list {
-            max-height: 300px;
+            max-height: 260px;
             overflow-y: auto;
             background: var(--history-bg);
-            border-radius: 10px;
+            border-radius: 8px;
             border: 1px solid var(--history-border);
             transition: all 0.3s ease;
+            -webkit-overflow-scrolling: touch;
         }
 
         .history-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-bottom: 1px solid var(--history-border);
             transition: all 0.3s ease;
             cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .history-item:last-child {
@@ -967,6 +1040,10 @@
             background: var(--history-hover);
         }
 
+        .history-item:active {
+            opacity: 0.7;
+        }
+
         .history-item .info {
             display: flex;
             flex-direction: column;
@@ -975,48 +1052,50 @@
 
         .history-item .info .name {
             font-weight: 600;
+            font-size: 14px;
             color: var(--text-primary);
             transition: color 0.3s ease;
         }
 
         .history-item .info .detail {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
             transition: color 0.3s ease;
         }
 
         .history-item .info .status-badge {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            padding: 2px 10px;
-            border-radius: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
             display: inline-block;
             margin-top: 2px;
         }
 
         .history-item .date {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
             text-align: right;
             transition: color 0.3s ease;
+            flex-shrink: 0;
         }
 
         .history-empty {
             text-align: center;
-            padding: 30px;
+            padding: 24px;
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 13px;
             transition: color 0.3s ease;
         }
 
         /* ========== FOOTER ========== */
         .footer {
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
+            margin-top: 24px;
+            padding-top: 16px;
             border-top: 1px solid var(--border-color);
             color: var(--footer-text);
-            font-size: 13px;
+            font-size: 12px;
             transition: all 0.3s ease;
         }
 
@@ -1026,98 +1105,311 @@
         }
 
         /* ========== RESPONSIVE ========== */
-        @media (max-width: 700px) {
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
             .container {
-                padding: 18px;
+                padding: 14px 12px 20px;
+                border-radius: 12px;
             }
-            .header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-            }
-            .header .logo {
-                justify-content: center;
+            .header .logo-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
             }
             .header h1 {
-                font-size: 24px;
+                font-size: 20px;
             }
-            .theme-toggle {
-                justify-content: center;
+            .header .subtitle {
+                font-size: 11px;
+            }
+            .header .badge {
+                font-size: 9px;
+                padding: 2px 8px;
+            }
+            .form-section {
+                padding: 14px 12px;
             }
             .form-grid {
                 grid-template-columns: 1fr;
-                gap: 15px;
+                gap: 12px;
             }
             .form-grid .full-width {
                 grid-column: 1;
             }
             .row-name-rm {
                 grid-template-columns: 1fr;
-                gap: 12px;
+                gap: 10px;
             }
             .birthdate-row {
                 grid-template-columns: 1fr 1fr 1fr;
-                gap: 8px;
+                gap: 6px;
             }
             .age-display {
                 grid-template-columns: 1fr;
-                gap: 8px;
-            }
-            .result-grid {
-                grid-template-columns: 1fr 1fr;
-                padding: 15px;
-            }
-            .result-card .value {
-                font-size: 20px;
-            }
-            .btn-primary {
-                padding: 12px 20px;
-                font-size: 15px;
-            }
-            .result-note .legend {
-                gap: 12px;
-            }
-            .result-header .patient-info {
-                text-align: left;
-                width: 100%;
-            }
-            .input-with-unit {
-                flex-wrap: wrap;
-            }
-            .input-with-unit select {
-                width: 100%;
-            }
-            .compare-grid {
-                grid-template-columns: 1fr;
-            }
-            .compare-input-group {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-            .history-item {
-                flex-direction: column;
-                align-items: flex-start;
                 gap: 6px;
             }
-            .history-item .date {
+            .age-display input {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+            .result-grid {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 12px;
+                gap: 10px;
+            }
+            .result-card .value {
+                font-size: 16px;
+            }
+            .result-header h2 {
+                font-size: 15px;
+            }
+            .result-header .patient-info {
+                font-size: 11px;
                 text-align: left;
                 width: 100%;
+            }
+            .result-header .patient-info .name {
+                font-size: 13px;
+            }
+            .btn-primary {
+                padding: 11px 18px;
+                font-size: 14px;
+            }
+
+            /* Compare Mobile */
+            .compare-section {
+                padding: 12px 12px 16px;
+            }
+            .compare-section h3 {
+                font-size: 14px;
+            }
+            .compare-input-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .compare-input-group label {
+                font-size: 9px;
+            }
+            .compare-input-group input {
+                padding: 7px 8px;
+                font-size: 13px;
+                min-height: 36px;
+            }
+            .compare-btn-wrapper .btn-success,
+            .compare-btn-wrapper .btn-secondary {
+                flex: 1;
+                min-width: 80px;
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+
+            .compare-item {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            .compare-item .param {
+                font-size: 12px;
+            }
+            .compare-item .detail {
+                font-size: 12px;
+            }
+            .compare-item .status-badge {
+                font-size: 10px;
+                padding: 1px 8px;
+            }
+
+            .result-note {
+                padding: 10px 14px 14px;
+                font-size: 11px;
+            }
+            .result-note .legend {
+                gap: 10px;
+            }
+            .result-note .legend-item {
+                font-size: 10px;
+            }
+
+            .history-item {
+                padding: 8px 12px;
+            }
+            .history-item .info .name {
+                font-size: 13px;
+            }
+            .history-item .date {
+                font-size: 10px;
+            }
+
+            .theme-toggle .toggle-track {
+                width: 38px;
+                height: 20px;
+            }
+            .theme-toggle .toggle-thumb {
+                width: 14px;
+                height: 14px;
+                top: 3px;
+                left: 3px;
+            }
+            [data-theme="dark"] .theme-toggle .toggle-thumb {
+                transform: translateX(18px);
+            }
+            .theme-toggle .toggle-label {
+                font-size: 11px;
             }
         }
 
-        @media (max-width: 450px) {
-            .result-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px 8px 16px;
+                border-radius: 10px;
+            }
+            .header {
+                padding-bottom: 12px;
+                margin-bottom: 14px;
+            }
+            .header .logo {
+                gap: 8px;
             }
             .header .logo-icon {
-                width: 45px;
-                height: 45px;
-                font-size: 22px;
+                width: 34px;
+                height: 34px;
+                font-size: 15px;
+            }
+            .header h1 {
+                font-size: 17px;
+            }
+            .header .subtitle {
+                font-size: 10px;
+            }
+            .form-section {
+                padding: 10px 10px;
+                border-radius: 10px;
+            }
+            .form-group label {
+                font-size: 12px;
+            }
+            .form-group input,
+            .form-group select {
+                padding: 7px 10px;
+                font-size: 13px;
+                border-radius: 6px;
+            }
+            .birthdate-row select {
+                padding: 7px 8px;
+                font-size: 13px;
+            }
+            .input-with-unit select {
+                width: 60px;
+                padding: 7px 4px;
+                font-size: 12px;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr 1fr;
+                padding: 10px;
+                gap: 8px;
+            }
+            .result-card {
+                padding: 10px 8px;
+                border-radius: 8px;
+            }
+            .result-card .value {
+                font-size: 15px;
+            }
+            .result-card .label {
+                font-size: 9px;
+            }
+            .result-card .range {
+                font-size: 10px;
+            }
+
+            .compare-input-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            .compare-input-group input {
+                padding: 6px 8px;
+                font-size: 12px;
+                min-height: 32px;
+                border-radius: 6px;
+            }
+            .compare-btn-wrapper {
+                flex-direction: row;
+            }
+            .compare-btn-wrapper .btn-success,
+            .compare-btn-wrapper .btn-secondary {
+                font-size: 12px;
+                padding: 7px 10px;
+                min-width: 60px;
+                flex: 1;
+            }
+
+            .compare-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+                padding: 6px 10px;
+            }
+            .compare-item .detail {
+                font-size: 11px;
+            }
+            .compare-item .status-badge {
+                font-size: 9px;
+                padding: 1px 6px;
+                margin-top: 2px;
+            }
+
+            .btn-primary {
+                padding: 10px 14px;
+                font-size: 13px;
+                border-radius: 8px;
+            }
+
+            .result-note {
+                padding: 8px 12px 12px;
+                font-size: 10px;
+            }
+            .result-note .time-info {
+                font-size: 10px;
+                padding: 4px 10px;
+            }
+            .result-note .legend-item {
+                font-size: 9px;
+            }
+            .result-note .legend-item .color-box {
+                width: 12px;
+                height: 12px;
+            }
+
+            .history-header h3 {
+                font-size: 14px;
+            }
+            .history-item .info .name {
+                font-size: 12px;
+            }
+            .history-item .info .detail {
+                font-size: 10px;
+            }
+            .history-item .date {
+                font-size: 9px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .compare-input-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .result-grid {
+                grid-template-columns: 1fr 1fr;
             }
             .birthdate-row {
                 grid-template-columns: 1fr;
+                gap: 4px;
             }
-            .compare-input-group {
-                grid-template-columns: 1fr 1fr;
+            .btn-primary {
+                font-size: 12px;
+                padding: 8px 12px;
             }
         }
     </style>
@@ -1134,7 +1426,7 @@
                     <div class="subtitle">Adhyaksa Pediatric Vital Signs</div>
                 </div>
             </div>
-            <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap;">
+            <div class="header-right">
                 <span class="badge">⚕️ AAP 2017</span>
                 <div class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
                     <span class="toggle-label" id="themeLabel">🌙</span>
@@ -1154,7 +1446,7 @@
                         <div class="row-name-rm">
                             <div class="form-group">
                                 <label>Nama Pasien <span class="required">*</span></label>
-                                <input type="text" id="patientName" placeholder="Masukkan nama lengkap pasien" required autocomplete="off">
+                                <input type="text" id="patientName" placeholder="Masukkan nama lengkap" required autocomplete="off">
                                 <span class="error-text" id="nameError">Nama pasien harus diisi</span>
                             </div>
                             <div class="form-group">
@@ -1182,12 +1474,12 @@
                             <select id="birthDay"><option value="">Hari</option></select>
                             <select id="birthMonth">
                                 <option value="">Bulan</option>
-                                <option value="1">Januari</option><option value="2">Februari</option>
-                                <option value="3">Maret</option><option value="4">April</option>
-                                <option value="5">Mei</option><option value="6">Juni</option>
-                                <option value="7">Juli</option><option value="8">Agustus</option>
-                                <option value="9">September</option><option value="10">Oktober</option>
-                                <option value="11">November</option><option value="12">Desember</option>
+                                <option value="1">Jan</option><option value="2">Feb</option>
+                                <option value="3">Mar</option><option value="4">Apr</option>
+                                <option value="5">Mei</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Agu</option>
+                                <option value="9">Sep</option><option value="10">Okt</option>
+                                <option value="11">Nov</option><option value="12">Des</option>
                             </select>
                             <select id="birthYear"><option value="">Tahun</option></select>
                         </div>
@@ -1246,7 +1538,7 @@
                 <span id="interpretation">Nilai normal berdasarkan usia.</span>
                 <div class="time-info">⏰ Rentang nilai otomatis dibagi berdasarkan waktu (Siang/Malam)</div>
                 <div class="legend">
-                    <span style="font-weight:600; font-size:13px;">🎨 Legenda:</span>
+                    <span style="font-weight:600; font-size:12px;">🎨 Legenda:</span>
                     <div class="legend-item"><div class="color-box day"></div>Denyut Nadi <strong>Siang</strong></div>
                     <div class="legend-item"><div class="color-box night"></div>Denyut Nadi <strong>Malam</strong></div>
                 </div>
@@ -1256,36 +1548,38 @@
             <!-- ===== COMPARE SECTION ===== -->
             <div class="compare-section" id="compareSection">
                 <h3>📊 Bandingkan dengan Nilai Aktual</h3>
-                <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">
+                <p class="subtitle-compare">
                     Masukkan hasil pengukuran aktual pasien untuk mengetahui apakah dalam rentang normal.
+                    <span style="display:block; margin-top:4px; font-weight:600; color:var(--btn-bg);">
+                        💡 MAP akan terisi otomatis saat TD Sistolik & Diastolik diisi!
+                    </span>
                 </p>
 
-                <div class="compare-grid">
+                <!-- Compare Input Grid - Mobile Friendly -->
+                <div class="compare-input-grid" id="compareInputGrid">
                     <div class="compare-input-group">
-                        <div class="form-group">
-                            <label>Nadi (/menit)</label>
-                            <input type="number" id="cmpNadi" min="0" max="300" step="1" placeholder="0">
-                        </div>
-                        <div class="form-group">
-                            <label>Napas (/menit)</label>
-                            <input type="number" id="cmpNapas" min="0" max="100" step="1" placeholder="0">
-                        </div>
-                        <div class="form-group">
-                            <label>TD Sistolik (mmHg)</label>
-                            <input type="number" id="cmpSistol" min="0" max="250" step="1" placeholder="0">
-                        </div>
-                        <div class="form-group">
-                            <label>TD Diastolik (mmHg)</label>
-                            <input type="number" id="cmpDiastol" min="0" max="200" step="1" placeholder="0">
-                        </div>
-                        <div class="form-group">
-                            <label>MAP (mmHg)</label>
-                            <input type="number" id="cmpMap" min="0" max="200" step="1" placeholder="0">
-                        </div>
-                        <div class="form-group">
-                            <label>Suhu (°C)</label>
-                            <input type="number" id="cmpSuhu" min="35" max="42" step="0.1" placeholder="36.5">
-                        </div>
+                        <label>Nadi (/menit)</label>
+                        <input type="number" id="cmpNadi" min="0" max="300" step="1" placeholder="0">
+                    </div>
+                    <div class="compare-input-group">
+                        <label>Napas (/menit)</label>
+                        <input type="number" id="cmpNapas" min="0" max="100" step="1" placeholder="0">
+                    </div>
+                    <div class="compare-input-group">
+                        <label>TD Sistolik (mmHg)</label>
+                        <input type="number" id="cmpSistol" min="0" max="250" step="1" placeholder="0">
+                    </div>
+                    <div class="compare-input-group">
+                        <label>TD Diastolik (mmHg)</label>
+                        <input type="number" id="cmpDiastol" min="0" max="200" step="1" placeholder="0">
+                    </div>
+                    <div class="compare-input-group">
+                        <label>MAP (mmHg) <span style="color:#27ae60;">⚡auto</span></label>
+                        <input type="number" id="cmpMap" min="0" max="200" step="1" placeholder="Auto" readonly style="background:var(--bg-form); cursor:default;">
+                    </div>
+                    <div class="compare-input-group">
+                        <label>Suhu (°C)</label>
+                        <input type="number" id="cmpSuhu" min="35" max="42" step="0.1" placeholder="36.5">
                     </div>
                 </div>
 
@@ -1302,8 +1596,8 @@
             </div>
 
             <!-- Tombol Simpan Riwayat -->
-            <div style="margin-top:20px; text-align:right; display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;">
-                <button class="btn-secondary" id="saveHistoryBtn" style="padding:10px 24px; font-size:14px;">
+            <div style="margin-top:16px; text-align:right; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
+                <button class="btn-secondary" id="saveHistoryBtn" style="padding:8px 20px; font-size:13px;">
                     💾 Simpan ke Riwayat
                 </button>
             </div>
@@ -1314,9 +1608,7 @@
             <div class="history-header">
                 <h3>📜 Riwayat Pemeriksaan</h3>
                 <div>
-                    <button class="btn-secondary" id="clearHistoryBtn" style="padding:6px 14px; font-size:12px; color:#e74c3c;">
-                        🗑️ Hapus Semua
-                    </button>
+                    <button class="btn-danger" id="clearHistoryBtn">🗑️ Hapus Semua</button>
                 </div>
             </div>
             <div class="history-list" id="historyList">
@@ -1327,7 +1619,7 @@
         <!-- FOOTER -->
         <footer class="footer">
             &copy; 2026 <strong>APeVS</strong> — Alat bantu penentuan nilai normal tanda vital anak.<br>
-            <span style="font-size:12px;">Untuk digunakan oleh tenaga kesehatan profesional. Selalu konfirmasi dengan pemeriksaan klinis langsung.</span>
+            <span style="font-size:11px;">Untuk digunakan oleh tenaga kesehatan profesional. Selalu konfirmasi dengan pemeriksaan klinis langsung.</span>
         </footer>
     </div>
 
@@ -1502,6 +1794,36 @@
         document.getElementById('birthYear').addEventListener('change', updateAgeDisplay);
 
         // ============================================================
+        //  MAP OTOMATIS
+        // ============================================================
+
+        const cmpSistol = document.getElementById('cmpSistol');
+        const cmpDiastol = document.getElementById('cmpDiastol');
+        const cmpMap = document.getElementById('cmpMap');
+
+        function calculateMAP() {
+            const sistol = parseFloat(cmpSistol.value);
+            const diastol = parseFloat(cmpDiastol.value);
+            
+            if (!isNaN(sistol) && !isNaN(diastol) && sistol > 0 && diastol > 0) {
+                const map = Math.round((sistol + (2 * diastol)) / 3);
+                cmpMap.value = map;
+                cmpMap.style.background = 'var(--status-normal-bg)';
+                cmpMap.style.borderColor = '#27ae60';
+                cmpMap.style.fontWeight = '700';
+                cmpMap.style.color = 'var(--text-primary)';
+            } else {
+                cmpMap.value = '';
+                cmpMap.style.background = 'var(--bg-form)';
+                cmpMap.style.borderColor = 'var(--input-border)';
+                cmpMap.style.fontWeight = '400';
+            }
+        }
+
+        cmpSistol.addEventListener('input', calculateMAP);
+        cmpDiastol.addEventListener('input', calculateMAP);
+
+        // ============================================================
         //  FUNGSI UTAMA
         // ============================================================
 
@@ -1673,7 +1995,6 @@
                 `Pasien ${patientName} (${ageDisplay}) memiliki nilai normal berdasarkan pedoman AAP 2017. ` +
                 (weight || height ? 'Data antropometri digunakan sebagai referensi tambahan.' : '');
 
-            // Simpan data untuk perbandingan
             lastResultData = {
                 patientName,
                 medicalRecord,
@@ -1686,14 +2007,17 @@
                 timestamp: new Date().toLocaleString('id-ID')
             };
 
-            // Tampilkan hasil dan compare section
             document.getElementById('resultSection').classList.add('show');
             document.getElementById('compareSection').classList.add('show');
             document.getElementById('compareResults').classList.remove('show');
             document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
             // Reset compare inputs
-            document.querySelectorAll('.compare-input-group input').forEach(inp => inp.value = '');
+            document.querySelectorAll('.compare-input-grid input').forEach(inp => inp.value = '');
+            cmpMap.value = '';
+            cmpMap.style.background = 'var(--bg-form)';
+            cmpMap.style.borderColor = 'var(--input-border)';
+            cmpMap.style.fontWeight = '400';
         }
 
         // ============================================================
@@ -1722,6 +2046,7 @@
 
             const results = [];
             let abnormalCount = 0;
+            let totalFilled = 0;
 
             for (const [key, data] of Object.entries(inputs)) {
                 const val = parseFloat(data.el.value);
@@ -1730,6 +2055,7 @@
                     continue;
                 }
 
+                totalFilled++;
                 const inRange = isInRange(val, data.range);
                 const status = inRange === true ? 'Normal' : inRange === false ? 'Abnormal' : '-';
                 if (inRange === false) abnormalCount++;
@@ -1745,17 +2071,15 @@
                 });
             }
 
-            // Render hasil perbandingan
             const container = document.getElementById('compareResults');
             const summary = document.getElementById('compareSummary');
             const list = document.getElementById('compareList');
 
             container.classList.add('show');
 
-            const totalFilled = results.filter(r => r.actual !== null).length;
             if (totalFilled === 0) {
                 summary.className = 'summary';
-                summary.textContent = '⚠️ Belum ada nilai yang dimasukkan.';
+                summary.textContent = '⚠️ Belum ada nilai yang dimasukkan. Silakan isi minimal satu nilai.';
                 list.innerHTML = '';
                 return;
             }
@@ -1790,19 +2114,21 @@
                 list.appendChild(div);
             });
 
-            // Scroll ke hasil perbandingan
             container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
         document.getElementById('compareBtn').addEventListener('click', doCompare);
 
         document.getElementById('clearCompareBtn').addEventListener('click', function() {
-            document.querySelectorAll('.compare-input-group input').forEach(inp => inp.value = '');
+            document.querySelectorAll('.compare-input-grid input').forEach(inp => inp.value = '');
+            cmpMap.value = '';
+            cmpMap.style.background = 'var(--bg-form)';
+            cmpMap.style.borderColor = 'var(--input-border)';
+            cmpMap.style.fontWeight = '400';
             document.getElementById('compareResults').classList.remove('show');
         });
 
-        // Enter key pada compare inputs
-        document.querySelectorAll('.compare-input-group input').forEach(inp => {
+        document.querySelectorAll('.compare-input-grid input').forEach(inp => {
             inp.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') doCompare();
             });
@@ -1875,7 +2201,6 @@
                 return;
             }
 
-            // Cek apakah ada abnormal dari compare terakhir
             let hasAbnormal = false;
             const summary = document.getElementById('compareSummary');
             if (summary.classList.contains('has-abnormal')) hasAbnormal = true;
@@ -1931,7 +2256,7 @@
         });
 
         console.log('✅ APeVS siap digunakan!');
-        console.log('📊 Fitur: Dark Mode | Riwayat | Validasi | Bandingkan Nilai Aktual');
+        console.log('📱 Mobile friendly | MAP Auto | Dark Mode | Riwayat | Bandingkan');
     </script>
 
 </body>
