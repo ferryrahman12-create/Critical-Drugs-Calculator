@@ -3,7 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kalkulator Dosis Obat ICU</title>
+  <title>ACDC Calculator — Adhyaksa Critical Dose Calculator | SANS Hub</title>
+  <meta name="description" content="ACDC — Adhyaksa Critical Dose Calculator. Kalkulator dosis obat ICU (Vasopressor, Inotropik, Sedasi). Bagian dari System Adhyaksa Nurse Support." />
+
+  <!-- Favicon (sama dengan SANS Hub & APeVS) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+      <rect width='100' height='100' rx='20' fill='%230f172a'/>
+      <text y='0.8em' font-size='60' text-anchor='middle' x='50' dy='0.1em'>⚖️</text>
+    </svg>" />
+
   <style>
     /* ===== TEMA TERANG (DEFAULT) ===== */
     :root {
@@ -30,6 +39,7 @@
       --header-border: rgba(255, 255, 255, 0.5); --toggle-bg: #e5e7eb; --toggle-text: #374151;
       --toggle-knob: #ffffff; --modal-overlay: rgba(0, 0, 0, 0.5); --skeleton-base: #e5e7eb;
       --skeleton-shine: #f3f4f6; --draft-badge-bg: #dbeafe; --draft-badge-text: #1e40af;
+      --sans-bg: #0f172a; --sans-primary: #14b8a6;
     }
 
     [data-theme="dark"] {
@@ -72,6 +82,49 @@
     }
     @keyframes gradientShift { 0%{background-position:0% 50%} 25%{background-position:100% 0%} 50%{background-position:100% 100%} 75%{background-position:0% 100%} 100%{background-position:0% 50%} }
     @keyframes gradientShiftDark { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+
+    /* ===== TOMBOL KEMBALI KE SANS HUB ===== */
+    .back-nav {
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--sans-bg);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.25s ease;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-back:hover {
+      background: #1e293b;
+      transform: translateX(-4px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-back:active {
+      transform: scale(0.97);
+    }
+
+    .btn-back .arrow {
+      font-size: 18px;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-back:hover .arrow {
+      transform: translateX(-3px);
+    }
+
+    /* ===== SISA CSS KAMU TETAP SAMA ===== */
     .app-container { max-width: 960px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
     .draft-indicator { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--draft-badge-bg); color: var(--draft-badge-text); border-radius: 20px; font-size: 0.68rem; font-weight: 700; transition: all 0.3s ease; opacity: 0; transform: translateY(-5px); pointer-events: none; white-space: nowrap; }
     .draft-indicator.visible { opacity: 1; transform: translateY(0); }
@@ -291,7 +344,7 @@
     @media print {
       @page { size: A4; margin: 15mm; }
       body { background: white !important; animation: none !important; padding-bottom: 0 !important; }
-      .app-header, .warning-box, .action-buttons, .syringe-size-section, .btn-group, #copyStatus, .note-warning, .history-panel, .theme-toggle-wrapper, .toast-container, .fab-container, .step-indicator, .modal-overlay, .draft-indicator, .drag-handle { display: none !important; }
+      .app-header, .warning-box, .action-buttons, .syringe-size-section, .btn-group, #copyStatus, .note-warning, .history-panel, .theme-toggle-wrapper, .toast-container, .fab-container, .step-indicator, .modal-overlay, .draft-indicator, .drag-handle, .back-nav { display: none !important; }
       .main-layout { gap: 0; }
       .panel { box-shadow: none; border: 1px solid #000; border-radius: 0; background: white !important; }
       .panel:hover { transform: none; }
@@ -302,6 +355,14 @@
 </head>
 <body>
   <div class="app-container">
+
+    <!-- ===== TOMBOL KEMBALI KE SANS HUB ===== -->
+    <div class="back-nav">
+      <a href="index.html" class="btn-back" title="Kembali ke SANS Hub">
+        <span class="arrow">←</span> Kembali ke SANS Hub
+      </a>
+    </div>
+
     <header class="app-header">
       <div class="header-logo-left"><div class="logo-placeholder logo-kejaksaan" title="Kejaksaan Republik Indonesia">⚖️</div></div>
       <div class="header-center">
