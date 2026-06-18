@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,30 +15,97 @@
       <text y='0.8em' font-size='60' text-anchor='middle' x='50' dy='0.1em'>⚖️</text>
     </svg>" />
 
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <style>
+    /* ===== CSS VARIABLES: DARK (DEFAULT) & LIGHT ===== */
     :root {
       --bg: #0f172a;
+      --bg2: #1a1a2e;
+      --bg3: #16213e;
       --card-bg: #1e293b;
       --primary: #14b8a6;
       --primary-dark: #0d9488;
+      --primary-glow: rgba(20, 184, 166, 0.3);
       --text: #e2e8f0;
       --text-secondary: #94a3b8;
+      --text-muted: #64748b;
       --border: #334155;
       --hover: #263348;
       --danger: #ef4444;
+      --warning: #f59e0b;
+      --badge-green-bg: rgba(20, 184, 166, 0.15);
+      --badge-green-text: #5eead4;
+      --badge-green-border: rgba(20, 184, 166, 0.3);
+      --badge-red-bg: rgba(239, 68, 68, 0.15);
+      --badge-red-text: #fca5a5;
+      --badge-red-border: rgba(239, 68, 68, 0.3);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
+      --toggle-bg: #334155;
+      --toggle-text: #cbd5e1;
+      --toggle-knob: #14b8a6;
+      --bottom-nav-bg: rgba(15, 23, 42, 0.9);
+      --bottom-nav-border: rgba(51, 65, 85, 0.6);
+      --stats-bg: rgba(20, 184, 166, 0.08);
+      --stats-border: rgba(20, 184, 166, 0.2);
+      --divider-color: #334155;
+    }
+
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --bg2: #e2e8f0;
+      --bg3: #f8fafc;
+      --card-bg: #ffffff;
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --primary-glow: rgba(13, 148, 136, 0.2);
+      --text: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --hover: #f1f5f9;
+      --badge-green-bg: rgba(13, 148, 136, 0.1);
+      --badge-green-text: #0f766e;
+      --badge-green-border: rgba(13, 148, 136, 0.2);
+      --badge-red-bg: rgba(239, 68, 68, 0.1);
+      --badge-red-text: #b91c1c;
+      --badge-red-border: rgba(239, 68, 68, 0.2);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --toggle-bg: #e2e8f0;
+      --toggle-text: #334155;
+      --toggle-knob: #ffffff;
+      --bottom-nav-bg: rgba(255, 255, 255, 0.9);
+      --bottom-nav-border: rgba(226, 232, 240, 0.8);
+      --stats-bg: rgba(13, 148, 136, 0.05);
+      --stats-border: rgba(13, 148, 136, 0.15);
+      --divider-color: #e2e8f0;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 50%, #16213e 100%);
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 50%, var(--bg3) 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
       color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 20px;
+      padding: 40px 20px 100px;
+      transition: background 0.5s ease, color 0.3s ease;
+      letter-spacing: -0.01em;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
     .container {
@@ -48,6 +115,58 @@
       flex-direction: column;
       align-items: center;
       gap: 24px;
+    }
+
+    /* ===== THEME TOGGLE ===== */
+    .theme-toggle-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: -8px;
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--toggle-bg);
+      border: 2px solid var(--border);
+      border-radius: 30px;
+      padding: 6px 6px 6px 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-glow);
+    }
+
+    .theme-toggle-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--toggle-text);
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .theme-toggle-knob {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: var(--toggle-knob);
+      color: #fff;
+      transition: all 0.3s ease;
+      min-width: 42px;
+      text-align: center;
+    }
+
+    [data-theme="light"] .theme-toggle-knob {
+      color: #0f172a;
     }
 
     /* ===== PROFILE SECTION ===== */
@@ -66,22 +185,44 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       border: 3px solid var(--primary);
-      box-shadow: 0 0 30px rgba(20, 184, 166, 0.3);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 40px var(--primary-glow);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+      animation: avatarShine 3s ease-in-out infinite;
+    }
+
+    @keyframes avatarShine {
+      0%, 100% { transform: translate(-30%, -30%) rotate(0deg); }
+      50% { transform: translate(30%, 30%) rotate(180deg); }
     }
 
     .avatar:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 40px rgba(20, 184, 166, 0.5);
+      transform: scale(1.08);
+      box-shadow: 0 0 60px var(--primary-glow);
     }
 
     .title {
-      font-size: 1.5rem;
-      font-weight: 800;
+      font-size: 1.6rem;
+      font-weight: 900;
       text-align: center;
       letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--text), var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .subtitle {
@@ -89,6 +230,7 @@
       color: var(--text-secondary);
       text-align: center;
       line-height: 1.5;
+      font-weight: 500;
     }
 
     .badges {
@@ -99,24 +241,60 @@
     }
 
     .badge {
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 20px;
       font-size: 0.7rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
     }
 
     .badge-green {
-      background: rgba(20, 184, 166, 0.2);
-      color: #5eead4;
-      border: 1px solid rgba(20, 184, 166, 0.3);
+      background: var(--badge-green-bg);
+      color: var(--badge-green-text);
+      border: 1px solid var(--badge-green-border);
     }
 
     .badge-red {
-      background: rgba(239, 68, 68, 0.2);
-      color: #fca5a5;
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      background: var(--badge-red-bg);
+      color: var(--badge-red-text);
+      border: 1px solid var(--badge-red-border);
+    }
+
+    /* ===== QUICK STATS ===== */
+    .quick-stats {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+    }
+
+    .stat-card {
+      flex: 1;
+      padding: 12px 14px;
+      background: var(--stats-bg);
+      border: 1px solid var(--stats-border);
+      border-radius: 12px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
     }
 
     /* ===== LINKS ===== */
@@ -136,69 +314,106 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       text-decoration: none;
       color: var(--text);
       position: relative;
       overflow: hidden;
     }
 
+    .link-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(20, 184, 166, 0.05), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .link-card:hover::before {
+      left: 100%;
+    }
+
     .link-card:hover {
       background: var(--hover);
       border-color: var(--primary);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px var(--primary-glow);
     }
 
     .link-card:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
 
     .link-card.coming-soon {
-      opacity: 0.7;
+      opacity: 0.8;
       cursor: default;
     }
 
     .link-card.coming-soon:hover {
       background: var(--card-bg);
       border-color: var(--border);
-      transform: none;
-      box-shadow: none;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .link-card.coming-soon:hover::before {
+      left: 100%;
     }
 
     .link-card.coming-soon .link-arrow {
       display: none;
     }
 
-    .coming-soon-badge {
-      padding: 3px 8px;
-      border-radius: 10px;
-      font-size: 0.6rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      background: rgba(251, 191, 36, 0.2);
-      color: #fcd34d;
-      border: 1px solid rgba(251, 191, 36, 0.3);
-      flex-shrink: 0;
-    }
-
     .link-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       flex-shrink: 0;
       color: white;
       font-weight: 700;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .link-card:hover .link-icon {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    .link-icon::after {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: -30%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
+      transform: rotate(25deg);
+      transition: all 0.4s ease;
+    }
+
+    .link-card:hover .link-icon::after {
+      top: -10%;
+    }
+
+    .link-icon.acdc-icon {
+      background: linear-gradient(135deg, #0d9488, #0f766e);
+    }
+
+    .link-icon.apevs-icon {
+      background: linear-gradient(135deg, #f97316, #ea580c);
     }
 
     .link-icon.ewss-icon {
-      background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
-      color: #3730a3;
-      font-size: 1.6rem;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
     }
 
     .link-info {
@@ -210,6 +425,7 @@
       font-weight: 700;
       font-size: 0.95rem;
       margin-bottom: 2px;
+      letter-spacing: -0.01em;
     }
 
     .link-desc {
@@ -222,43 +438,64 @@
 
     .link-arrow {
       font-size: 1.2rem;
-      color: var(--text-secondary);
-      transition: transform 0.2s ease;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
       flex-shrink: 0;
     }
 
     .link-card:hover .link-arrow {
-      transform: translateX(4px);
+      transform: translateX(6px);
       color: var(--primary);
     }
 
-    /* ===== DIVIDER ===== */
-    .divider {
-      width: 100%;
+    /* ===== COMING SOON BADGE ===== */
+    .coming-soon-section {
       display: flex;
       align-items: center;
-      gap: 12px;
-      color: var(--text-secondary);
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      gap: 8px;
+      flex-shrink: 0;
     }
 
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
+    .coming-soon-badge {
+      padding: 4px 10px;
+      border-radius: 10px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: rgba(251, 191, 36, 0.15);
+      color: #fcd34d;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    .progress-dots {
+      display: flex;
+      gap: 3px;
+    }
+
+    .progress-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      animation: dotPulse 1.5s ease-in-out infinite;
+    }
+
+    .progress-dot:nth-child(1) { animation-delay: 0s; }
+    .progress-dot:nth-child(2) { animation-delay: 0.2s; }
+    .progress-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes dotPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
     }
 
     /* ===== FOOTER ===== */
     .footer {
       text-align: center;
       font-size: 0.7rem;
-      color: var(--text-secondary);
+      color: var(--text-muted);
       margin-top: 8px;
+      letter-spacing: 0.02em;
     }
 
     .footer a {
@@ -267,36 +504,127 @@
       font-weight: 600;
     }
 
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== BOTTOM NAVIGATION (MOBILE) ===== */
+    .bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bottom-nav-bg);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-top: 1px solid var(--bottom-nav-border);
+      padding: 8px 16px;
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
+      z-index: 1000;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+
+    .bottom-nav-item:hover,
+    .bottom-nav-item.active {
+      color: var(--primary);
+      background: var(--stats-bg);
+    }
+
+    .bottom-nav-icon {
+      font-size: 1.3rem;
+    }
+
     /* ===== ANIMATIONS ===== */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .link-card:nth-child(1) { animation: fadeInUp 0.3s ease 0.1s both; }
-    .link-card:nth-child(2) { animation: fadeInUp 0.3s ease 0.15s both; }
-    .link-card:nth-child(3) { animation: fadeInUp 0.3s ease 0.2s both; }
+    .link-card:nth-child(1) { animation: fadeInUp 0.4s ease 0.1s both; }
+    .link-card:nth-child(2) { animation: fadeInUp 0.4s ease 0.2s both; }
+    .link-card:nth-child(3) { animation: fadeInUp 0.4s ease 0.3s both; }
+
+    .stat-card:nth-child(1) { animation: fadeInUp 0.4s ease 0.05s both; }
+    .stat-card:nth-child(2) { animation: fadeInUp 0.4s ease 0.1s both; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (min-width: 769px) {
+      .bottom-nav {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .bottom-nav {
+        display: flex;
+      }
+      body {
+        padding-bottom: 100px;
+      }
+      .footer {
+        margin-bottom: 20px;
+      }
+    }
 
     @media (max-width: 480px) {
-      body { padding: 20px 12px; }
-      .avatar { width: 70px; height: 70px; font-size: 2rem; }
+      body { padding: 20px 12px 100px; }
+      .avatar { width: 70px; height: 70px; font-size: 2.2rem; }
       .title { font-size: 1.3rem; }
       .link-card { padding: 14px 16px; gap: 10px; }
-      .link-icon { width: 40px; height: 40px; font-size: 1.2rem; }
+      .link-icon { width: 42px; height: 42px; font-size: 1.3rem; border-radius: 12px; }
+      .bottom-nav-item { padding: 6px 8px; font-size: 0.6rem; }
     }
   </style>
 </head>
 <body>
   <div class="container">
 
+    <!-- ===== THEME TOGGLE ===== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <span class="theme-toggle-label">Mode</span>
+        <span class="theme-toggle-knob" id="themeStatus">🌙 Dark</span>
+      </button>
+    </div>
+
     <!-- ===== PROFILE ===== -->
     <div class="profile">
       <div class="avatar">⚖️</div>
       <h1 class="title">SANS Hub</h1>
-      <p class="subtitle">System Adhyaksa Nurse Support<br>Tools pendukung tenaga medis</p>
+      <p class="subtitle">System Adhyaksa Nurse Support<br>Tools pendukung tenaga medis profesional</p>
       <div class="badges">
         <span class="badge badge-green">🚑 ICU Tools</span>
         <span class="badge badge-red">⚠ High Alert</span>
+      </div>
+    </div>
+
+    <!-- ===== QUICK STATS ===== -->
+    <div class="quick-stats" id="quickStats">
+      <div class="stat-card">
+        <div class="stat-value" id="statTools">3</div>
+        <div class="stat-label">Total Tools</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statLastAccess">-</div>
+        <div class="stat-label">Akses Terakhir</div>
       </div>
     </div>
 
@@ -304,8 +632,8 @@
     <div class="links">
 
       <!-- ACDC Calculator -->
-      <a href="acdc-calculator.html" class="link-card">
-        <div class="link-icon" style="background: linear-gradient(135deg, #0d9488, #0f766e);">💉</div>
+      <a href="acdc-calculator.html" class="link-card" data-tool="acdc">
+        <div class="link-icon acdc-icon">💉</div>
         <div class="link-info">
           <div class="link-title">ACDC — Adhyaksa Critical Dose Calculator</div>
           <div class="link-desc">Kalkulator dosis obat ICU (Vasopressor, Inotropik, Sedasi)</div>
@@ -314,8 +642,8 @@
       </a>
 
       <!-- APeVS -->
-      <a href="apevs.html" class="link-card">
-        <div class="link-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">👶</div>
+      <a href="apevs.html" class="link-card" data-tool="apevs">
+        <div class="link-icon apevs-icon">👶</div>
         <div class="link-info">
           <div class="link-title">APeVS (Adhyaksa Pediatric Vital Signs)</div>
           <div class="link-desc">Kalkulator tanda-tanda vital normal untuk perinatal & pediatri</div>
@@ -324,13 +652,20 @@
       </a>
 
       <!-- EWSS — COMING SOON -->
-      <div class="link-card coming-soon">
+      <div class="link-card coming-soon" data-tool="ewss">
         <div class="link-icon ewss-icon">🩺</div>
         <div class="link-info">
           <div class="link-title">Sistem Permudah EWSS</div>
           <div class="link-desc">Early Warning Score System — deteksi dini perburukan pasien</div>
         </div>
-        <span class="coming-soon-badge">Coming Soon</span>
+        <div class="coming-soon-section">
+          <span class="coming-soon-badge">Coming Soon</span>
+          <div class="progress-dots">
+            <span class="progress-dot"></span>
+            <span class="progress-dot"></span>
+            <span class="progress-dot"></span>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -342,5 +677,116 @@
     </div>
 
   </div>
+
+  <!-- ===== BOTTOM NAVIGATION (MOBILE) ===== -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="bottom-nav-item active">
+      <span class="bottom-nav-icon">🏠</span>
+      <span>Home</span>
+    </a>
+    <a href="acdc-calculator.html" class="bottom-nav-item">
+      <span class="bottom-nav-icon">💉</span>
+      <span>ACDC</span>
+    </a>
+    <a href="apevs.html" class="bottom-nav-item">
+      <span class="bottom-nav-icon">👶</span>
+      <span>APeVS</span>
+    </a>
+  </nav>
+
+  <script>
+    // ===== THEME TOGGLE =====
+    const THEME_KEY = 'sans_hub_theme';
+    
+    function getSavedTheme() {
+      try { return localStorage.getItem(THEME_KEY) || 'dark'; } 
+      catch(e) { return 'dark'; }
+    }
+
+    function applyTheme(theme) {
+      const statusEl = document.getElementById('themeStatus');
+      if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        if (statusEl) statusEl.textContent = '☀️ Light';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        if (statusEl) statusEl.textContent = '🌙 Dark';
+      }
+      try { localStorage.setItem(THEME_KEY, theme); } catch(e) {}
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    }
+
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    applyTheme(getSavedTheme());
+
+    // ===== QUICK STATS: DETEKSI AKSES TERAKHIR =====
+    const ACCESS_KEY = 'sans_hub_last_access';
+    
+    function updateQuickStats() {
+      // Total tools (aktif)
+      const activeTools = document.querySelectorAll('.link-card:not(.coming-soon)').length;
+      document.getElementById('statTools').textContent = activeTools;
+
+      // Akses terakhir
+      try {
+        const lastAccess = localStorage.getItem(ACCESS_KEY);
+        if (lastAccess) {
+          const lastDate = new Date(lastAccess);
+          const now = new Date();
+          const diffMs = now - lastDate;
+          const diffMin = Math.floor(diffMs / 60000);
+          
+          let display;
+          if (diffMin < 1) display = 'Baru saja';
+          else if (diffMin < 60) display = diffMin + ' mnt lalu';
+          else if (diffMin < 1440) display = Math.floor(diffMin / 60) + ' jam lalu';
+          else display = Math.floor(diffMin / 1440) + ' hari lalu';
+          
+          document.getElementById('statLastAccess').textContent = display;
+        } else {
+          document.getElementById('statLastAccess').textContent = 'Pertama kali';
+        }
+      } catch(e) {
+        document.getElementById('statLastAccess').textContent = '-';
+      }
+    }
+
+    // Simpan waktu akses saat klik link
+    document.querySelectorAll('.link-card:not(.coming-soon)').forEach(card => {
+      card.addEventListener('click', function() {
+        try {
+          localStorage.setItem(ACCESS_KEY, new Date().toISOString());
+          // Update stat sebelum navigasi
+          updateQuickStats();
+        } catch(e) {}
+      });
+    });
+
+    // Simpan juga saat halaman ini dibuka
+    try {
+      // Jangan timpa kalau baru aja diset dari klik (dalam 2 detik terakhir)
+      const lastAccess = localStorage.getItem(ACCESS_KEY);
+      if (!lastAccess || (Date.now() - new Date(lastAccess).getTime()) > 2000) {
+        localStorage.setItem(ACCESS_KEY, new Date().toISOString());
+      }
+    } catch(e) {}
+
+    updateQuickStats();
+
+    // ===== BOTTOM NAV: HIGHLIGHT AKTIF =====
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.bottom-nav-item').forEach(item => {
+      const href = item.getAttribute('href');
+      if (href === currentPage) {
+        item.classList.add('active');
+      }
+    });
+
+    console.log('✅ SANS Hub Ultra Upgrade siap! | Dark/Light Mode + Stats + Bottom Nav');
+  </script>
 </body>
 </html>
