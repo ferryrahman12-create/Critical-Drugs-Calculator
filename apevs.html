@@ -3,99 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APeVS — Adhyaksa Pediatric Vital Signs | SANS Hub</title>
-    <meta name="description" content="APeVS — Kalkulator tanda-tanda vital normal pediatri berdasarkan pedoman AAP 2017. Bagian dari System Adhyaksa Nurse Support." />
-
-    <!-- Favicon (sama dengan SANS Hub) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-      <rect width='100' height='100' rx='20' fill='%230f172a'/>
-      <text y='0.8em' font-size='60' text-anchor='middle' x='50' dy='0.1em'>⚖️</text>
-    </svg>" />
-
+    <title>APeVS - Adhyaksa Pediatric Vital Signs</title>
     <style>
+        /* ========== CSS VARIABLES ========== */
         :root {
-            --apevs-primary: #1a5276;
-            --apevs-primary-dark: #154360;
-            --sans-bg: #0f172a;
-            --sans-primary: #14b8a6;
+            --bg-primary: #e8f0fe;
+            --bg-secondary: #ffffff;
+            --bg-form: #f8fafc;
+            --text-primary: #1a1a2e;
+            --text-secondary: #2c3e50;
+            --text-muted: #7f8c8d;
+            --border-color: #dce1e8;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --card-bg: #ffffff;
+            --header-bg: linear-gradient(135deg, #1a5276, #2e86c1);
+            --badge-bg: #e74c3c;
+            --input-bg: #ffffff;
+            --input-border: #dce1e8;
+            --input-focus: #1a5276;
+            --btn-bg: #1a5276;
+            --btn-hover: #154360;
+            --result-bg: #f8fafc;
+            --daytime-border: #f39c12;
+            --daytime-bg: linear-gradient(135deg, #fff9f0, #ffffff);
+            --nighttime-border: #2c3e50;
+            --nighttime-bg: linear-gradient(135deg, #f0f4f8, #ffffff);
+            --default-border: #1a5276;
+            --status-normal-bg: #d5f5e3;
+            --status-normal-text: #1e8449;
+            --status-abnormal-bg: #fadbd8;
+            --status-abnormal-text: #922b21;
+            --footer-text: #7f8c8d;
+            --toggle-bg: #dce1e8;
+            --scrollbar-track: #f0f0f0;
+            --scrollbar-thumb: #1a5276;
+            --history-bg: #f8fafc;
+            --history-border: #e2e8f0;
+            --history-hover: #edf2f7;
+            --compare-bg: #f0f7ff;
+            --compare-border: #d4e4f7;
+            --abnormal-bg: #fff5f5;
+            --abnormal-border: #fcc;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-primary: #0f1420;
+            --bg-secondary: #1a2035;
+            --bg-form: #1e2740;
+            --text-primary: #e8edf5;
+            --text-secondary: #c8d0dc;
+            --text-muted: #8892a8;
+            --border-color: #2a3450;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --card-bg: #1a2035;
+            --header-bg: linear-gradient(135deg, #0d1b2a, #1b3a5c);
+            --badge-bg: #c0392b;
+            --input-bg: #0f1420;
+            --input-border: #2a3450;
+            --input-focus: #3498db;
+            --btn-bg: #1b3a5c;
+            --btn-hover: #2a5070;
+            --result-bg: #0f1420;
+            --daytime-border: #e67e22;
+            --daytime-bg: linear-gradient(135deg, #1a1a0a, #1a2035);
+            --nighttime-border: #5d7a9a;
+            --nighttime-bg: linear-gradient(135deg, #0a121a, #1a2035);
+            --default-border: #3498db;
+            --status-normal-bg: #1a3a2a;
+            --status-normal-text: #5dbb8a;
+            --status-abnormal-bg: #3a1a1a;
+            --status-abnormal-text: #e87474;
+            --footer-text: #5d6d7e;
+            --toggle-bg: #2a3450;
+            --scrollbar-track: #1a2035;
+            --scrollbar-thumb: #3498db;
+            --history-bg: #0f1420;
+            --history-border: #2a3450;
+            --history-hover: #1a2740;
+            --compare-bg: #1a2740;
+            --compare-border: #2a3a5a;
+            --abnormal-bg: #2a1a1a;
+            --abnormal-border: #5a2a2a;
+        }
+
+        /* ========== RESET & BASE ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e8f0fe 0%, #d4e4f7 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
             padding: 20px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 4px;
         }
 
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            background: white;
+            background: var(--bg-secondary);
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            box-shadow: var(--shadow);
             padding: 30px 35px 45px;
+            transition: all 0.3s ease;
         }
 
-        /* ===== TOMBOL KEMBALI ===== */
-        .back-nav {
-            margin-bottom: 10px;
-        }
-
-        .btn-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: var(--sans-bg);
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.25s ease;
-            letter-spacing: 0.3px;
-        }
-
-        .btn-back:hover {
-            background: #1e293b;
-            transform: translateX(-4px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-back:active {
-            transform: scale(0.97);
-        }
-
-        .btn-back .arrow {
-            font-size: 18px;
-            transition: transform 0.2s ease;
-        }
-
-        .btn-back:hover .arrow {
-            transform: translateX(-3px);
-        }
-
-        /* ===== HEADER ===== */
+        /* ========== HEADER ========== */
         .header {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
             padding-bottom: 25px;
-            border-bottom: 3px solid var(--apevs-primary);
+            border-bottom: 3px solid var(--border-color);
             margin-bottom: 30px;
+            gap: 15px;
+            transition: border-color 0.3s ease;
         }
 
         .header .logo {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
         }
 
         .header .logo-icon {
-            background: var(--apevs-primary);
+            background: var(--btn-bg);
             color: white;
             width: 55px;
             height: 55px;
@@ -106,41 +162,87 @@
             font-size: 28px;
             font-weight: bold;
             letter-spacing: 1px;
+            transition: background 0.3s ease;
         }
 
         .header h1 {
-            color: var(--apevs-primary);
+            color: var(--text-primary);
             font-size: 32px;
             font-weight: 700;
+            transition: color 0.3s ease;
         }
 
         .header .subtitle {
-            color: #2c3e50;
+            color: var(--text-secondary);
             font-size: 16px;
             font-weight: 400;
-            margin-top: 5px;
+            margin-top: 2px;
             letter-spacing: 0.5px;
+            transition: color 0.3s ease;
         }
 
         .header .badge {
-            background: #e74c3c;
+            background: var(--badge-bg);
             color: white;
             font-size: 11px;
             font-weight: 600;
             padding: 4px 12px;
             border-radius: 20px;
             display: inline-block;
-            margin-top: 8px;
             letter-spacing: 0.8px;
+            transition: background 0.3s ease;
         }
 
-        /* ===== FORM ===== */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .theme-toggle .toggle-track {
+            width: 50px;
+            height: 26px;
+            background: var(--toggle-bg);
+            border-radius: 13px;
+            position: relative;
+            transition: background 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle .toggle-thumb {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        [data-theme="dark"] .theme-toggle .toggle-thumb {
+            transform: translateX(24px);
+            background: #1a2035;
+        }
+
+        .theme-toggle .toggle-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        /* ========== FORM ========== */
         .form-section {
-            background: #f8fafc;
+            background: var(--bg-form);
             border-radius: 15px;
             padding: 25px 30px;
             margin-bottom: 30px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
         }
 
         .form-grid {
@@ -161,8 +263,9 @@
         .form-group label {
             font-size: 14px;
             font-weight: 600;
-            color: #2c3e50;
+            color: var(--text-secondary);
             margin-bottom: 6px;
+            transition: color 0.3s ease;
         }
 
         .form-group label .required {
@@ -173,35 +276,54 @@
         .form-group input,
         .form-group select {
             padding: 10px 14px;
-            border: 2px solid #dce1e8;
+            border: 2px solid var(--input-border);
             border-radius: 10px;
             font-size: 15px;
             font-family: inherit;
             transition: all 0.3s ease;
-            background: white;
-            color: #1a1a2e;
+            background: var(--input-bg);
+            color: var(--text-primary);
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: var(--apevs-primary);
+            border-color: var(--input-focus);
             box-shadow: 0 0 0 4px rgba(26, 82, 118, 0.15);
         }
 
         .form-group input::placeholder {
-            color: #aab;
+            color: var(--text-muted);
         }
 
         .form-group .hint {
             font-size: 12px;
-            color: #7f8c8d;
+            color: var(--text-muted);
             margin-top: 4px;
+            transition: color 0.3s ease;
         }
 
         .form-group .hint .highlight {
-            color: var(--apevs-primary);
+            color: var(--btn-bg);
             font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .form-group .error-text {
+            font-size: 12px;
+            color: #e74c3c;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-group .error-text.show {
+            display: block;
+        }
+
+        .form-group input.error,
+        .form-group select.error {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
         }
 
         .row-name-rm {
@@ -218,12 +340,12 @@
 
         .birthdate-row select {
             padding: 10px 14px;
-            border: 2px solid #dce1e8;
+            border: 2px solid var(--input-border);
             border-radius: 10px;
             font-size: 15px;
             font-family: inherit;
-            background: white;
-            color: #1a1a2e;
+            background: var(--input-bg);
+            color: var(--text-primary);
             cursor: pointer;
             transition: all 0.3s ease;
             appearance: auto;
@@ -231,7 +353,7 @@
 
         .birthdate-row select:focus {
             outline: none;
-            border-color: var(--apevs-primary);
+            border-color: var(--input-focus);
             box-shadow: 0 0 0 4px rgba(26, 82, 118, 0.15);
         }
 
@@ -249,24 +371,43 @@
             width: 80px;
             flex-shrink: 0;
             padding: 10px 8px;
-            border: 2px solid #dce1e8;
+            border: 2px solid var(--input-border);
             border-radius: 10px;
             font-size: 14px;
             font-family: inherit;
-            background: white;
-            color: #1a1a2e;
+            background: var(--input-bg);
+            color: var(--text-primary);
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .input-with-unit select:focus {
             outline: none;
-            border-color: var(--apevs-primary);
+            border-color: var(--input-focus);
             box-shadow: 0 0 0 4px rgba(26, 82, 118, 0.15);
         }
 
+        .age-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .age-display input {
+            background: var(--bg-form);
+            color: var(--text-primary);
+            font-weight: 600;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
         .btn-primary {
-            background: var(--apevs-primary);
+            background: var(--btn-bg);
             color: white;
             border: none;
             padding: 13px 40px;
@@ -281,7 +422,7 @@
         }
 
         .btn-primary:hover {
-            background: var(--apevs-primary-dark);
+            background: var(--btn-hover);
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(26, 82, 118, 0.3);
         }
@@ -290,7 +431,57 @@
             transform: translateY(0px);
         }
 
-        /* ===== HASIL ===== */
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--text-primary);
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            opacity: 0.8;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background: #1e8449;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        /* ========== RESULTS ========== */
         .result-section {
             display: none;
             animation: fadeIn 0.5s ease;
@@ -306,7 +497,7 @@
         }
 
         .result-header {
-            background: linear-gradient(135deg, #1a5276, #2e86c1);
+            background: var(--header-bg);
             color: white;
             padding: 18px 25px;
             border-radius: 15px 15px 0 0;
@@ -315,6 +506,7 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
+            transition: background 0.3s ease;
         }
 
         .result-header h2 {
@@ -339,14 +531,16 @@
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             padding: 25px;
-            background: #f8fafc;
+            background: var(--result-bg);
             border-radius: 0 0 15px 15px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
             border-top: none;
+            transition: all 0.3s ease;
         }
 
+        /* ========== RESULT CARDS ========== */
         .result-card {
-            background: white;
+            background: var(--card-bg);
             padding: 18px 16px;
             border-radius: 12px;
             text-align: center;
@@ -362,29 +556,29 @@
         }
 
         .result-card.daytime {
-            border-left: 5px solid #f39c12;
-            background: linear-gradient(135deg, #fff9f0, #ffffff);
+            border-left: 5px solid var(--daytime-border);
+            background: var(--daytime-bg);
         }
 
         .result-card.daytime .label {
-            color: #d68910;
+            color: var(--daytime-border);
         }
 
         .result-card.nighttime {
-            border-left: 5px solid #2c3e50;
-            background: linear-gradient(135deg, #f0f4f8, #ffffff);
+            border-left: 5px solid var(--nighttime-border);
+            background: var(--nighttime-bg);
         }
 
         .result-card.nighttime .label {
-            color: #1a2634;
+            color: var(--nighttime-border);
         }
 
         .result-card.default-card {
-            border-left: 5px solid #1a5276;
+            border-left: 5px solid var(--default-border);
         }
 
         .result-card.default-card .label {
-            color: #2c3e50;
+            color: var(--text-secondary);
         }
 
         .result-card .label {
@@ -392,25 +586,28 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            transition: color 0.3s ease;
         }
 
         .result-card .value {
             font-size: 22px;
             font-weight: 700;
-            color: #1a1a2e;
+            color: var(--text-primary);
             margin: 6px 0 2px;
+            transition: color 0.3s ease;
         }
 
         .result-card .value .unit {
             font-size: 14px;
             font-weight: 400;
-            color: #7f8c8d;
+            color: var(--text-muted);
             margin-left: 2px;
         }
 
         .result-card .range {
             font-size: 13px;
-            color: #2c3e50;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
         }
 
         .result-card .range .normal {
@@ -418,10 +615,16 @@
             font-weight: 600;
         }
 
+        .result-card .range .abnormal {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
         .result-card .sub-range {
             font-size: 12px;
-            color: #7f8c8d;
+            color: var(--text-muted);
             margin-top: 2px;
+            transition: color 0.3s ease;
         }
 
         .result-card .status {
@@ -434,8 +637,13 @@
         }
 
         .status-normal {
-            background: #d5f5e3;
-            color: #1e8449;
+            background: var(--status-normal-bg);
+            color: var(--status-normal-text);
+        }
+
+        .status-abnormal {
+            background: var(--status-abnormal-bg);
+            color: var(--status-abnormal-text);
         }
 
         .result-card .time-badge {
@@ -458,34 +666,222 @@
             color: #1a5276;
         }
 
+        [data-theme="dark"] .result-card .time-badge.day {
+            background: #3a2a1a;
+            color: #f0c080;
+        }
+
+        [data-theme="dark"] .result-card .time-badge.night {
+            background: #1a2a3a;
+            color: #80b0d0;
+        }
+
+        /* ========== COMPARE SECTION ========== */
+        .compare-section {
+            display: none;
+            margin-top: 25px;
+            padding: 20px 25px 25px;
+            background: var(--compare-bg);
+            border-radius: 15px;
+            border: 2px solid var(--compare-border);
+            transition: all 0.3s ease;
+        }
+
+        .compare-section.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .compare-section h3 {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .compare-input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .compare-input-group .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .compare-input-group .form-group label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .compare-input-group .form-group input {
+            padding: 8px 10px;
+            border: 2px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .compare-input-group .form-group input:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 4px rgba(26, 82, 118, 0.15);
+        }
+
+        .compare-input-group .form-group input::placeholder {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .compare-btn-wrapper {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            justify-content: flex-end;
+        }
+
+        /* ========== COMPARE RESULTS ========== */
+        .compare-results {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .compare-results.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .compare-results .summary {
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .compare-results .summary.all-normal {
+            background: var(--status-normal-bg);
+            color: var(--status-normal-text);
+        }
+
+        .compare-results .summary.has-abnormal {
+            background: var(--status-abnormal-bg);
+            color: var(--status-abnormal-text);
+        }
+
+        .compare-results .summary .count {
+            font-weight: 700;
+        }
+
+        .compare-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .compare-item.normal {
+            background: var(--status-normal-bg);
+            border-left: 4px solid #27ae60;
+        }
+
+        .compare-item.abnormal {
+            background: var(--abnormal-bg);
+            border-left: 4px solid #e74c3c;
+            border-color: var(--abnormal-border);
+        }
+
+        .compare-item .param {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .compare-item .detail {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .compare-item .detail .actual {
+            font-weight: 700;
+        }
+
+        .compare-item .detail .range {
+            color: var(--text-muted);
+        }
+
+        .compare-item .status-badge {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 2px 12px;
+            border-radius: 12px;
+        }
+
+        .compare-item .status-badge.normal {
+            background: var(--status-normal-bg);
+            color: var(--status-normal-text);
+        }
+
+        .compare-item .status-badge.abnormal {
+            background: var(--status-abnormal-bg);
+            color: var(--status-abnormal-text);
+        }
+
+        /* ========== RESULT NOTE ========== */
         .result-note {
             padding: 15px 25px 25px;
             font-size: 13px;
-            color: #5d6d7e;
-            background: #f8fafc;
+            color: var(--text-secondary);
+            background: var(--result-bg);
             border-radius: 0 0 15px 15px;
-            border: 1px solid #e2e8f0;
-            border-top: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-top: 1px solid var(--border-color);
+            transition: all 0.3s ease;
         }
 
         .result-note strong {
-            color: var(--apevs-primary);
+            color: var(--btn-bg);
+            transition: color 0.3s ease;
         }
 
         .result-note .ref {
-            color: #7f8c8d;
+            color: var(--text-muted);
             font-size: 12px;
             margin-top: 8px;
+            transition: color 0.3s ease;
         }
 
         .result-note .time-info {
-            background: #ebf5fb;
+            background: var(--bg-form);
             padding: 8px 14px;
             border-radius: 8px;
             display: inline-block;
             margin-top: 6px;
             font-size: 13px;
-            color: #1a5276;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
         }
 
         .result-note .legend {
@@ -494,7 +890,8 @@
             flex-wrap: wrap;
             margin-top: 10px;
             padding-top: 10px;
-            border-top: 1px dashed #dce1e8;
+            border-top: 1px dashed var(--border-color);
+            transition: border-color 0.3s ease;
         }
 
         .result-note .legend-item {
@@ -502,6 +899,8 @@
             align-items: center;
             gap: 8px;
             font-size: 12px;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
         }
 
         .result-note .legend-item .color-box {
@@ -511,49 +910,139 @@
         }
 
         .color-box.day {
-            background: #f39c12;
+            background: var(--daytime-border);
         }
 
         .color-box.night {
-            background: #2c3e50;
+            background: var(--nighttime-border);
         }
 
-        /* ===== FOOTER ===== */
+        /* ========== HISTORY ========== */
+        .history-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .history-header h3 {
+            font-size: 18px;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            background: var(--history-bg);
+            border-radius: 10px;
+            border: 1px solid var(--history-border);
+            transition: all 0.3s ease;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--history-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item:hover {
+            background: var(--history-hover);
+        }
+
+        .history-item .info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .history-item .info .name {
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .history-item .info .detail {
+            font-size: 12px;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .history-item .info .status-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        .history-item .date {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: right;
+            transition: color 0.3s ease;
+        }
+
+        .history-empty {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        /* ========== FOOTER ========== */
         .footer {
             text-align: center;
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 1px solid #e2e8f0;
-            color: #7f8c8d;
+            border-top: 1px solid var(--border-color);
+            color: var(--footer-text);
             font-size: 13px;
+            transition: all 0.3s ease;
         }
 
         .footer strong {
-            color: var(--apevs-primary);
+            color: var(--btn-bg);
+            transition: color 0.3s ease;
         }
 
-        .footer .footer-back {
-            margin-top: 12px;
-        }
-
-        .footer .footer-back a {
-            color: var(--sans-primary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 13px;
-        }
-
-        .footer .footer-back a:hover {
-            text-decoration: underline;
-        }
-
-        /* ===== RESPONSIVE ===== */
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 700px) {
             .container {
                 padding: 18px;
             }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .header .logo {
+                justify-content: center;
+            }
             .header h1 {
                 font-size: 24px;
+            }
+            .theme-toggle {
+                justify-content: center;
             }
             .form-grid {
                 grid-template-columns: 1fr;
@@ -568,6 +1057,10 @@
             }
             .birthdate-row {
                 grid-template-columns: 1fr 1fr 1fr;
+                gap: 8px;
+            }
+            .age-display {
+                grid-template-columns: 1fr;
                 gap: 8px;
             }
             .result-grid {
@@ -594,6 +1087,21 @@
             .input-with-unit select {
                 width: 100%;
             }
+            .compare-grid {
+                grid-template-columns: 1fr;
+            }
+            .compare-input-group {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .history-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .history-item .date {
+                text-align: left;
+                width: 100%;
+            }
         }
 
         @media (max-width: 450px) {
@@ -608,22 +1116,17 @@
             .birthdate-row {
                 grid-template-columns: 1fr;
             }
+            .compare-input-group {
+                grid-template-columns: 1fr 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-
-        <!-- ===== TOMBOL KEMBALI KE SANS HUB ===== -->
-        <div class="back-nav">
-            <a href="index.html" class="btn-back" title="Kembali ke SANS Hub">
-                <span class="arrow">←</span> Kembali ke SANS Hub
-            </a>
-        </div>
-
         <!-- HEADER -->
-        <div class="header">
+        <header class="header">
             <div class="logo">
                 <div class="logo-icon">AP</div>
                 <div>
@@ -631,31 +1134,38 @@
                     <div class="subtitle">Adhyaksa Pediatric Vital Signs</div>
                 </div>
             </div>
-            <div>
-                <span class="badge">⚕️ Berbasis Pedoman AAP 2017</span>
+            <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap;">
+                <span class="badge">⚕️ AAP 2017</span>
+                <div class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
+                    <span class="toggle-label" id="themeLabel">🌙</span>
+                    <div class="toggle-track">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                    <span class="toggle-label" id="themeLabel2">☀️</span>
+                </div>
             </div>
-        </div>
+        </header>
 
         <!-- FORM -->
-        <div class="form-section">
-            <form id="vitalForm">
+        <section class="form-section">
+            <form id="vitalForm" novalidate>
                 <div class="form-grid">
-                    <!-- Nama dan No RM -->
                     <div class="form-group full-width">
                         <div class="row-name-rm">
                             <div class="form-group">
                                 <label>Nama Pasien <span class="required">*</span></label>
-                                <input type="text" id="patientName" placeholder="Masukkan nama lengkap pasien" required>
+                                <input type="text" id="patientName" placeholder="Masukkan nama lengkap pasien" required autocomplete="off">
+                                <span class="error-text" id="nameError">Nama pasien harus diisi</span>
                             </div>
                             <div class="form-group">
                                 <label>Nomor Rekam Medis <span class="required">*</span></label>
-                                <input type="text" id="medicalRecord" placeholder="00000" required>
+                                <input type="text" id="medicalRecord" placeholder="00000" required autocomplete="off">
+                                <span class="error-text" id="rmError">Nomor RM harus diisi</span>
                                 <span class="hint">Contoh: 00000</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Jenis Kelamin -->
                     <div class="form-group">
                         <label>Jenis Kelamin <span class="required">*</span></label>
                         <select id="gender" required>
@@ -663,70 +1173,52 @@
                             <option value="L">Laki-laki</option>
                             <option value="P">Perempuan</option>
                         </select>
+                        <span class="error-text" id="genderError">Pilih jenis kelamin</span>
                     </div>
 
-                    <!-- Tanggal Lahir -->
                     <div class="form-group">
                         <label>Tanggal Lahir <span class="required">*</span></label>
                         <div class="birthdate-row">
-                            <select id="birthDay">
-                                <option value="">Hari</option>
-                            </select>
+                            <select id="birthDay"><option value="">Hari</option></select>
                             <select id="birthMonth">
                                 <option value="">Bulan</option>
-                                <option value="1">Januari</option>
-                                <option value="2">Februari</option>
-                                <option value="3">Maret</option>
-                                <option value="4">April</option>
-                                <option value="5">Mei</option>
-                                <option value="6">Juni</option>
-                                <option value="7">Juli</option>
-                                <option value="8">Agustus</option>
-                                <option value="9">September</option>
-                                <option value="10">Oktober</option>
-                                <option value="11">November</option>
-                                <option value="12">Desember</option>
+                                <option value="1">Januari</option><option value="2">Februari</option>
+                                <option value="3">Maret</option><option value="4">April</option>
+                                <option value="5">Mei</option><option value="6">Juni</option>
+                                <option value="7">Juli</option><option value="8">Agustus</option>
+                                <option value="9">September</option><option value="10">Oktober</option>
+                                <option value="11">November</option><option value="12">Desember</option>
                             </select>
-                            <select id="birthYear">
-                                <option value="">Tahun</option>
-                            </select>
+                            <select id="birthYear"><option value="">Tahun</option></select>
                         </div>
-                        <span class="hint">Usia akan dihitung otomatis berdasarkan <span class="highlight">Waktu Indonesia (WIB)</span></span>
+                        <span class="error-text" id="birthError">Pilih tanggal lahir yang valid</span>
+                        <span class="hint">Usia dihitung otomatis berdasarkan <span class="highlight">WIB</span></span>
                     </div>
 
-                    <!-- Usia Otomatis -->
                     <div class="form-group full-width">
-                        <label>Usia Saat Ini (Otomatis)</label>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
-                            <input type="text" id="displayAgeYears" readonly style="background:#f0f4f8; color:#1a5276; font-weight:600; text-align:center;" placeholder="Tahun">
-                            <input type="text" id="displayAgeMonths" readonly style="background:#f0f4f8; color:#1a5276; font-weight:600; text-align:center;" placeholder="Bulan">
-                            <input type="text" id="displayAgeDays" readonly style="background:#f0f4f8; color:#1a5276; font-weight:600; text-align:center;" placeholder="Hari">
+                        <label>Usia Saat Ini</label>
+                        <div class="age-display">
+                            <input type="text" id="displayAgeYears" readonly placeholder="Tahun">
+                            <input type="text" id="displayAgeMonths" readonly placeholder="Bulan">
+                            <input type="text" id="displayAgeDays" readonly placeholder="Hari">
                         </div>
-                        <span class="hint" style="margin-top:4px;">🕒 Usia dihitung berdasarkan tanggal dan jam saat ini (WIB)</span>
+                        <span class="hint" style="margin-top:4px;">🕒 Dihitung berdasarkan waktu Indonesia (WIB)</span>
                     </div>
 
-                    <!-- Berat Badan -->
                     <div class="form-group">
                         <label>Berat Badan</label>
                         <div class="input-with-unit">
-                            <input type="number" id="weight" min="0" step="0.01" placeholder="0.00" value="">
-                            <select id="weightUnit">
-                                <option value="kg">Kg</option>
-                                <option value="gram">Gram</option>
-                            </select>
+                            <input type="number" id="weight" min="0" step="0.01" placeholder="0.00">
+                            <select id="weightUnit"><option value="kg">Kg</option><option value="gram">Gram</option></select>
                         </div>
                         <span class="hint">Opsional, 2 angka desimal</span>
                     </div>
 
-                    <!-- Tinggi Badan -->
                     <div class="form-group">
                         <label>Tinggi Badan</label>
                         <div class="input-with-unit">
-                            <input type="number" id="height" min="0" step="0.01" placeholder="0.00" value="">
-                            <select id="heightUnit">
-                                <option value="cm">cm</option>
-                                <option value="feet">feet</option>
-                            </select>
+                            <input type="number" id="height" min="0" step="0.01" placeholder="0.00">
+                            <select id="heightUnit"><option value="cm">cm</option><option value="feet">feet</option></select>
                         </div>
                         <span class="hint">Opsional, 2 angka desimal</span>
                     </div>
@@ -734,12 +1226,12 @@
 
                 <button type="submit" class="btn-primary">🔍 Tampilkan Nilai Normal</button>
             </form>
-        </div>
+        </section>
 
         <!-- HASIL -->
-        <div id="resultSection" class="result-section">
+        <section id="resultSection" class="result-section">
             <div class="result-header">
-                <h2>📋 Hasil Pemeriksaan</h2>
+                <h2>📋 Nilai Normal</h2>
                 <div class="patient-info" id="patientInfo">
                     <div class="name" id="displayName">-</div>
                     <div id="displayRM">-</div>
@@ -747,221 +1239,277 @@
                 </div>
             </div>
 
-            <div class="result-grid" id="resultGrid">
-                <!-- Dynamic Cards -->
-            </div>
+            <div class="result-grid" id="resultGrid"></div>
 
             <div class="result-note">
-                <strong>📌 Interpretasi Klinis:</strong>
+                <strong>📌 Informasi:</strong>
                 <span id="interpretation">Nilai normal berdasarkan usia.</span>
                 <div class="time-info">⏰ Rentang nilai otomatis dibagi berdasarkan waktu (Siang/Malam)</div>
-                
                 <div class="legend">
-                    <span style="font-weight:600; font-size:13px; color:#2c3e50;">🎨 Legenda:</span>
-                    <div class="legend-item">
-                        <div class="color-box day"></div>
-                        <span>Denyut Nadi <strong>Siang</strong> (06.00 - 18.00)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="color-box night"></div>
-                        <span>Denyut Nadi <strong>Malam</strong> (18.00 - 06.00)</span>
+                    <span style="font-weight:600; font-size:13px;">🎨 Legenda:</span>
+                    <div class="legend-item"><div class="color-box day"></div>Denyut Nadi <strong>Siang</strong></div>
+                    <div class="legend-item"><div class="color-box night"></div>Denyut Nadi <strong>Malam</strong></div>
+                </div>
+                <div class="ref">Sumber: American Academy of Pediatrics (AAP) 2017 &amp; AHA PALS</div>
+            </div>
+
+            <!-- ===== COMPARE SECTION ===== -->
+            <div class="compare-section" id="compareSection">
+                <h3>📊 Bandingkan dengan Nilai Aktual</h3>
+                <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">
+                    Masukkan hasil pengukuran aktual pasien untuk mengetahui apakah dalam rentang normal.
+                </p>
+
+                <div class="compare-grid">
+                    <div class="compare-input-group">
+                        <div class="form-group">
+                            <label>Nadi (/menit)</label>
+                            <input type="number" id="cmpNadi" min="0" max="300" step="1" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Napas (/menit)</label>
+                            <input type="number" id="cmpNapas" min="0" max="100" step="1" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>TD Sistolik (mmHg)</label>
+                            <input type="number" id="cmpSistol" min="0" max="250" step="1" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>TD Diastolik (mmHg)</label>
+                            <input type="number" id="cmpDiastol" min="0" max="200" step="1" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>MAP (mmHg)</label>
+                            <input type="number" id="cmpMap" min="0" max="200" step="1" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Suhu (°C)</label>
+                            <input type="number" id="cmpSuhu" min="35" max="42" step="0.1" placeholder="36.5">
+                        </div>
                     </div>
                 </div>
 
-                <div class="ref" id="refNote">
-                    Sumber: American Academy of Pediatrics (AAP) 2017 &amp; AHA PALS Guidelines
+                <div class="compare-btn-wrapper">
+                    <button class="btn-success" id="compareBtn">📊 Bandingkan</button>
+                    <button class="btn-secondary" id="clearCompareBtn">✖️ Reset</button>
+                </div>
+
+                <!-- Hasil Perbandingan -->
+                <div class="compare-results" id="compareResults">
+                    <div class="summary" id="compareSummary"></div>
+                    <div id="compareList"></div>
                 </div>
             </div>
-        </div>
+
+            <!-- Tombol Simpan Riwayat -->
+            <div style="margin-top:20px; text-align:right; display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;">
+                <button class="btn-secondary" id="saveHistoryBtn" style="padding:10px 24px; font-size:14px;">
+                    💾 Simpan ke Riwayat
+                </button>
+            </div>
+        </section>
+
+        <!-- RIWAYAT -->
+        <section class="history-section" id="historySection">
+            <div class="history-header">
+                <h3>📜 Riwayat Pemeriksaan</h3>
+                <div>
+                    <button class="btn-secondary" id="clearHistoryBtn" style="padding:6px 14px; font-size:12px; color:#e74c3c;">
+                        🗑️ Hapus Semua
+                    </button>
+                </div>
+            </div>
+            <div class="history-list" id="historyList">
+                <div class="history-empty">Belum ada riwayat pemeriksaan.</div>
+            </div>
+        </section>
 
         <!-- FOOTER -->
-        <div class="footer">
-            &copy; 2024-2026 <strong>APeVS</strong> — Alat bantu penentuan nilai normal tanda vital anak.<br>
-            <span style="font-size:12px; color:#95a5a6;">Untuk digunakan oleh tenaga kesehatan profesional. Selalu konfirmasi dengan pemeriksaan klinis langsung.</span>
-            <div class="footer-back">
-                ← <a href="index.html">Kembali ke SANS Hub</a>
-            </div>
-        </div>
-
+        <footer class="footer">
+            &copy; 2026 <strong>APeVS</strong> — Alat bantu penentuan nilai normal tanda vital anak.<br>
+            <span style="font-size:12px;">Untuk digunakan oleh tenaga kesehatan profesional. Selalu konfirmasi dengan pemeriksaan klinis langsung.</span>
+        </footer>
     </div>
 
     <script>
         // ============================================================
-        //  DATA NILAI NORMAL (berbasis AAP & AHA PALS)
+        //  DATA NILAI NORMAL (AAP 2017 & AHA PALS)
         // ============================================================
-
-        const vitalData = {
-            'neonatus': { label: 'Neonatus (0-28 hari)', minAgeDays: 0, maxAgeDays: 28 },
-            'bayi': { label: 'Bayi (1-12 bulan)', minAgeDays: 29, maxAgeDays: 365 },
-            'balita': { label: 'Balita (1-2 tahun)', minAgeDays: 366, maxAgeDays: 730 },
-            'prasekolah': { label: 'Pra-sekolah (3-5 tahun)', minAgeDays: 731, maxAgeDays: 1825 },
-            'sekolah': { label: 'Usia Sekolah (6-11 tahun)', minAgeDays: 1826, maxAgeDays: 4015 },
-            'remaja': { label: 'Remaja (12-18 tahun)', minAgeDays: 4016, maxAgeDays: 6570 }
-        };
 
         const referenceRanges = {
             'neonatus': {
+                label: 'Neonatus (0-28 hari)',
                 nadi: { daytime: '100-205', nighttime: '90-160' },
                 napas: '30-53',
                 sistol: '67-84',
                 diastol: '35-53',
-                map: '45-60'
+                map: '45-60',
+                suhu: '36.5-37.5'
             },
             'bayi': {
+                label: 'Bayi (1-12 bulan)',
                 nadi: { daytime: '100-190', nighttime: '90-160' },
                 napas: '30-53',
                 sistol: '72-104',
                 diastol: '37-56',
-                map: '50-62'
+                map: '50-62',
+                suhu: '36.5-37.5'
             },
             'balita': {
+                label: 'Balita (1-2 tahun)',
                 nadi: { daytime: '98-140', nighttime: '80-120' },
                 napas: '22-37',
                 sistol: '86-106',
                 diastol: '42-63',
-                map: '49-62'
+                map: '49-62',
+                suhu: '36.5-37.5'
             },
             'prasekolah': {
+                label: 'Pra-sekolah (3-5 tahun)',
                 nadi: { daytime: '80-120', nighttime: '65-100' },
                 napas: '20-28',
                 sistol: '89-112',
                 diastol: '46-72',
-                map: '58-89'
+                map: '58-89',
+                suhu: '36.5-37.5'
             },
             'sekolah': {
+                label: 'Usia Sekolah (6-11 tahun)',
                 nadi: { daytime: '75-118', nighttime: '58-90' },
                 napas: '18-25',
                 sistol: '97-115',
                 diastol: '57-76',
-                map: '66-72'
+                map: '66-72',
+                suhu: '36.5-37.5'
             },
             'remaja': {
+                label: 'Remaja (12-18 tahun)',
                 nadi: { daytime: '60-100', nighttime: '50-90' },
                 napas: '12-20',
                 sistol: '110-131',
                 diastol: '64-83',
-                map: '73-84'
+                map: '73-84',
+                suhu: '36.5-37.5'
             }
         };
 
         // ============================================================
-        //  FUNGSI JENIS KELAMIN
+        //  DARK MODE
         // ============================================================
 
-        document.getElementById('gender').addEventListener('focus', function() {
-            const options = this.options;
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].value === '') {
-                    this.remove(i);
-                    break;
-                }
+        const themeToggle = document.getElementById('themeToggle');
+        const themeLabel = document.getElementById('themeLabel');
+        const themeLabel2 = document.getElementById('themeLabel2');
+
+        if (localStorage.getItem('apevs-theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeLabel.textContent = '☀️';
+            themeLabel2.textContent = '🌙';
+        }
+
+        themeToggle.addEventListener('click', function() {
+            const current = document.documentElement.getAttribute('data-theme');
+            if (current === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('apevs-theme', 'light');
+                themeLabel.textContent = '🌙';
+                themeLabel2.textContent = '☀️';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('apevs-theme', 'dark');
+                themeLabel.textContent = '☀️';
+                themeLabel2.textContent = '🌙';
             }
         });
 
         // ============================================================
-        //  INISIALISASI DROPDOWN TANGGAL LAHIR
+        //  INISIALISASI DROPDOWN
         // ============================================================
 
-        function initBirthDateDropdowns() {
-            const daySelect = document.getElementById('birthDay');
+        function initDropdowns() {
+            const daySel = document.getElementById('birthDay');
             for (let i = 1; i <= 31; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                daySelect.appendChild(option);
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = i;
+                daySel.appendChild(opt);
             }
 
-            const yearSelect = document.getElementById('birthYear');
-            const currentYear = new Date().getFullYear();
-            for (let i = currentYear; i >= 1900; i--) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                yearSelect.appendChild(option);
+            const yearSel = document.getElementById('birthYear');
+            const currYear = new Date().getFullYear();
+            for (let i = currYear; i >= 1900; i--) {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = i;
+                yearSel.appendChild(opt);
             }
 
-            const defaultYear = currentYear - 1;
-            const defaultMonth = new Date().getMonth() + 1;
-            const defaultDay = new Date().getDate();
-            
-            yearSelect.value = defaultYear;
-            document.getElementById('birthMonth').value = defaultMonth;
-            daySelect.value = defaultDay;
-            
+            const d = new Date();
+            yearSel.value = d.getFullYear() - 1;
+            document.getElementById('birthMonth').value = d.getMonth() + 1;
+            daySel.value = d.getDate();
             updateAgeDisplay();
         }
 
         // ============================================================
-        //  FUNGSI PERHITUNGAN USIA
+        //  FUNGSI USIA
         // ============================================================
 
-        function getSelectedBirthDate() {
-            const day = parseInt(document.getElementById('birthDay').value);
-            const month = parseInt(document.getElementById('birthMonth').value);
-            const year = parseInt(document.getElementById('birthYear').value);
-            
-            if (!day || !month || !year) return null;
-            
-            const maxDay = new Date(year, month, 0).getDate();
-            if (day > maxDay) return null;
-            
-            return new Date(year, month - 1, day);
+        function getBirthDate() {
+            const d = parseInt(document.getElementById('birthDay').value);
+            const m = parseInt(document.getElementById('birthMonth').value);
+            const y = parseInt(document.getElementById('birthYear').value);
+            if (!d || !m || !y) return null;
+            const maxDay = new Date(y, m, 0).getDate();
+            if (d > maxDay) return null;
+            return new Date(y, m - 1, d);
         }
 
         function calculateAge(birthDate) {
             const now = new Date();
             const wibOffset = 7 * 60;
             const localOffset = now.getTimezoneOffset();
-            const wibTime = new Date(now.getTime() + (localOffset + wibOffset) * 60000);
-            
-            let years = wibTime.getFullYear() - birthDate.getFullYear();
-            let months = wibTime.getMonth() - birthDate.getMonth();
-            let days = wibTime.getDate() - birthDate.getDate();
-            
-            if (days < 0) {
-                months--;
-                const prevMonth = new Date(wibTime.getFullYear(), wibTime.getMonth(), 0);
-                days += prevMonth.getDate();
-            }
-            
-            if (months < 0) {
-                years--;
-                months += 12;
-            }
-            
-            const totalDays = (years * 365) + (months * 30) + days;
-            
-            return { years, months, days, totalDays };
-        }
+            const wib = new Date(now.getTime() + (localOffset + wibOffset) * 60000);
 
-        function formatAgeDisplay(years, months, days) {
-            let parts = [];
-            if (years > 0) parts.push(years + ' tahun');
-            if (months > 0) parts.push(months + ' bulan');
-            if (days > 0 || (years === 0 && months === 0)) parts.push(days + ' hari');
-            return parts.join(' ') || '0 hari';
+            let y = wib.getFullYear() - birthDate.getFullYear();
+            let m = wib.getMonth() - birthDate.getMonth();
+            let d = wib.getDate() - birthDate.getDate();
+
+            if (d < 0) { m--; const pm = new Date(wib.getFullYear(), wib.getMonth(), 0);
+                d += pm.getDate(); }
+            if (m < 0) { y--; m += 12; }
+
+            const totalDays = (y * 365) + (m * 30) + d;
+            return { years: y, months: m, days: d, totalDays };
         }
 
         function updateAgeDisplay() {
-            const birthDate = getSelectedBirthDate();
-            if (!birthDate) {
+            const birth = getBirthDate();
+            if (!birth) {
                 document.getElementById('displayAgeYears').value = '';
                 document.getElementById('displayAgeMonths').value = '';
                 document.getElementById('displayAgeDays').value = '';
                 return;
             }
-            
-            const age = calculateAge(birthDate);
+            const age = calculateAge(birth);
             document.getElementById('displayAgeYears').value = age.years + ' tahun';
             document.getElementById('displayAgeMonths').value = age.months + ' bulan';
             document.getElementById('displayAgeDays').value = age.days + ' hari';
         }
 
+        document.getElementById('birthDay').addEventListener('change', updateAgeDisplay);
+        document.getElementById('birthMonth').addEventListener('change', updateAgeDisplay);
+        document.getElementById('birthYear').addEventListener('change', updateAgeDisplay);
+
         // ============================================================
         //  FUNGSI UTAMA
         // ============================================================
 
-        function getAgeCategory(ageDays) {
+        let currentAgeDays = 0;
+        let currentRange = null;
+        let lastResultData = null;
+
+        function getCategory(ageDays) {
             if (ageDays <= 28) return 'neonatus';
             if (ageDays <= 365) return 'bayi';
             if (ageDays <= 730) return 'balita';
@@ -970,38 +1518,9 @@
             return 'remaja';
         }
 
-        function getReferenceRange(ageDays) {
-            const category = getAgeCategory(ageDays);
-            return referenceRanges[category];
-        }
-
-        function getCategoryLabel(ageDays) {
-            const category = getAgeCategory(ageDays);
-            return vitalData[category].label;
-        }
-
-        function getNadiRangeBoth(ageDays) {
-            const range = getReferenceRange(ageDays);
-            return {
-                daytime: range.nadi.daytime,
-                nighttime: range.nadi.nighttime
-            };
-        }
-
-        function getNapasRange(ageDays) {
-            return getReferenceRange(ageDays).napas;
-        }
-
-        function getSistolRange(ageDays) {
-            return getReferenceRange(ageDays).sistol;
-        }
-
-        function getDiastolRange(ageDays) {
-            return getReferenceRange(ageDays).diastol;
-        }
-
-        function getMapRange(ageDays) {
-            return getReferenceRange(ageDays).map;
+        function getRange(ageDays) {
+            const cat = getCategory(ageDays);
+            return referenceRanges[cat];
         }
 
         function getMinMax(rangeStr) {
@@ -1009,97 +1528,110 @@
             return { min: parts[0], max: parts[1] };
         }
 
+        function isInRange(value, rangeStr) {
+            if (value === null || isNaN(value) || value === 0) return null;
+            const { min, max } = getMinMax(rangeStr);
+            return value >= min && value <= max;
+        }
+
+        // ============================================================
+        //  VALIDASI FORM
+        // ============================================================
+
+        function validateForm() {
+            let valid = true;
+
+            const name = document.getElementById('patientName').value.trim();
+            const rm = document.getElementById('medicalRecord').value.trim();
+            const gender = document.getElementById('gender').value;
+            const birth = getBirthDate();
+
+            const nameErr = document.getElementById('nameError');
+            if (!name) { nameErr.classList.add('show');
+                document.getElementById('patientName').classList.add('error');
+                valid = false; } else { nameErr.classList.remove('show');
+                document.getElementById('patientName').classList.remove('error'); }
+
+            const rmErr = document.getElementById('rmError');
+            if (!rm) { rmErr.classList.add('show');
+                document.getElementById('medicalRecord').classList.add('error');
+                valid = false; } else { rmErr.classList.remove('show');
+                document.getElementById('medicalRecord').classList.remove('error'); }
+
+            const genderErr = document.getElementById('genderError');
+            if (!gender) { genderErr.classList.add('show');
+                document.getElementById('gender').classList.add('error');
+                valid = false; } else { genderErr.classList.remove('show');
+                document.getElementById('gender').classList.remove('error'); }
+
+            const birthErr = document.getElementById('birthError');
+            if (!birth) { birthErr.classList.add('show');
+                valid = false; } else {
+                birthErr.classList.remove('show');
+                const age = calculateAge(birth);
+                if (age.totalDays < 1) { birthErr.textContent = 'Usia minimal 1 hari';
+                    birthErr.classList.add('show');
+                    valid = false; } else if (age.totalDays > 6570) { birthErr.textContent = 'Usia maksimal 18 tahun';
+                    birthErr.classList.add('show');
+                    valid = false; } else { birthErr.classList.remove('show'); }
+            }
+
+            return valid;
+        }
+
+        document.querySelectorAll('#vitalForm input, #vitalForm select').forEach(el => {
+            el.addEventListener('input', function() {
+                this.classList.remove('error');
+                const err = this.closest('.form-group')?.querySelector('.error-text');
+                if (err) err.classList.remove('show');
+            });
+        });
+
         // ============================================================
         //  RENDER HASIL
         // ============================================================
 
         function renderResults(patientName, medicalRecord, birthDate, gender, weight, weightUnit, height, heightUnit) {
             const age = calculateAge(birthDate);
-            const ageDays = age.totalDays;
-            const categoryLabel = getCategoryLabel(ageDays);
-            const nadiRanges = getNadiRangeBoth(ageDays);
-            const napasRange = getNapasRange(ageDays);
-            const sistolRange = getSistolRange(ageDays);
-            const diastolRange = getDiastolRange(ageDays);
-            const mapRange = getMapRange(ageDays);
+            currentAgeDays = age.totalDays;
+            currentRange = getRange(currentAgeDays);
+            const categoryLabel = currentRange.label;
 
-            let weightDisplay = '';
+            let wDisplay = '';
             if (weight !== null && !isNaN(weight) && weight > 0) {
-                let weightValue = weight;
-                let unitDisplay = weightUnit;
-                if (weightUnit === 'gram') {
-                    weightValue = weight / 1000;
-                    unitDisplay = 'kg';
-                }
-                weightDisplay = '| ' + weightValue.toFixed(2) + ' ' + unitDisplay;
+                let wv = weight,
+                    wu = weightUnit;
+                if (weightUnit === 'gram') { wv = weight / 1000;
+                    wu = 'kg'; }
+                wDisplay = `| ${wv.toFixed(2)} ${wu}`;
             }
 
-            let heightDisplay = '';
+            let hDisplay = '';
             if (height !== null && !isNaN(height) && height > 0) {
-                let heightValue = height;
-                let unitDisplay = heightUnit;
-                if (heightUnit === 'feet') {
-                    heightValue = height * 30.48;
-                    unitDisplay = 'cm';
-                }
-                heightDisplay = '| ' + heightValue.toFixed(1) + ' ' + unitDisplay;
+                let hv = height,
+                    hu = heightUnit;
+                if (heightUnit === 'feet') { hv = height * 30.48;
+                    hu = 'cm'; }
+                hDisplay = `| ${hv.toFixed(1)} ${hu}`;
             }
 
             const cards = [
-                { 
-                    id: 'nadi-day',
-                    label: 'Denyut Nadi', 
-                    timeLabel: 'Siang',
-                    timeIcon: '☀️',
-                    rangeData: getMinMax(nadiRanges.daytime),
-                    unit: '/menit', 
-                    range: nadiRanges.daytime,
-                    type: 'daytime',
-                    sub: 'Malam: ' + nadiRanges.nighttime
-                },
-                { 
-                    id: 'nadi-night',
-                    label: 'Denyut Nadi', 
-                    timeLabel: 'Malam',
-                    timeIcon: '🌙',
-                    rangeData: getMinMax(nadiRanges.nighttime),
-                    unit: '/menit', 
-                    range: nadiRanges.nighttime,
-                    type: 'nighttime',
-                    sub: 'Siang: ' + nadiRanges.daytime
-                },
-                { 
-                    id: 'napas',
-                    label: 'Laju Pernapasan', 
-                    rangeData: getMinMax(napasRange),
-                    unit: '/menit', 
-                    range: napasRange,
-                    type: 'default'
-                },
-                { 
-                    id: 'sistol',
-                    label: 'TD Sistolik', 
-                    rangeData: getMinMax(sistolRange),
-                    unit: 'mmHg', 
-                    range: sistolRange,
-                    type: 'default'
-                },
-                { 
-                    id: 'diastol',
-                    label: 'TD Diastolik', 
-                    rangeData: getMinMax(diastolRange),
-                    unit: 'mmHg', 
-                    range: diastolRange,
-                    type: 'default'
-                },
-                { 
-                    id: 'map',
-                    label: 'MAP', 
-                    rangeData: getMinMax(mapRange),
-                    unit: 'mmHg', 
-                    range: mapRange,
-                    type: 'default'
-                }
+                { id: 'nadi-day', label: 'Denyut Nadi', timeIcon: '☀️', rangeData: getMinMax(currentRange.nadi.daytime),
+                    unit: '/menit', range: currentRange.nadi.daytime, type: 'daytime',
+                sub: 'Malam: ' + currentRange.nadi.nighttime },
+                { id: 'nadi-night', label: 'Denyut Nadi', timeIcon: '🌙', rangeData: getMinMax(currentRange.nadi.nighttime),
+                    unit: '/menit', range: currentRange.nadi.nighttime, type: 'nighttime',
+                sub: 'Siang: ' + currentRange.nadi.daytime },
+                { id: 'napas', label: 'Laju Pernapasan', rangeData: getMinMax(currentRange.napas), unit: '/menit',
+                    range: currentRange.napas, type: 'default' },
+                { id: 'sistol', label: 'TD Sistolik', rangeData: getMinMax(currentRange.sistol), unit: 'mmHg',
+                    range: currentRange.sistol, type: 'default' },
+                { id: 'diastol', label: 'TD Diastolik', rangeData: getMinMax(currentRange.diastol), unit: 'mmHg',
+                    range: currentRange.diastol, type: 'default' },
+                { id: 'map', label: 'MAP', rangeData: getMinMax(currentRange.map), unit: 'mmHg', range: currentRange.map,
+                    type: 'default' },
+                { id: 'suhu', label: 'Suhu Tubuh', rangeData: getMinMax(currentRange.suhu), unit: '°C',
+                    range: currentRange.suhu, type: 'default' }
             ];
 
             const grid = document.getElementById('resultGrid');
@@ -1108,116 +1640,298 @@
             cards.forEach(card => {
                 const div = document.createElement('div');
                 div.className = 'result-card';
-                
-                if (card.type === 'daytime') {
-                    div.classList.add('daytime');
-                } else if (card.type === 'nighttime') {
-                    div.classList.add('nighttime');
-                } else {
-                    div.classList.add('default-card');
-                }
+                if (card.type === 'daytime') div.classList.add('daytime');
+                else if (card.type === 'nighttime') div.classList.add('nighttime');
+                else div.classList.add('default-card');
 
-                let timeBadge = '';
-                if (card.type === 'daytime') {
-                    timeBadge = '<span class="time-badge day">☀️ Siang</span>';
-                } else if (card.type === 'nighttime') {
-                    timeBadge = '<span class="time-badge night">🌙 Malam</span>';
-                }
+                let tb = '';
+                if (card.type === 'daytime') tb = `<span class="time-badge day">☀️ Siang</span>`;
+                else if (card.type === 'nighttime') tb = `<span class="time-badge night">🌙 Malam</span>`;
 
-                let displayLabel = card.label;
-                if (card.timeIcon) {
-                    displayLabel = card.timeIcon + ' ' + card.label;
-                }
+                const label = card.timeIcon ? `${card.timeIcon} ${card.label}` : card.label;
+                const rangeDisplay = `${card.rangeData.min} - ${card.rangeData.max}`;
 
-                const rangeDisplay = card.rangeData.min + ' - ' + card.rangeData.max;
-
-                div.innerHTML = 
-                    '<div class="label">' + displayLabel + '</div>' +
-                    timeBadge +
-                    '<div class="value">' + rangeDisplay + ' <span class="unit">' + card.unit + '</span></div>' +
-                    '<div class="range">Rentang normal: <span class="normal">' + card.range + '</span></div>' +
-                    (card.sub ? '<div class="sub-range">' + card.sub + '</div>' : '') +
-                    '<span class="status status-normal">Normal</span>';
+                div.innerHTML = `
+                    <div class="label">${label}</div>
+                    ${tb}
+                    <div class="value">${rangeDisplay} <span class="unit">${card.unit}</span></div>
+                    <div class="range">Rentang normal: <span class="normal">${card.range}</span></div>
+                    ${card.sub ? `<div class="sub-range">${card.sub}</div>` : ''}
+                    <span class="status status-normal">✅ Normal</span>
+                `;
                 grid.appendChild(div);
             });
 
             const genderLabel = gender === 'L' ? 'Laki-laki' : 'Perempuan';
-            const ageDisplay = formatAgeDisplay(age.years, age.months, age.days);
-            
+            const ageDisplay = `${age.years}th ${age.months}bl ${age.days}hr`;
             document.getElementById('displayName').textContent = '👤 ' + patientName;
             document.getElementById('displayRM').textContent = '📋 RM: ' + medicalRecord;
-            document.getElementById('displayAgeResult').textContent = 
-                '📅 ' + ageDisplay + ' | ' + genderLabel + ' | ' + categoryLabel + ' ' + weightDisplay + ' ' + heightDisplay;
+            document.getElementById('displayAgeResult').textContent =
+                `📅 ${ageDisplay} | ${genderLabel} | ${categoryLabel} ${wDisplay} ${hDisplay}`;
 
-            const interpret = document.getElementById('interpretation');
-            interpret.textContent =
-                'Pasien ' + patientName + ' (' + ageDisplay + ') memiliki tanda vital dalam rentang normal berdasarkan pedoman AAP 2017. ' +
+            document.getElementById('interpretation').textContent =
+                `Pasien ${patientName} (${ageDisplay}) memiliki nilai normal berdasarkan pedoman AAP 2017. ` +
                 (weight || height ? 'Data antropometri digunakan sebagai referensi tambahan.' : '');
 
-            const section = document.getElementById('resultSection');
-            section.classList.add('show');
-            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Simpan data untuk perbandingan
+            lastResultData = {
+                patientName,
+                medicalRecord,
+                ageDisplay,
+                gender: genderLabel,
+                category: categoryLabel,
+                weight: wDisplay,
+                height: hDisplay,
+                range: currentRange,
+                timestamp: new Date().toLocaleString('id-ID')
+            };
+
+            // Tampilkan hasil dan compare section
+            document.getElementById('resultSection').classList.add('show');
+            document.getElementById('compareSection').classList.add('show');
+            document.getElementById('compareResults').classList.remove('show');
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Reset compare inputs
+            document.querySelectorAll('.compare-input-group input').forEach(inp => inp.value = '');
         }
 
         // ============================================================
-        //  EVENT HANDLER
+        //  FUNGSI BANDINGKAN
         // ============================================================
 
-        document.getElementById('birthDay').addEventListener('change', updateAgeDisplay);
-        document.getElementById('birthMonth').addEventListener('change', updateAgeDisplay);
-        document.getElementById('birthYear').addEventListener('change', updateAgeDisplay);
+        function doCompare() {
+            if (!currentRange) {
+                alert('Silakan tampilkan nilai normal terlebih dahulu.');
+                return;
+            }
+
+            const inputs = {
+                nadi: { el: document.getElementById('cmpNadi'), range: currentRange.nadi, label: 'Denyut Nadi',
+                unit: '/menit' },
+                napas: { el: document.getElementById('cmpNapas'), range: currentRange.napas, label: 'Laju Pernapasan',
+                    unit: '/menit' },
+                sistol: { el: document.getElementById('cmpSistol'), range: currentRange.sistol, label: 'TD Sistolik',
+                    unit: 'mmHg' },
+                diastol: { el: document.getElementById('cmpDiastol'), range: currentRange.diastol, label: 'TD Diastolik',
+                    unit: 'mmHg' },
+                map: { el: document.getElementById('cmpMap'), range: currentRange.map, label: 'MAP', unit: 'mmHg' },
+                suhu: { el: document.getElementById('cmpSuhu'), range: currentRange.suhu, label: 'Suhu Tubuh',
+                    unit: '°C' }
+            };
+
+            const results = [];
+            let abnormalCount = 0;
+
+            for (const [key, data] of Object.entries(inputs)) {
+                const val = parseFloat(data.el.value);
+                if (isNaN(val) || val === 0) {
+                    results.push({ key, label: data.label, actual: null, status: '-', inRange: null });
+                    continue;
+                }
+
+                const inRange = isInRange(val, data.range);
+                const status = inRange === true ? 'Normal' : inRange === false ? 'Abnormal' : '-';
+                if (inRange === false) abnormalCount++;
+
+                results.push({
+                    key,
+                    label: data.label,
+                    actual: val,
+                    unit: data.unit,
+                    range: data.range,
+                    status,
+                    inRange
+                });
+            }
+
+            // Render hasil perbandingan
+            const container = document.getElementById('compareResults');
+            const summary = document.getElementById('compareSummary');
+            const list = document.getElementById('compareList');
+
+            container.classList.add('show');
+
+            const totalFilled = results.filter(r => r.actual !== null).length;
+            if (totalFilled === 0) {
+                summary.className = 'summary';
+                summary.textContent = '⚠️ Belum ada nilai yang dimasukkan.';
+                list.innerHTML = '';
+                return;
+            }
+
+            if (abnormalCount === 0) {
+                summary.className = 'summary all-normal';
+                summary.innerHTML = `✅ <strong>Semua Normal!</strong> Dari ${totalFilled} parameter yang diperiksa, semuanya dalam rentang normal.`;
+            } else {
+                summary.className = 'summary has-abnormal';
+                summary.innerHTML =
+                    `⚠️ <strong>Ditemukan ${abnormalCount} Parameter Abnormal!</strong> Dari ${totalFilled} parameter yang diperiksa, <span class="count">${abnormalCount}</span> berada di luar rentang normal. Mohon evaluasi klinis lebih lanjut.`;
+            }
+
+            list.innerHTML = '';
+            results.forEach(r => {
+                if (r.actual === null) return;
+
+                const div = document.createElement('div');
+                div.className = `compare-item ${r.inRange === true ? 'normal' : r.inRange === false ? 'abnormal' : ''}`;
+
+                const badgeClass = r.inRange === true ? 'normal' : r.inRange === false ? 'abnormal' : '';
+                const badgeText = r.inRange === true ? '✅ Normal' : r.inRange === false ? '⚠️ Abnormal' : '-';
+
+                div.innerHTML = `
+                    <span class="param">${r.label}</span>
+                    <span class="detail">
+                        <span class="actual">${r.actual}</span> ${r.unit}
+                        <span class="range">(normal: ${r.range})</span>
+                    </span>
+                    <span class="status-badge ${badgeClass}">${badgeText}</span>
+                `;
+                list.appendChild(div);
+            });
+
+            // Scroll ke hasil perbandingan
+            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        document.getElementById('compareBtn').addEventListener('click', doCompare);
+
+        document.getElementById('clearCompareBtn').addEventListener('click', function() {
+            document.querySelectorAll('.compare-input-group input').forEach(inp => inp.value = '');
+            document.getElementById('compareResults').classList.remove('show');
+        });
+
+        // Enter key pada compare inputs
+        document.querySelectorAll('.compare-input-group input').forEach(inp => {
+            inp.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') doCompare();
+            });
+        });
+
+        // ============================================================
+        //  RIWAYAT (LocalStorage)
+        // ============================================================
+
+        function getHistory() {
+            try { return JSON.parse(localStorage.getItem('apevs-history')) || []; } catch { return []; }
+        }
+
+        function saveHistory(entry) {
+            const history = getHistory();
+            history.unshift({ ...entry, id: Date.now() });
+            if (history.length > 100) history.pop();
+            localStorage.setItem('apevs-history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function clearHistory() {
+            if (confirm('Hapus semua riwayat pemeriksaan?')) {
+                localStorage.removeItem('apevs-history');
+                renderHistory();
+            }
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            const history = getHistory();
+
+            if (history.length === 0) {
+                list.innerHTML = '<div class="history-empty">Belum ada riwayat pemeriksaan.</div>';
+                return;
+            }
+
+            list.innerHTML = '';
+            history.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'history-item';
+
+                const badge = item.hasAbnormal ?
+                    '<span class="status-badge" style="background:#fadbd8;color:#922b21;">⚠️ Abnormal</span>' :
+                    '<span class="status-badge" style="background:#d5f5e3;color:#1e8449;">✅ Normal</span>';
+
+                div.innerHTML = `
+                    <div class="info">
+                        <span class="name">${item.patientName}</span>
+                        <span class="detail">RM: ${item.medicalRecord} | ${item.ageDisplay} | ${item.gender} | ${item.category}</span>
+                        <span class="detail">${item.weight} ${item.height}</span>
+                        ${badge}
+                    </div>
+                    <div class="date">${item.timestamp}</div>
+                `;
+
+                div.addEventListener('click', function() {
+                    document.getElementById('patientName').value = item.patientName;
+                    document.getElementById('medicalRecord').value = item.medicalRecord;
+                    alert('📋 Data pasien dimuat ke form. Silakan lengkapi tanggal lahir dan klik "Tampilkan Nilai Normal".');
+                });
+
+                list.appendChild(div);
+            });
+        }
+
+        document.getElementById('saveHistoryBtn').addEventListener('click', function() {
+            if (!lastResultData) {
+                alert('Tidak ada hasil yang disimpan. Silakan lakukan pemeriksaan terlebih dahulu.');
+                return;
+            }
+
+            // Cek apakah ada abnormal dari compare terakhir
+            let hasAbnormal = false;
+            const summary = document.getElementById('compareSummary');
+            if (summary.classList.contains('has-abnormal')) hasAbnormal = true;
+
+            const entry = {
+                ...lastResultData,
+                hasAbnormal
+            };
+            saveHistory(entry);
+            alert('✅ Riwayat berhasil disimpan!');
+        });
+
+        document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
+
+        // ============================================================
+        //  SUBMIT FORM
+        // ============================================================
 
         document.getElementById('vitalForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const patientName = document.getElementById('patientName').value.trim();
-            const medicalRecord = document.getElementById('medicalRecord').value.trim();
+            if (!validateForm()) {
+                alert('⚠️ Mohon lengkapi data yang wajib diisi.');
+                return;
+            }
+
+            const name = document.getElementById('patientName').value.trim();
+            const rm = document.getElementById('medicalRecord').value.trim();
             const gender = document.getElementById('gender').value;
-            const birthDate = getSelectedBirthDate();
-            
+            const birth = getBirthDate();
             const weight = parseFloat(document.getElementById('weight').value);
-            const weightUnit = document.getElementById('weightUnit').value;
+            const wUnit = document.getElementById('weightUnit').value;
             const height = parseFloat(document.getElementById('height').value);
-            const heightUnit = document.getElementById('heightUnit').value;
+            const hUnit = document.getElementById('heightUnit').value;
 
-            if (!patientName) {
-                alert('Mohon masukkan nama pasien.');
-                return;
-            }
-            if (!medicalRecord) {
-                alert('Mohon masukkan nomor rekam medis.');
-                return;
-            }
-            if (!gender) {
-                alert('Mohon pilih jenis kelamin.');
-                return;
-            }
-            if (!birthDate) {
-                alert('Mohon pilih tanggal lahir pasien yang valid.');
-                return;
-            }
-
-            const age = calculateAge(birthDate);
-            if (age.totalDays < 1) {
-                alert('Usia pasien minimal 1 hari. Mohon periksa kembali tanggal lahir.');
-                return;
-            }
-            if (age.totalDays > 6570) {
-                alert('Usia pasien maksimal 18 tahun. Mohon periksa kembali tanggal lahir.');
-                return;
-            }
-
-            renderResults(patientName, medicalRecord, birthDate, gender, 
-                         isNaN(weight) ? null : weight, weightUnit,
-                         isNaN(height) ? null : height, heightUnit);
+            renderResults(name, rm, birth, gender,
+                isNaN(weight) ? null : weight, wUnit,
+                isNaN(height) ? null : height, hUnit);
         });
 
         // ============================================================
         //  INISIALISASI
         // ============================================================
 
-        initBirthDateDropdowns();
-        console.log('✅ APeVS siap digunakan! | Terintegrasi dengan SANS Hub');
+        initDropdowns();
+        renderHistory();
+
+        document.getElementById('gender').addEventListener('focus', function() {
+            const opts = this.options;
+            for (let i = 0; i < opts.length; i++) {
+                if (opts[i].value === '') { this.remove(i); break; }
+            }
+        });
+
+        console.log('✅ APeVS siap digunakan!');
+        console.log('📊 Fitur: Dark Mode | Riwayat | Validasi | Bandingkan Nilai Aktual');
     </script>
 
 </body>
