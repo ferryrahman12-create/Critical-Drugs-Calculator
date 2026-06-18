@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APeVS — Adhyaksa Pediatric Vital Signs | SANS Hub</title>
+    <meta name="description" content="APeVS — Kalkulator tanda-tanda vital normal pediatri berdasarkan pedoman AAP 2017. Bagian dari System Adhyaksa Nurse Support." />
 
     <!-- Favicon (sama dengan SANS Hub) -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
@@ -13,19 +14,14 @@
     </svg>" />
 
     <style>
-        /* ===== RESET & BASE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
-            --sans-bg: #0f172a;
-            --sans-primary: #14b8a6;
             --apevs-primary: #1a5276;
             --apevs-primary-dark: #154360;
+            --sans-bg: #0f172a;
+            --sans-primary: #14b8a6;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -41,7 +37,6 @@
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             padding: 30px 35px 45px;
-            transition: all 0.3s ease;
         }
 
         /* ===== TOMBOL KEMBALI ===== */
@@ -375,11 +370,6 @@
             color: #d68910;
         }
 
-        .result-card.daytime .status {
-            background: #fdebd0;
-            color: #a04000;
-        }
-
         .result-card.nighttime {
             border-left: 5px solid #2c3e50;
             background: linear-gradient(135deg, #f0f4f8, #ffffff);
@@ -387,11 +377,6 @@
 
         .result-card.nighttime .label {
             color: #1a2634;
-        }
-
-        .result-card.nighttime .status {
-            background: #d6eaf8;
-            color: #1a5276;
         }
 
         .result-card.default-card {
@@ -451,11 +436,6 @@
         .status-normal {
             background: #d5f5e3;
             color: #1e8449;
-        }
-
-        .status-abnormal {
-            background: #fadbd8;
-            color: #922b21;
         }
 
         .result-card .time-badge {
@@ -660,7 +640,7 @@
         <div class="form-section">
             <form id="vitalForm">
                 <div class="form-grid">
-                    <!-- Nama dan No RM satu baris -->
+                    <!-- Nama dan No RM -->
                     <div class="form-group full-width">
                         <div class="row-name-rm">
                             <div class="form-group">
@@ -1051,7 +1031,7 @@
                     weightValue = weight / 1000;
                     unitDisplay = 'kg';
                 }
-                weightDisplay = `| ${weightValue.toFixed(2)} ${unitDisplay}`;
+                weightDisplay = '| ' + weightValue.toFixed(2) + ' ' + unitDisplay;
             }
 
             let heightDisplay = '';
@@ -1062,7 +1042,7 @@
                     heightValue = height * 30.48;
                     unitDisplay = 'cm';
                 }
-                heightDisplay = `| ${heightValue.toFixed(1)} ${unitDisplay}`;
+                heightDisplay = '| ' + heightValue.toFixed(1) + ' ' + unitDisplay;
             }
 
             const cards = [
@@ -1137,31 +1117,27 @@
                     div.classList.add('default-card');
                 }
 
-                const statusClass = 'status-normal';
-                const statusText = 'Normal';
-
                 let timeBadge = '';
                 if (card.type === 'daytime') {
-                    timeBadge = `<span class="time-badge day">☀️ Siang</span>`;
+                    timeBadge = '<span class="time-badge day">☀️ Siang</span>';
                 } else if (card.type === 'nighttime') {
-                    timeBadge = `<span class="time-badge night">🌙 Malam</span>`;
+                    timeBadge = '<span class="time-badge night">🌙 Malam</span>';
                 }
 
                 let displayLabel = card.label;
                 if (card.timeIcon) {
-                    displayLabel = `${card.timeIcon} ${card.label}`;
+                    displayLabel = card.timeIcon + ' ' + card.label;
                 }
 
-                const rangeDisplay = `${card.rangeData.min} - ${card.rangeData.max}`;
+                const rangeDisplay = card.rangeData.min + ' - ' + card.rangeData.max;
 
-                div.innerHTML = `
-                    <div class="label">${displayLabel}</div>
-                    ${timeBadge}
-                    <div class="value">${rangeDisplay} <span class="unit">${card.unit}</span></div>
-                    <div class="range">Rentang normal: <span class="normal">${card.range}</span></div>
-                    ${card.sub ? `<div class="sub-range">${card.sub}</div>` : ''}
-                    <span class="status ${statusClass}">${statusText}</span>
-                `;
+                div.innerHTML = 
+                    '<div class="label">' + displayLabel + '</div>' +
+                    timeBadge +
+                    '<div class="value">' + rangeDisplay + ' <span class="unit">' + card.unit + '</span></div>' +
+                    '<div class="range">Rentang normal: <span class="normal">' + card.range + '</span></div>' +
+                    (card.sub ? '<div class="sub-range">' + card.sub + '</div>' : '') +
+                    '<span class="status status-normal">Normal</span>';
                 grid.appendChild(div);
             });
 
@@ -1171,11 +1147,11 @@
             document.getElementById('displayName').textContent = '👤 ' + patientName;
             document.getElementById('displayRM').textContent = '📋 RM: ' + medicalRecord;
             document.getElementById('displayAgeResult').textContent = 
-                `📅 ${ageDisplay} | ${genderLabel} | ${categoryLabel} ${weightDisplay} ${heightDisplay}`;
+                '📅 ' + ageDisplay + ' | ' + genderLabel + ' | ' + categoryLabel + ' ' + weightDisplay + ' ' + heightDisplay;
 
             const interpret = document.getElementById('interpretation');
             interpret.textContent =
-                `Pasien ${patientName} (${ageDisplay}) memiliki tanda vital dalam rentang normal berdasarkan pedoman AAP 2017. ` +
+                'Pasien ' + patientName + ' (' + ageDisplay + ') memiliki tanda vital dalam rentang normal berdasarkan pedoman AAP 2017. ' +
                 (weight || height ? 'Data antropometri digunakan sebagai referensi tambahan.' : '');
 
             const section = document.getElementById('resultSection');
