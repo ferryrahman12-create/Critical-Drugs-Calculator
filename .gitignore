@@ -1,0 +1,19 @@
+# Sistem
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary
+*.tmp
+*.log
+
+# Node (kalau nanti pakai)
+node_modules/
+package-lock.json
