@@ -232,57 +232,6 @@
       color: var(--primary);
     }
 
-    /* ===== FEATURED CARD ===== */
-    .featured-card {
-      width: 100%;
-      padding: 20px;
-      background: linear-gradient(135deg, #1a5632, #0d3b1f);
-      border: 2px solid var(--primary);
-      border-radius: 16px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      color: white;
-      position: relative;
-      overflow: hidden;
-      display: block;
-    }
-
-    .featured-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 35px rgba(20, 184, 166, 0.3);
-    }
-
-    .featured-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #fbbf24;
-      color: #000;
-      padding: 3px 8px;
-      border-radius: 10px;
-      font-size: 0.65rem;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .featured-icon {
-      font-size: 2.5rem;
-      margin-bottom: 8px;
-    }
-
-    .featured-title {
-      font-size: 1.1rem;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-
-    .featured-desc {
-      font-size: 0.8rem;
-      opacity: 0.8;
-    }
-
     /* ===== DIVIDER ===== */
     .divider {
       width: 100%;
@@ -326,6 +275,7 @@
 
     .link-card:nth-child(1) { animation: fadeInUp 0.3s ease 0.1s both; }
     .link-card:nth-child(2) { animation: fadeInUp 0.3s ease 0.15s both; }
+    .link-card:nth-child(3) { animation: fadeInUp 0.3s ease 0.2s both; }
 
     @media (max-width: 480px) {
       body { padding: 20px 12px; }
@@ -350,21 +300,20 @@
       </div>
     </div>
 
-    <!-- ===== FEATURED: ACDC CALCULATOR ===== -->
-    <a href="acdc-calculator.html" class="featured-card">
-      <span class="featured-badge">⭐ Utama</span>
-      <div class="featured-icon">💉</div>
-      <div class="featured-title">ACDC — Adhyaksa Critical Dose Calculator</div>
-      <div class="featured-desc">Kalkulator dosis obat ICU (Vasopressor, Inotropik, Sedasi)</div>
-    </a>
-
-    <!-- ===== DIVIDER ===== -->
-    <div class="divider">Tools Lainnya</div>
-
     <!-- ===== LINKS ===== -->
     <div class="links">
 
-      <!-- APeVS — AKTIF -->
+      <!-- ACDC Calculator -->
+      <a href="acdc-calculator.html" class="link-card">
+        <div class="link-icon" style="background: linear-gradient(135deg, #0d9488, #0f766e);">💉</div>
+        <div class="link-info">
+          <div class="link-title">ACDC — Adhyaksa Critical Dose Calculator</div>
+          <div class="link-desc">Kalkulator dosis obat ICU (Vasopressor, Inotropik, Sedasi)</div>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <!-- APeVS -->
       <a href="apevs.html" class="link-card">
         <div class="link-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">👶</div>
         <div class="link-info">
